@@ -14,58 +14,75 @@ interface Props {
   floatingInfo?: {
     label: string;
     value: string;
-    position: 'top-left' | 'top-right';
+    position: "top-left" | "top-right";
   };
 }
 
-const { 
-  imageSrc, 
-  imageAlt, 
-  badge, 
-  badgeIcon, 
-  title, 
+const {
+  imageSrc,
+  imageAlt,
+  badge,
+  badgeIcon,
+  title,
   titleAccent,
-  description, 
-  ctaText, 
+  description,
+  ctaText,
   ctaLink,
   reverse = false,
-  floatingInfo
+  floatingInfo,
 } = Astro.props;
 ---
 
-<div class={`grid md:grid-cols-2 gap-16 items-center ${reverse ? 'md:flex-row-reverse' : ''}`}>
+<div
+  class={`grid md:grid-cols-2 gap-16 items-center ${reverse ? "md:flex-row-reverse" : ""}`}
+>
   <!-- Image -->
-  <div class={`relative group ${reverse ? 'order-1 md:order-2' : ''}`}>
-    <div class="overflow-hidden rounded-[2.5rem] shadow-2xl shadow-blue-900/10 h-[500px] relative">
-      <img 
+  <div class={`relative group ${reverse ? "order-1 md:order-2" : ""}`}>
+    <div
+      class="overflow-hidden rounded-[2.5rem] shadow-2xl shadow-blue-900/10 h-[500px] relative"
+    >
+      <img
         src={imageSrc}
         class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
         alt={imageAlt}
       />
-      
+
       <!-- Floating Info Card -->
-      {floatingInfo && (
-        <div class={`absolute ${floatingInfo.position === 'top-left' ? 'top-8 left-8' : 'top-8 right-8'} bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-lg ${floatingInfo.position === 'top-right' ? 'text-center w-[140px]' : 'max-w-[180px]'}`}>
-          <p class="text-xs font-bold text-slate-400 uppercase mb-1">{floatingInfo.label}</p>
-          <p class="text-4xl font-black text-slate-900">{floatingInfo.value}</p>
-        </div>
-      )}
+      {
+        floatingInfo && (
+          <div
+            class={`absolute ${floatingInfo.position === "top-left" ? "top-8 left-8" : "top-8 right-8"} bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-lg ${floatingInfo.position === "top-right" ? "text-center min-w-[160px]" : "max-w-[180px]"}`}
+          >
+            <p class="text-xs font-bold text-slate-400 uppercase mb-1">
+              {floatingInfo.label}
+            </p>
+            <p class="text-3xl md:text-4xl font-black text-slate-900 break-words">
+              {floatingInfo.value}
+            </p>
+          </div>
+        )
+      }
     </div>
   </div>
 
   <!-- Text Content -->
-  <div class={reverse ? 'order-2 md:order-1' : ''}>
-    <div class="flex items-center gap-2 mb-4 text-slate-400 text-xs font-bold uppercase tracking-widest">
-      <i class={badgeIcon}></i> {badge}
+  <div class={reverse ? "order-2 md:order-1" : ""}>
+    <div
+      class="flex items-center gap-2 mb-4 text-slate-400 text-xs font-bold uppercase tracking-widest"
+    >
+      <i class={badgeIcon}></i>
+      {badge}
     </div>
-    <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">
+    <h2
+      class="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight"
+    >
       <Fragment set:html={title} />
       <span class="text-slate-400 italic font-serif"> {titleAccent}</span>
     </h2>
     <p class="text-slate-600 text-lg mb-8 leading-relaxed">
       {description}
     </p>
-    <a 
+    <a
       href={ctaLink}
       target="_blank"
       class="text-brand-blue font-bold text-sm uppercase tracking-widest hover:underline decoration-2 underline-offset-4"
