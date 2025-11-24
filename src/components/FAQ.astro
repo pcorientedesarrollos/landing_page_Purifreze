@@ -1,0 +1,138 @@
+---
+// FAQ Accordion component
+interface Props {
+  preview?: boolean; // If true, shows only first 5 questions
+}
+
+const { preview = false } = Astro.props;
+
+const faqs = [
+  {
+    question: "¿Es Más Seguro Que El Garrafón?",
+    answer:
+      "El sistema ósmosis brinda la garantía de inocuidad, seguridad que es producida en el hogar, mantenimiento oportuno del sistema y todas su piezas, diferenciador del descalcificador que permite el sarro no se adhiere al sistema, al organismo ni a equipo y utensilios.",
+  },
+  {
+    question: "¿Es Costoso?",
+    answer:
+      "La inversión es pago mensual y la mayoría de las veces menor al gasto se realiza en garrafones.",
+  },
+  {
+    question: "¿Cuánto Cuesta La Instalación Y Mantenimientos?",
+    answer:
+      "Está incluido en el pago de la mensualidad, no genera ningún pago adicional.",
+  },
+  {
+    question: "¿Es Complicada La Instalación?",
+    answer:
+      "No, solo requerimos toma agua, drenaje, contacto eléctrico. La instalación tiene duración aproximada de 2 a 3 hrs.",
+  },
+  {
+    question: "¿Se Firma Contrato?",
+    answer:
+      "Si, se firma contrato por 12 meses sin penalización siempre y cuando el equipo se entregue sin mal uso.",
+  },
+];
+
+const displayFaqs = preview ? faqs.slice(0, 5) : faqs;
+---
+
+<section class="py-24 bg-white">
+  <div class="max-w-3xl mx-auto px-6">
+    {
+      !preview && (
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center gap-2 mb-4 text-slate-400 text-xs font-bold uppercase tracking-widest border border-slate-200 px-4 py-2 rounded-full">
+            <i class="fa-solid fa-question" /> Preguntas Frecuentes
+          </div>
+          <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            ¿Tienes Preguntas?
+          </h2>
+
+          <p class="text-slate-500 mb-6">
+            Nos comprometemos a hacer que su experiencia sea lo más fácil y
+            sencilla posible.
+          </p>
+
+          <a
+            href="https://wa.me/5219991336108"
+            class="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-bold hover:from-green-600 hover:to-green-700 transition-all hover:scale-105 shadow-lg"
+          >
+            <i class="fa-brands fa-whatsapp text-xl" />
+            Pregúntanos aquí
+          </a>
+        </div>
+      )
+    }
+
+    {
+      preview && (
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center gap-2 mb-4 text-slate-400 text-xs font-bold uppercase tracking-widest border border-slate-200 px-4 py-2 rounded-full">
+            <i class="fa-solid fa-question" /> Preguntas Frecuentes
+          </div>
+          <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            ¿Tienes Preguntas?
+          </h2>
+          <p class="text-slate-500">
+            Nos comprometemos a hacer que su experiencia sea lo más fácil y
+            sencilla posible.
+          </p>
+        </div>
+      )
+    }
+
+    <div class="space-y-4">
+      {
+        displayFaqs.map((faq, index) => (
+          <div class="bg-slate-50 rounded-2xl overflow-hidden transition-all hover:bg-white hover:shadow-lg border border-transparent hover:border-slate-100">
+            <button
+              class="faq-toggle w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none group"
+              data-faq-index={index}
+            >
+              <span class="font-bold text-lg text-slate-800">
+                {faq.question}
+              </span>
+              <i class="fa-solid fa-plus text-slate-400 text-sm transition-transform duration-300 faq-icon" />
+            </button>
+            <div class="faq-content hidden px-8 pb-6 text-slate-600 leading-relaxed">
+              {faq.answer}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  // FAQ toggle functionality
+  function initializeFAQs() {
+    const faqToggles = document.querySelectorAll(".faq-toggle");
+
+    faqToggles.forEach((toggle) => {
+      toggle.addEventListener("click", () => {
+        const content = toggle.nextElementSibling as HTMLElement;
+        const icon = toggle.querySelector(".faq-icon") as HTMLElement;
+
+        if (content?.classList.contains("hidden")) {
+          // Open
+          content.classList.remove("hidden");
+          icon?.classList.add("rotate-45", "text-brand-blue");
+          icon?.classList.remove("text-slate-400");
+        } else {
+          // Close
+          content?.classList.add("hidden");
+          icon?.classList.remove("rotate-45", "text-brand-blue");
+          icon?.classList.add("text-slate-400");
+        }
+      });
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener("DOMContentLoaded", initializeFAQs);
+
+  // Re-initialize after Astro page transitions (if using View Transitions)
+  document.addEventListener("astro:page-load", initializeFAQs);
+</script>

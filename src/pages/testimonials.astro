@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navigation from "../components/Navigation.astro";
+import TestimonialsComponent from "../components/Testimonials.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+    title="Purifreze - Testimonios | Clientes Satisfechos"
+    description="Lee lo que nuestros clientes dicen sobre Purifreze. Más de 500 familias felices en Mérida."
+>
+    <Navigation />
+    <main class="pt-32 md:pt-40">
+        <h1 class="sr-only">Testimonios de Clientes</h1>
+        <TestimonialsComponent />
+    </main>
+    <Footer />
+</Layout>

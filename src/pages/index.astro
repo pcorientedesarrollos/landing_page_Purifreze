@@ -1,0 +1,97 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navigation from "../components/Navigation.astro";
+import Hero from "../components/Hero.astro";
+import VideoSection from "../components/VideoSection.astro";
+import AlternatingSection from "../components/AlternatingSection.astro";
+import Stats from "../components/Stats.astro";
+import Comparison from "../components/Comparison.astro";
+import UsesGrid from "../components/UsesGrid.astro";
+import Testimonials from "../components/Testimonials.astro";
+import FAQ from "../components/FAQ.astro";
+import CTA from "../components/CTA.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+  title="Purifreze - Purificador de Agua en Mérida | Renta con $0 Inicial y Mantenimiento Gratis"
+  description="Agua purificada ilimitada en tu hogar. Renta tu purificador en Mérida, Yucatán. ✓ Instalación GRATIS en 48hrs ✓ $0 inicial ✓ Mantenimiento incluido ✓ Sistema de ósmosis inversa ✓ +500 clientes ⭐ Rating 4.9/5"
+>
+  <Navigation />
+
+  <main class="pt-0">
+    <h1 class="sr-only">
+      Purifreze - Comparación de Purificador de Agua vs Garrafones
+    </h1>
+    <!-- Hero Section -->
+    <Hero />
+
+    <!-- Secciones Alternadas -->
+    <div class="max-w-[1200px] mx-auto px-6 space-y-32 py-20">
+      <!-- Sección Casa -->
+      <AlternatingSection
+        imageSrc="/assets/Casa.png"
+        imageAlt="Sistema de purificación de agua para casa en Mérida - Osmosis inversa"
+        badge="Filtración Avanzada"
+        badgeIcon="fa-solid fa-faucet-drip"
+        title="Sistema de <br> purificación de agua"
+        titleAccent="para casa."
+        description="Disfruta agua purificada siempre disponible en casa, sin cargar garrafones ni preocuparte por el mantenimiento."
+        ctaText="Agendar Instalación"
+        ctaLink="https://wa.me/5219991336108"
+        reverse={false}
+        floatingInfo={{
+          label: "Pago Inicial de",
+          value: "$0",
+          position: "top-left",
+        }}
+      />
+
+      <!-- Sección Oficina -->
+      <AlternatingSection
+        imageSrc="/assets/Oficina.png"
+        imageAlt="Purificador de agua para oficinas en Mérida - Servicio empresarial"
+        badge="Calidad Garantizada"
+        badgeIcon="fa-solid fa-medal"
+        title="Sistema de <br> purificación de agua"
+        titleAccent="para oficinas."
+        description="La solución ideal para tu espacio de trabajo. Agua filtrada sin interrupciones, para cuidar de tu equipo y tus clientes."
+        ctaText="Hablar con un Asesor"
+        ctaLink="https://wa.me/5219991336108"
+        reverse={true}
+        floatingInfo={{
+          label: "Instalación en",
+          value: "48hr",
+          position: "top-right",
+        }}
+      />
+    </div>
+
+    <!-- Stats -->
+    <Stats />
+
+    <!-- Video Hidratación Section -->
+    <VideoSection
+      title="La hidratación comienza desde el agua"
+      videoSrc="/assets/hidratcion.mp4"
+      vertical={true}
+    />
+
+    <!-- Comparison Section -->
+    <Comparison />
+
+    <!-- Grid de Usos -->
+    <UsesGrid />
+
+    <!-- Testimonios -->
+    <Testimonials />
+
+    <!-- FAQ Section -->
+    <FAQ preview={true} />
+
+    <!-- CTA Final -->
+    <CTA />
+  </main>
+
+  <Footer />
+</Layout>

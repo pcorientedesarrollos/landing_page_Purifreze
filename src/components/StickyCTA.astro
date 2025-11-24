@@ -1,0 +1,108 @@
+---
+// Sticky CTA Button for Mobile
+---
+
+<div class="sticky-cta">
+    <a
+        href="https://wa.me/5219991336108?text=Hola,%20quiero%20agendar%20mi%20instalación"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="sticky-cta-button"
+    >
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>Agendar Instalación</span>
+    </a>
+</div>
+
+<style>
+    .sticky-cta {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        display: none;
+        padding: 12px 16px;
+        background: linear-gradient(
+            to top,
+            rgba(255, 255, 255, 0.98),
+            rgba(255, 255, 255, 0.95)
+        );
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .sticky-cta-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 16px 24px;
+        background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+        color: white;
+        font-weight: 700;
+        font-size: 16px;
+        border-radius: 12px;
+        text-decoration: none;
+        box-shadow: 0 4px 16px rgba(0, 102, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .sticky-cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4);
+    }
+
+    .sticky-cta-button:active {
+        transform: translateY(0);
+    }
+
+    .sticky-cta-button i {
+        font-size: 20px;
+    }
+
+    @media (max-width: 1024px) {
+        .sticky-cta {
+            display: block;
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .sticky-cta.visible {
+        animation: slideUp 0.3s ease forwards;
+    }
+</style>
+
+<script>
+    function initStickyCTA() {
+        const stickyCTA = document.querySelector(".sticky-cta");
+        if (!stickyCTA) return;
+
+        const showThreshold = 300;
+
+        window.addEventListener("scroll", () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > showThreshold) {
+                stickyCTA.classList.add("visible");
+            } else {
+                stickyCTA.classList.remove("visible");
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", initStickyCTA);
+    document.addEventListener("astro:page-load", initStickyCTA);
+</script>

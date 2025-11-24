@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navigation from "../components/Navigation.astro";
+import UsesGrid from "../components/UsesGrid.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+    title="Purifreze - Usos | Agua Pura para Todo"
+    description="Descubre todos los usos del agua purificada Purifreze: beber, cocinar, lavar frutas y más."
+>
+    <Navigation />
+    <main class="pt-32 md:pt-40">
+        <h1 class="sr-only">Usos del Agua Purificada</h1>
+        <UsesGrid />
+    </main>
+    <Footer />
+</Layout>

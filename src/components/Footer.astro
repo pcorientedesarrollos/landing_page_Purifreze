@@ -1,0 +1,91 @@
+---
+// Footer component with social media links
+---
+
+<footer class="bg-white border-t border-slate-100 pt-20 pb-10">
+  <div class="max-w-[1200px] mx-auto px-6">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-10">
+      <div class="flex items-center gap-2 mb-6 md:mb-0">
+        <div
+          class="w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white"
+        >
+          <i class="fa-solid fa-droplet text-sm"></i>
+        </div>
+        <span class="text-xl font-bold text-slate-900">Purifreze</span>
+      </div>
+
+      <!-- Social Media Icons -->
+      <div class="flex gap-4 mb-6 md:mb-0">
+        <a
+          href="https://www.facebook.com/purifreze"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link facebook"
+          aria-label="Síguenos en Facebook"
+        >
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a
+          href="https://wa.me/5219991336108"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link whatsapp"
+          aria-label="Contáctanos por WhatsApp"
+        >
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </div>
+
+      <div class="flex gap-8 text-sm font-bold text-slate-900">
+        <a href="/" class="hover:text-brand-blue transition">INICIO</a>
+        <a
+          href="https://wa.me/5219991336108"
+          target="_blank"
+          class="hover:text-brand-blue transition"
+        >
+          CONTACTO
+        </a>
+      </div>
+    </div>
+    <div
+      class="flex flex-col md:flex-row justify-between items-center text-xs font-bold text-slate-400 uppercase tracking-widest border-t border-slate-100 pt-8"
+    >
+      <p>© 2025 Purifreze. Todos los derechos reservados.</p>
+      <p>Powered by PC Oriente</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .social-link {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .social-link.facebook {
+    background: linear-gradient(135deg, #1877f2 0%, #0d65d9 100%);
+    color: white;
+  }
+
+  .social-link.facebook:hover {
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 12px 24px rgba(24, 119, 242, 0.4);
+  }
+
+  .social-link.whatsapp {
+    background: linear-gradient(135deg, #25d366 0%, #1ea952 100%);
+    color: white;
+  }
+
+  .social-link.whatsapp:hover {
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 12px 24px rgba(37, 211, 102, 0.4);
+  }
+</style>

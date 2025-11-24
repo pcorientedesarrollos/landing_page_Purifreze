@@ -1,0 +1,20 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navigation from "../components/Navigation.astro";
+import FAQ from "../components/FAQ.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+  title="Preguntas Frecuentes - Purifreze"
+  description="Encuentra respuestas a las preguntas más frecuentes sobre nuestros sistemas de purificación de agua."
+>
+  <Navigation />
+
+  <main class="pt-32 md:pt-40 min-h-screen">
+    <!-- FAQ Page -->
+    <FAQ preview={false} />
+  </main>
+
+  <Footer />
+</Layout>

@@ -1,0 +1,173 @@
+---
+// Stats section with animated counters
+---
+
+<section class="stats-section fade-in">
+  <div class="stats-container">
+    <div class="stat-item scale-in delay-100">
+      <div class="stat-number" data-target="500">0</div>
+      <div class="stat-label">Clientes Satisfechos</div>
+      <div class="stat-icon">
+        <i class="fa-solid fa-users"></i>
+      </div>
+    </div>
+
+    <div class="stat-item scale-in delay-300">
+      <div class="stat-number" data-target="4.9">0</div>
+      <div class="stat-label">Rating Promedio</div>
+      <div class="stat-icon">
+        <i class="fa-solid fa-star"></i>
+      </div>
+    </div>
+
+    <div class="stat-item scale-in delay-500">
+      <div class="stat-number" data-target="48">0</div>
+      <div class="stat-label">Horas de Instalación</div>
+      <div class="stat-icon">
+        <i class="fa-solid fa-clock"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats-section {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        circle at 20% 50%,
+        rgba(59, 130, 246, 0.3) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 80%,
+        rgba(37, 99, 235, 0.3) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
+  }
+
+  .stats-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-item {
+    text-align: center;
+    position: relative;
+  }
+
+  .stat-number {
+    font-size: clamp(48px, 8vw, 72px);
+    font-weight: 900;
+    color: white;
+    margin-bottom: 12px;
+    line-height: 1;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .stat-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  .stat-icon {
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.3);
+    margin-top: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .stats-section {
+      padding: 60px 20px;
+    }
+
+    .stats-container {
+      gap: 40px;
+    }
+
+    .stat-number {
+      font-size: 56px;
+    }
+  }
+</style>
+
+<script>
+  function initCounters() {
+    const counterElements = document.querySelectorAll(".stat-number");
+
+    const animateCounter = (element: Element) => {
+      const target = parseFloat(element.getAttribute("data-target") || "0");
+      const duration = 2000; // 2 seconds
+      const steps = 60;
+      const stepDuration = duration / steps;
+      const increment = target / steps;
+      let current = 0;
+
+      const counter = setInterval(() => {
+        current += increment;
+
+        if (current >= target) {
+          clearInterval(counter);
+          // Format final number
+          if (target % 1 !== 0) {
+            element.textContent = target.toFixed(1) + "⭐";
+          } else if (target < 100) {
+            element.textContent = target + "hrs";
+          } else {
+            element.textContent = target + "+";
+          }
+        } else {
+          // Format current number
+          if (target % 1 !== 0) {
+            element.textContent = current.toFixed(1);
+          } else {
+            element.textContent = Math.floor(current).toString();
+          }
+        }
+      }, stepDuration);
+    };
+
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.target.textContent === "0") {
+          animateCounter(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    counterElements.forEach((el) => observer.observe(el));
+  }
+
+  // Initialize on page load
+  document.addEventListener("DOMContentLoaded", initCounters);
+
+  // Re-initialize after Astro page transitions
+  document.addEventListener("astro:page-load", initCounters);
+</script>

@@ -1,0 +1,257 @@
+---
+// Navigation with live statistics bar
+---
+
+<nav
+  class="fixed w-full z-50 bg-white/90 backdrop-blur-xl border-b border-slate-100 transition-all duration-300 shadow-sm"
+  id="navbar"
+>
+  <!-- Main Navigation -->
+  <div
+    class="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between"
+  >
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2 group">
+      <div class="h-16 w-auto transition transform group-hover:scale-105">
+        <img
+          src="/assets/nombre-logo.png"
+          alt="Purifreze - Purificadores de Agua"
+          class="h-full w-auto object-contain"
+        />
+      </div>
+    </a>
+
+    <!-- Links Desktop -->
+    <div class="hidden lg:flex items-center gap-6 xl:gap-8">
+      <a
+        href="/"
+        class="text-[10px] xl:text-xs font-bold text-slate-500 hover:text-brand-blue uppercase tracking-widest transition"
+      >
+        Inicio
+      </a>
+      <a
+        href="/comparison"
+        class="text-[10px] xl:text-xs font-bold text-slate-500 hover:text-brand-blue uppercase tracking-widest transition"
+      >
+        Comparación
+      </a>
+      <a
+        href="/uses"
+        class="text-[10px] xl:text-xs font-bold text-slate-500 hover:text-brand-blue uppercase tracking-widest transition"
+      >
+        Usos
+      </a>
+      <a
+        href="/testimonials"
+        class="text-[10px] xl:text-xs font-bold text-slate-500 hover:text-brand-blue uppercase tracking-widest transition"
+      >
+        Testimonios
+      </a>
+      <a
+        href="/faq"
+        class="text-[10px] xl:text-xs font-bold text-slate-500 hover:text-brand-blue uppercase tracking-widest transition"
+      >
+        Preguntas Frecuentes
+      </a>
+    </div>
+
+    <!-- Botón Cotizar -->
+    <div class="flex items-center gap-4">
+      <a
+        href="https://wa.me/5219991336108"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden md:inline-flex bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-bold px-4 py-2 lg:px-6 lg:py-3 rounded-lg shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition transform hover:-translate-y-0.5 hover:scale-105"
+      >
+        <i class="fa-brands fa-whatsapp mr-2"></i>
+        COTIZA AHORA
+      </a>
+      <!-- Mobile Toggle -->
+      <button id="mobile-menu-toggle" class="lg:hidden text-slate-800 text-2xl">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Statistics Bar -->
+  <div
+    class="bg-gradient-to-r from-blue-50 to-cyan-50 border-t border-blue-100/50"
+  >
+    <div class="max-w-[1400px] mx-auto px-6 py-3">
+      <div
+        class="flex items-center justify-center gap-6 md:gap-12 text-xs md:text-sm overflow-x-auto hide-scrollbar"
+      >
+        <!-- Stat 1 -->
+        <div class="flex items-center gap-2 whitespace-nowrap">
+          <div
+            class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center"
+          >
+            <i class="fa-solid fa-users text-blue-600"></i>
+          </div>
+          <div>
+            <span
+              class="font-black text-blue-900 stat-counter"
+              data-target="500">0</span
+            >
+            <span class="font-bold text-blue-600">+</span>
+            <span class="font-medium text-slate-600 ml-1">Clientes</span>
+          </div>
+        </div>
+
+        <!-- Stat 2 -->
+        <div class="flex items-center gap-2 whitespace-nowrap">
+          <div
+            class="w-8 h-8 rounded-full bg-cyan-500/10 flex items-center justify-center"
+          >
+            <i class="fa-solid fa-droplet text-cyan-600"></i>
+          </div>
+          <div>
+            <span
+              class="font-black text-cyan-900 stat-counter"
+              data-target="1000000">0</span
+            >
+            <span class="font-bold text-cyan-600">+</span>
+            <span class="font-medium text-slate-600 ml-1">Litros/Mes</span>
+          </div>
+        </div>
+
+        <!-- Stat 3 -->
+        <div class="flex items-center gap-2 whitespace-nowrap">
+          <div
+            class="w-8 h-8 rounded-full bg-yellow-500/10 flex items-center justify-center"
+          >
+            <i class="fa-solid fa-star text-yellow-600"></i>
+          </div>
+          <div>
+            <span class="font-black text-yellow-900">4.9</span>
+            <span class="font-medium text-slate-600 ml-1">/5.0 Rating</span>
+          </div>
+        </div>
+
+        <!-- Stat 4 -->
+        <!-- <div class="flex items-center gap-2 whitespace-nowrap">
+          <div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center">
+            <i class="fa-solid fa-clock text-green-600"></i>
+          </div>
+          <div>
+            <span class="font-black text-green-900">48</span>
+            <span class="font-medium text-slate-600 ml-1">hrs Instalación</span>
+          </div>
+        </div> -->
+
+        <!-- Stat 5 -->
+        <div class="flex items-center gap-2 whitespace-nowrap">
+          <div
+            class="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center"
+          >
+            <i class="fa-solid fa-tools text-purple-600"></i>
+          </div>
+          <div>
+            <span
+              class="font-black text-purple-900 stat-counter"
+              data-target="2000">0</span
+            >
+            <span class="font-bold text-purple-600">+</span>
+            <span class="font-medium text-slate-600 ml-1">Mantenimientos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu Overlay -->
+<div
+  id="mobile-menu"
+  class="fixed inset-0 bg-white z-40 flex flex-col pt-24 px-6 gap-6 opacity-0 pointer-events-none transition-opacity duration-300"
+>
+  <a href="/" class="text-2xl font-bold text-slate-800 mobile-menu-link"
+    >Inicio</a
+  >
+  <a
+    href="/comparison"
+    class="text-2xl font-bold text-slate-800 mobile-menu-link">Comparación</a
+  >
+  <a href="/uses" class="text-2xl font-bold text-slate-800 mobile-menu-link"
+    >Usos</a
+  >
+  <a
+    href="/testimonials"
+    class="text-2xl font-bold text-slate-800 mobile-menu-link">Testimonios</a
+  >
+  <a href="/faq" class="text-2xl font-bold text-slate-800 mobile-menu-link"
+    >Preguntas</a
+  >
+  <a
+    href="https://wa.me/5219991336108"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="text-2xl font-bold text-brand-blue"
+  >
+    Cotizar Ahora
+  </a>
+</div>
+
+<script>
+  // Mobile menu toggle
+  const menuToggle = document.getElementById("mobile-menu-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const mobileLinks = document.querySelectorAll(".mobile-menu-link");
+
+  menuToggle?.addEventListener("click", () => {
+    if (mobileMenu?.classList.contains("opacity-0")) {
+      mobileMenu.classList.remove("opacity-0", "pointer-events-none");
+      mobileMenu.classList.add("opacity-100");
+    } else {
+      mobileMenu?.classList.add("opacity-0", "pointer-events-none");
+      mobileMenu?.classList.remove("opacity-100");
+    }
+  });
+
+  // Close menu when clicking links
+  mobileLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileMenu?.classList.add("opacity-0", "pointer-events-none");
+      mobileMenu?.classList.remove("opacity-100");
+    });
+  });
+
+  // Animated counter for statistics
+  function animateCounter(element: HTMLElement) {
+    const target = parseInt(element.getAttribute("data-target") || "0");
+    const duration = 2000; // 2 seconds
+    const steps = 60;
+    const increment = target / steps;
+    let current = 0;
+
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        element.textContent = target.toLocaleString();
+        clearInterval(timer);
+      } else {
+        element.textContent = Math.floor(current).toLocaleString();
+      }
+    }, duration / steps);
+  }
+
+  // Initialize counters on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    const counters = document.querySelectorAll(".stat-counter");
+    counters.forEach((counter) => {
+      if (counter instanceof HTMLElement) {
+        animateCounter(counter);
+      }
+    });
+  });
+
+  // Re-initialize after Astro page transitions
+  document.addEventListener("astro:page-load", () => {
+    const counters = document.querySelectorAll(".stat-counter");
+    counters.forEach((counter) => {
+      if (counter instanceof HTMLElement) {
+        animateCounter(counter);
+      }
+    });
+  });
+</script>

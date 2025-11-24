@@ -1,0 +1,199 @@
+---
+// Enhanced Hero section with floating animated statistics
+const images = [
+  "/assets/imagen1.png",
+  "/assets/imagen2.png",
+  "/assets/imagen3.png",
+  "/assets/imagen4.png",
+];
+---
+
+<section
+  class="relative min-h-[95vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden"
+>
+  <!-- Background Image Slider Layer (z-index: 0) -->
+  <div class="absolute inset-0 w-full h-full z-0">
+    {
+      images.map((img, index) => (
+        <img
+          src={img}
+          class={`image-slide ${index === 0 ? "active" : ""}`}
+          alt={`Sistema de purificación de agua Purifreze - Vista ${index + 1} mostrando purificador de agua de alta calidad`}
+          loading={index === 0 ? "eager" : "lazy"}
+        />
+      ))
+    }
+  </div>
+
+  <!-- Animated Gradient Overlay (z-index: 1) -->
+  <div
+    class="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-cyan-900/30 to-blue-900/40 pointer-events-none animate-pulse-soft z-[1]"
+  >
+  </div>
+
+  <!-- Content -->
+  <div
+    class="relative z-10 max-w-5xl mx-auto w-full flex flex-col items-center justify-center mt-10"
+  >
+    <!-- Badge -->
+    <div
+      class="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-md rounded-full border border-blue-300/30 shadow-lg animate-fade-in"
+    >
+      <span
+        class="w-2 h-2 bg-blue-400 rounded-full animate-pulse-soft shadow-glow-blue"
+      ></span>
+      <span
+        class="text-xs font-bold uppercase tracking-widest text-white drop-shadow-lg"
+      >
+        💧 Agua Purificada Ilimitada
+      </span>
+    </div>
+
+    <!-- Title -->
+    <h1
+      class="text-5xl md:text-7xl lg:text-8xl text-white leading-[0.9] mb-8 animate-fade-up drop-shadow-2xl"
+    >
+      <span class="font-light block mb-3">PURIFICADOR</span>
+      <span
+        class="font-black bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent"
+      >
+        DE AGUA
+      </span>
+    </h1>
+
+    <!-- Description -->
+    <p
+      class="text-lg md:text-2xl text-white/95 max-w-3xl mx-auto mb-10 leading-relaxed font-medium animate-fade-up backdrop-blur-sm bg-black/20 px-6 py-4 rounded-2xl shadow-xl"
+      style="animation-delay: 0.2s;"
+    >
+      Renta un sistema de purificación con <span class="font-bold text-cyan-300"
+        >instalación en 48hrs</span
+      >,
+      <span class="font-bold text-green-300">$0 inicial</span> y
+      <span class="font-bold text-purple-300">mantenimiento incluido</span>
+    </p>
+
+    <!-- CTA Buttons -->
+    <div
+      class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 w-full animate-fade-up"
+      style="animation-delay: 0.4s;"
+    >
+      <a
+        href="https://wa.me/5219991336108"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-10 py-5 rounded-full font-black text-lg tracking-wide shadow-2xl shadow-green-500/40 hover:shadow-green-500/60 transition-all transform hover:scale-110 hover:-translate-y-1 flex items-center gap-3"
+      >
+        <i
+          class="fa-brands fa-whatsapp text-2xl group-hover:rotate-12 transition-transform"
+        ></i>
+        AGENDAR VISITA GRATIS
+        <i
+          class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"
+        ></i>
+      </a>
+    </div>
+
+    <!-- Quick Stats Row -->
+    <div
+      class="grid grid-cols-3 gap-4 md:gap-8 max-w-2xl animate-fade-up"
+      style="animation-delay: 0.6s;"
+    >
+      <div
+        class="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20"
+      >
+        <div class="text-3xl md:text-4xl font-black text-white mb-1">$0</div>
+        <div class="text-xs font-bold text-white/80 uppercase">
+          Pago Inicial
+        </div>
+      </div>
+      <div
+        class="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20"
+      >
+        <div class="text-3xl md:text-4xl font-black text-white mb-1">48hrs</div>
+        <div class="text-xs font-bold text-white/80 uppercase">Instalación</div>
+      </div>
+      <div
+        class="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20"
+      >
+        <div class="text-3xl md:text-4xl font-black text-white mb-1">100%</div>
+        <div class="text-xs font-bold text-white/80 uppercase">Incluido</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Gradient Fade -->
+  <div
+    class="absolute bottom-0 w-full h-32 bg-gradient-to-t from-white to-transparent pointer-events-none"
+  >
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <i class="fa-solid fa-chevron-down text-white text-2xl opacity-70"></i>
+  </div>
+</section>
+
+<script>
+  // Hero image slider - Ensure DOM is loaded
+  function initializeSlider() {
+    const imageSlides = document.querySelectorAll(".image-slide");
+    let currentImageIndex = 0;
+
+    console.log(`Found ${imageSlides.length} images for Hero slider`);
+
+    if (imageSlides.length > 1) {
+      // Start slider
+      const intervalId = setInterval(() => {
+        imageSlides[currentImageIndex].classList.remove("active");
+        currentImageIndex = (currentImageIndex + 1) % imageSlides.length;
+        imageSlides[currentImageIndex].classList.add("active");
+        console.log(`Switched to image ${currentImageIndex}`);
+      }, 5000); // Change every 5 seconds
+
+      console.log("Hero slider initialized");
+    } else {
+      console.log("Not enough images for slider");
+    }
+  }
+
+  // Run on page load
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeSlider);
+  } else {
+    initializeSlider();
+  }
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener("astro:page-load", initializeSlider);
+</script>
+
+<style>
+  /* Image Slider Styles */
+  .image-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .image-slide.active {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  /* Gradient animation for title */
+  @keyframes gradientShift {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+</style>

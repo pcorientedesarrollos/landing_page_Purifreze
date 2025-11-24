@@ -1,0 +1,74 @@
+/* Scroll Animation Utilities */
+
+/* Base styles for elements that will animate */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Slide from left */
+.slide-in-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.slide-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Slide from right */
+.slide-in-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.slide-in-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scale up animation */
+.scale-in {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scale-in.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Stagger delays for multiple elements */
+.delay-100 {
+  transition-delay: 0.1s;
+}
+
+.delay-200 {
+  transition-delay: 0.2s;
+}
+
+.delay-300 {
+  transition-delay: 0.3s;
+}
+
+.delay-400 {
+  transition-delay: 0.4s;
+}
+
+.delay-500 {
+  transition-delay: 0.5s;
+}
+
+.delay-600 {
+  transition-delay: 0.6s;
+}

@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navigation from "../components/Navigation.astro";
+import ComparisonComponent from "../components/Comparison.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+    title="Purifreze - Comparativa | Ahorro y Beneficios"
+    description="Compara Purifreze con los garrafones tradicionales. Calcula tu ahorro y descubre por qué somos la mejor opción."
+>
+    <Navigation />
+    <main class="pt-32 md:pt-40">
+        <h1 class="sr-only">Comparativa: Purifreze vs Garrafones</h1>
+        <ComparisonComponent />
+    </main>
+    <Footer />
+</Layout>

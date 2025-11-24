@@ -1,0 +1,22 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navigation from "../components/Navigation.astro";
+import VideoSection from "../components/VideoSection.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+    title="Purifreze - Video | La Importancia de la Hidratación"
+    description="Conoce más sobre la importancia de beber agua purificada de calidad."
+>
+    <Navigation />
+    <main class="pt-32 md:pt-40">
+        <h1 class="sr-only">Video Informativo</h1>
+        <VideoSection
+            title="La hidratación comienza desde el agua"
+            videoSrc="/assets/hidratcion.mp4"
+            vertical={true}
+        />
+    </main>
+    <Footer />
+</Layout>

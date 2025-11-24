@@ -1,0 +1,90 @@
+---
+// Enhanced video section component with premium design
+interface Props {
+  title: string;
+  videoSrc: string;
+  vertical?: boolean;
+  subtitle?: string;
+}
+
+const { title, videoSrc, vertical = true, subtitle } = Astro.props;
+---
+
+<section class="py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden">
+  <!-- Background decoration -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-30 -translate-y-1/2 translate-x-1/2"></div>
+  <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-100 rounded-full blur-3xl opacity-30 translate-y-1/2 -translate-x-1/2"></div>
+  
+  <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+    <!-- Header -->
+    <div class="mb-12">
+      <div class="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-blue-100 rounded-full">
+        <i class="fa-solid fa-video text-blue-600"></i>
+        <span class="text-xs font-bold uppercase tracking-widest text-blue-700">
+          Video
+        </span>
+      </div>
+      <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+        {title}
+      </h2>
+      {subtitle && (
+        <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+          {subtitle}
+        </p>
+      )}
+    </div>
+
+    <!-- Enhanced Video Container -->
+    <div class={`mx-auto ${vertical ? 'max-w-md' : 'max-w-full'} group`}>
+      <div class="relative rounded-[2.5rem] overflow-hidden shadow-2xl shadow-blue-900/20 transition-all duration-300 group-hover:shadow-3xl group-hover:shadow-blue-900/30 group-hover:-translate-y-2">
+        <!-- Gradient border effect -->
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-500 via-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[2.5rem] p-[3px] -z-10"></div>
+        
+        <!-- Video wrapper with aspect ratio -->
+        <div class={`relative bg-slate-900 ${vertical ? 'aspect-[9/16]' : 'aspect-video'}`}>
+          <video 
+            class="w-full h-full object-cover" 
+            autoplay 
+            muted 
+            loop 
+            playsinline 
+            controls
+            preload="metadata"
+          >
+            <source src={videoSrc} type="video/mp4" />
+            Tu navegador no soporta video HTML5.
+          </video>
+          
+          <!-- Play overlay decoration (appears before video loads) -->
+          <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/50 to-cyan-900/50 opacity-0 group-hover:opacity-0 transition-opacity pointer-events-none">
+            <div class="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <i class="fa-solid fa-play text-white text-2xl ml-1"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Video caption -->
+      <div class="mt-6 flex items-center justify-center gap-2 text-sm text-slate-500">
+        <i class="fa-solid fa-circle-play text-blue-600"></i>
+        <span>Reproducción automática • Calidad HD</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Custom video controls styling */
+  video::-webkit-media-controls-panel {
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+  }
+  
+  video::-webkit-media-controls-play-button {
+    background-color: rgba(37, 99, 235, 0.8);
+    border-radius: 50%;
+  }
+  
+  video::-webkit-media-controls-play-button:hover {
+    background-color: rgba(37, 99, 235, 1);
+  }
+</style>

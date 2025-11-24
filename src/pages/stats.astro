@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navigation from "../components/Navigation.astro";
+import StatsComponent from "../components/Stats.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+    title="Purifreze - Estadísticas | Impacto y Calidad"
+    description="Descubre el impacto de Purifreze: miles de litros purificados y clientes satisfechos."
+>
+    <Navigation />
+    <main class="pt-32 md:pt-40">
+        <h1 class="sr-only">Estadísticas de Purifreze</h1>
+        <StatsComponent />
+    </main>
+    <Footer />
+</Layout>
