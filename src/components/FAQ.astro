@@ -8,27 +8,27 @@ const { preview = false } = Astro.props;
 
 const faqs = [
   {
-    question: "¿Es Más Seguro Que El Garrafón?",
+    question: "¿Es más seguro que el garrafón?",
     answer:
       "El sistema ósmosis brinda la garantía de inocuidad, seguridad que es producida en el hogar, mantenimiento oportuno del sistema y todas su piezas, diferenciador del descalcificador que permite el sarro no se adhiere al sistema, al organismo ni a equipo y utensilios.",
   },
   {
-    question: "¿Es Costoso?",
+    question: "¿Es costoso?",
     answer:
       "La inversión es pago mensual y la mayoría de las veces menor al gasto se realiza en garrafones.",
   },
   {
-    question: "¿Cuánto Cuesta La Instalación Y Mantenimientos?",
+    question: "¿Cuánto cuesta la instalación y mantenimientos?",
     answer:
       "Está incluido en el pago de la mensualidad, no genera ningún pago adicional.",
   },
   {
-    question: "¿Es Complicada La Instalación?",
+    question: "¿Es complicada la instalación?",
     answer:
       "No, solo requerimos toma agua, drenaje, contacto eléctrico. La instalación tiene duración aproximada de 2 a 3 hrs.",
   },
   {
-    question: "¿Se Firma Contrato?",
+    question: "¿Se firma contrato?",
     answer:
       "Si, se firma contrato por 12 meses sin penalización siempre y cuando el equipo se entregue sin mal uso.",
   },
@@ -43,10 +43,10 @@ const displayFaqs = preview ? faqs.slice(0, 5) : faqs;
       !preview && (
         <div class="text-center mb-16">
           <div class="inline-flex items-center gap-2 mb-4 text-slate-400 text-xs font-bold uppercase tracking-widest border border-slate-200 px-4 py-2 rounded-full">
-            <i class="fa-solid fa-question" /> Preguntas Frecuentes
+            <i class="fa-solid fa-question" /> Preguntas frecuentes
           </div>
           <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            ¿Tienes Preguntas?
+            ¿Tienes preguntas?
           </h2>
 
           <p class="text-slate-500 mb-6">
@@ -69,10 +69,10 @@ const displayFaqs = preview ? faqs.slice(0, 5) : faqs;
       preview && (
         <div class="text-center mb-16">
           <div class="inline-flex items-center gap-2 mb-4 text-slate-400 text-xs font-bold uppercase tracking-widest border border-slate-200 px-4 py-2 rounded-full">
-            <i class="fa-solid fa-question" /> Preguntas Frecuentes
+            <i class="fa-solid fa-question" /> Preguntas frecuentes
           </div>
           <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            ¿Tienes Preguntas?
+            ¿Tienes preguntas?
           </h2>
           <p class="text-slate-500">
             Nos comprometemos a hacer que su experiencia sea lo más fácil y
