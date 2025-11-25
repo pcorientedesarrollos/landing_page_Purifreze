@@ -1,7 +1,3 @@
----
-// Calculadora de ahorro comparando garrafones vs Purifreze
----
-
 <section class="comparison-section">
     <div class="container">
         <div class="section-header">
@@ -13,15 +9,13 @@
                 ¿Cuánto <span class="gradient-text">ahorras con Purifreze?</span
                 >
             </h2>
-            <p class="subtitle">Descubre tu ahorro mensual en unos segundos</p>
+            <p class="subtitle">Descubre tu ahorro mensual</p>
         </div>
 
         <div class="calculator-container">
             <div class="calculator-card">
-                <!-- Input Section -->
                 <div class="input-section">
                     <div class="input-grid">
-                        <!-- Cantidad de Garrafones -->
                         <div class="input-group">
                             <label class="input-label">
                                 <i class="fa-solid fa-jug-detergent"></i>
@@ -34,7 +28,7 @@
                                         id="garrafonesSlider"
                                         min="1"
                                         max="30"
-                                        value="12"
+                                        value="5"
                                         class="slider"
                                     />
                                 </div>
@@ -44,7 +38,7 @@
                                         id="garrafonesInput"
                                         min="1"
                                         max="30"
-                                        value="12"
+                                        value="5"
                                         class="number-input"
                                     />
                                     <span class="input-suffix">garrafones</span>
@@ -52,7 +46,6 @@
                             </div>
                         </div>
 
-                        <!-- Precio por Garrafón -->
                         <div class="input-group">
                             <label class="input-label">
                                 <i class="fa-solid fa-dollar-sign"></i>
@@ -66,7 +59,7 @@
                                     min="1"
                                     max="200"
                                     value="45"
-                                    step="5"
+                                    step="1"
                                     class="number-input"
                                 />
                                 <span class="input-suffix">MXN</span>
@@ -75,11 +68,10 @@
                         </div>
                     </div>
 
-                    <!-- Gasto Mensual Calculado -->
                     <div class="monthly-spending">
                         <div class="spending-card">
                             <p class="spending-label">
-                                Tu gasto mensual actual
+                                Tu gasto actual en garrafones
                             </p>
                             <div class="spending-amount" id="gastoMensual">
                                 $450
@@ -88,115 +80,115 @@
                     </div>
                 </div>
 
-                <!-- Calculation Display -->
                 <div class="calculation-grid">
-                    <!-- Garrafones Cost -->
                     <div class="cost-card garrafones-card">
                         <div class="card-icon">
                             <i class="fa-solid fa-jug-detergent"></i>
                         </div>
                         <h3>Garrafones</h3>
-                        <p class="cost-label">Costo mensual</p>
+                        <p class="cost-label">Costo Mensual</p>
                         <div class="cost-amount">
                             $<span id="garrafonesCost">450</span>
                         </div>
                         <p class="cost-detail">
-                            <span id="garrafonesQty">10</span> garrafones a $<span
-                                id="garrafonesPrecio">45</span
-                            > c/u
+                            <span id="garrafonesQty">10</span> garrafones al mes
                         </p>
                     </div>
 
-                    <!-- VS Divider -->
                     <div class="vs-divider-vertical">
                         <span>VS</span>
                     </div>
 
-                    <!-- Purifreze Cost -->
                     <div class="cost-card purifreze-card">
                         <div class="card-icon purifreze">
                             <i class="fa-solid fa-droplet"></i>
                         </div>
                         <h3>Purifreze</h3>
-                        <p class="cost-label">Costo mensual</p>
-                        <div class="cost-amount purifreze">$450</div>
-                        <p class="cost-detail">Todo incluido + Ilimitado</p>
+                        <p class="cost-label">Costo Mensual</p>
+                        <div class="cost-amount purifreze">
+                            <span style="font-size: 0.6em;">Desde</span> $220.50
+                        </div>
+                        <p class="cost-detail">Suscripción Todo Incluido</p>
                     </div>
                 </div>
 
-                <!-- Savings Display -->
                 <div class="savings-section" id="savingsSection">
                     <div class="savings-card positive" id="savingsCard">
                         <div class="savings-icon">
                             <i class="fa-solid fa-piggy-bank"></i>
                         </div>
-                        <div class="savings-content">
+                        <div class="savings-content" id="savingsContent">
                             <p class="savings-label" id="savingsLabel">
                                 Tu ahorro mensual
                             </p>
+
                             <div class="savings-amount" id="savingsAmount">
-                                $0
+                                $229.50
                             </div>
                             <p class="savings-annual" id="savingsAnnual">
-                                $0 al año
+                                $2,754 al año
                             </p>
+
+                            <ul class="premium-benefits-list">
+                                <li>
+                                    <i class="fa-solid fa-droplet"></i>
+                                    Agua fresca recién filtrada (5 etapas)
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-ban"></i>
+                                    Libre de microplásticos y BPA
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-hand-holding-heart"
+                                    ></i>
+                                    Sin cargar peso nunca más
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
 
-                <!-- CTA Button -->
                 <div class="cta-section">
                     <a
-                        href="https://wa.me/5219991336108?text=Hola,%20quiero%20ahorrar%20con%20Purifreze"
+                        href="https://wa.me/5219991336108?text=Hola,%20me%20interesa%20la%20suscripción%20de%20Purifreze"
                         class="cta-button"
+                        target="_blank"
                     >
                         <i class="fa-brands fa-whatsapp"></i>
-                        Quiero Comenzar a Ahorrar
+                        Quiero Mejorar mi Agua
                     </a>
                 </div>
             </div>
 
-            <!-- Comparison Table Section -->
             <div class="comparison-table-section">
                 <div class="table-header">
                     <h3 class="table-title">
                         <i class="fa-solid fa-chart-bar"></i>
                         Comparación detallada
                     </h3>
-                    <p class="table-subtitle">
-                        Descubre todas las ventajas de Purifreze
-                    </p>
 
-                    <!-- Category Filters -->
                     <div class="category-filters">
                         <button class="filter-btn active" data-category="all">
-                            <i class="fa-solid fa-list"></i>
-                            Todas
+                            <i class="fa-solid fa-list"></i> Todas
                         </button>
                         <button class="filter-btn" data-category="cost">
-                            <i class="fa-solid fa-dollar-sign"></i>
-                            Costo
+                            <i class="fa-solid fa-dollar-sign"></i> Costo
                         </button>
                         <button class="filter-btn" data-category="convenience">
-                            <i class="fa-solid fa-truck"></i>
-                            Conveniencia
+                            <i class="fa-solid fa-truck"></i> Conveniencia
                         </button>
                         <button class="filter-btn" data-category="quality">
-                            <i class="fa-solid fa-award"></i>
-                            Calidad
-                        </button>
-                        <button class="filter-btn" data-category="environment">
-                            <i class="fa-solid fa-leaf"></i>
-                            Ecología
+                            <i class="fa-solid fa-award"></i> Calidad
                         </button>
                         <button class="filter-btn" data-category="health">
-                            <i class="fa-solid fa-heart-pulse"></i>
-                            Salud
+                            <i class="fa-solid fa-heart-pulse"></i> Salud
+                        </button>
+                        <button class="filter-btn" data-category="environment">
+                            <i class="fa-solid fa-leaf"></i> Ecología
                         </button>
                     </div>
                 </div>
 
-                <!-- Comparison Table -->
                 <div class="comparison-table-wrapper">
                     <table class="comparison-table">
                         <thead>
@@ -218,39 +210,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Costo -->
                             <tr class="table-row" data-category="cost">
                                 <td class="feature-cell">
-                                    <i
-                                        class="fa-solid fa-dollar-sign category-icon"
-                                    ></i>
-                                    Inversión Inicial
+                                    <i class="fa-solid fa-tag category-icon"
+                                    ></i> Precio Mensual
                                 </td>
                                 <td class="value-cell purifreze">
-                                    <span class="value">$0</span>
-                                    <span class="badge success"
-                                        >Sin depósito</span
-                                    >
-                                </td>
-                                <td class="value-cell garrafon">
-                                    <span class="value">Variable</span>
-                                    <span class="badge neutral"
-                                        >Depende del proveedor</span
-                                    >
-                                </td>
-                            </tr>
-                            <tr class="table-row" data-category="cost">
-                                <td class="feature-cell">
-                                    <i
-                                        class="fa-solid fa-calendar-day category-icon"
-                                    ></i>
-                                    Costo Mensual
-                                </td>
-                                <td class="value-cell purifreze">
-                                    <span class="value">$450</span>
-                                    <span class="badge success"
-                                        >Fijo e ilimitado</span
-                                    >
+                                    <span class="value">Desde $220.50</span>
+                                    <span class="badge success">Fijo</span>
                                 </td>
                                 <td class="value-cell garrafon">
                                     <span class="value" id="tableGarrafonesCost"
@@ -259,230 +226,109 @@
                                     <span class="badge warning">Variable</span>
                                 </td>
                             </tr>
-                            <tr class="table-row" data-category="cost">
+                            <tr class="table-row" data-category="quality">
                                 <td class="feature-cell">
-                                    <i class="fa-solid fa-wrench category-icon"
-                                    ></i>
-                                    Mantenimiento
-                                </td>
-                                <td class="value-cell purifreze">
                                     <i
-                                        class="fa-solid fa-check-circle check-icon"
-                                    ></i>
-                                    <span class="value">Gratis</span>
-                                </td>
-                                <td class="value-cell garrafon">
-                                    <i
-                                        class="fa-solid fa-times-circle cross-icon"
-                                    ></i>
-                                    <span class="value">No aplica</span>
-                                </td>
-                            </tr>
-
-                            <!-- Conveniencia -->
-                            <tr class="table-row" data-category="convenience">
-                                <td class="feature-cell">
-                                    <i class="fa-solid fa-truck category-icon"
-                                    ></i>
-                                    Entrega a Domicilio
-                                </td>
-                                <td class="value-cell purifreze">
-                                    <i
-                                        class="fa-solid fa-check-circle check-icon"
-                                    ></i>
-                                    <span class="value">No necesario</span>
-                                </td>
-                                <td class="value-cell garrafon">
-                                    <i class="fa-solid fa-clock cross-icon"></i>
-                                    <span class="value"
-                                        >Dependes del repartidor</span
-                                    >
-                                </td>
-                            </tr>
-                            <tr class="table-row" data-category="convenience">
-                                <td class="feature-cell">
-                                    <i class="fa-solid fa-box category-icon"
-                                    ></i>
-                                    Almacenamiento
+                                        class="fa-solid fa-microscope category-icon"
+                                    ></i> Microplásticos
                                 </td>
                                 <td class="value-cell purifreze">
                                     <i
                                         class="fa-solid fa-check-circle check-icon"
                                     ></i>
                                     <span class="value"
-                                        >Sin espacio requerido</span
+                                        >Libre de microplásticos</span
                                     >
                                 </td>
                                 <td class="value-cell garrafon">
                                     <i
                                         class="fa-solid fa-times-circle cross-icon"
                                     ></i>
-                                    <span class="value">Requiere espacio</span>
-                                </td>
-                            </tr>
-                            <tr class="table-row" data-category="convenience">
-                                <td class="feature-cell">
-                                    <i class="fa-solid fa-clock category-icon"
-                                    ></i>
-                                    Disponibilidad 24/7
-                                </td>
-                                <td class="value-cell purifreze">
-                                    <i
-                                        class="fa-solid fa-check-circle check-icon"
-                                    ></i>
-                                    <span class="value">Siempre disponible</span
+                                    <span class="value"
+                                        >Presentes por envase</span
                                     >
                                 </td>
-                                <td class="value-cell garrafon">
-                                    <i
-                                        class="fa-solid fa-times-circle cross-icon"
-                                    ></i>
-                                    <span class="value">Horario limitado</span>
-                                </td>
                             </tr>
-
-                            <!-- Calidad -->
                             <tr class="table-row" data-category="quality">
                                 <td class="feature-cell">
                                     <i class="fa-solid fa-filter category-icon"
-                                    ></i>
-                                    Sistema de Purificación
+                                    ></i> Filtración
                                 </td>
                                 <td class="value-cell purifreze">
                                     <i
                                         class="fa-solid fa-check-circle check-icon"
                                     ></i>
                                     <span class="value"
-                                        >5 etapas de filtración</span
+                                        >Recién filtrada (5 etapas)</span
                                     >
                                 </td>
                                 <td class="value-cell garrafon">
                                     <i
                                         class="fa-solid fa-question-circle neutral-icon"
                                     ></i>
-                                    <span class="value">Variable</span>
-                                </td>
-                            </tr>
-                            <tr class="table-row" data-category="quality">
-                                <td class="feature-cell">
-                                    <i
-                                        class="fa-solid fa-temperature-arrow-down category-icon"
-                                    ></i>
-                                    Frescura del Agua
-                                </td>
-                                <td class="value-cell purifreze">
-                                    <i
-                                        class="fa-solid fa-check-circle check-icon"
-                                    ></i>
-                                    <span class="value">Siempre fresca</span>
-                                </td>
-                                <td class="value-cell garrafon">
-                                    <i
-                                        class="fa-solid fa-times-circle cross-icon"
-                                    ></i>
-                                    <span class="value">Depende del tiempo</span
+                                    <span class="value">Almacenada semanas</span
                                     >
                                 </td>
                             </tr>
-                            <tr class="table-row" data-category="quality">
+                            <tr class="table-row" data-category="convenience">
                                 <td class="feature-cell">
                                     <i
-                                        class="fa-solid fa-certificate category-icon"
-                                    ></i>
-                                    Certificaciones
+                                        class="fa-solid fa-weight-hanging category-icon"
+                                    ></i> Esfuerzo físico
                                 </td>
                                 <td class="value-cell purifreze">
                                     <i
                                         class="fa-solid fa-check-circle check-icon"
                                     ></i>
-                                    <span class="value">Certificado</span>
-                                </td>
-                                <td class="value-cell garrafon">
-                                    <i
-                                        class="fa-solid fa-question-circle neutral-icon"
-                                    ></i>
-                                    <span class="value">Variable</span>
-                                </td>
-                            </tr>
-
-                            <!-- Medio Ambiente -->
-                            <tr class="table-row" data-category="environment">
-                                <td class="feature-cell">
-                                    <i class="fa-solid fa-recycle category-icon"
-                                    ></i>
-                                    Plástico Desechado
-                                </td>
-                                <td class="value-cell purifreze">
-                                    <i
-                                        class="fa-solid fa-check-circle check-icon"
-                                    ></i>
-                                    <span class="value">Cero plástico</span>
+                                    <span class="value">Sin cargar peso</span>
                                 </td>
                                 <td class="value-cell garrafon">
                                     <i
                                         class="fa-solid fa-times-circle cross-icon"
                                     ></i>
-                                    <span class="value">Alto consumo</span>
+                                    <span class="value"
+                                        >Cargar garrafones pesados</span
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="table-row" data-category="health">
+                                <td class="feature-cell">
+                                    <i class="fa-solid fa-flask category-icon"
+                                    ></i> BPA y Toxinas
+                                </td>
+                                <td class="value-cell purifreze">
+                                    <i
+                                        class="fa-solid fa-check-circle check-icon"
+                                    ></i>
+                                    <span class="value">Libre de BPA</span>
+                                </td>
+                                <td class="value-cell garrafon">
+                                    <i
+                                        class="fa-solid fa-triangle-exclamation warning-icon"
+                                    ></i>
+                                    <span class="value"
+                                        >Riesgo por calor/sol</span
+                                    >
                                 </td>
                             </tr>
                             <tr class="table-row" data-category="environment">
                                 <td class="feature-cell">
-                                    <i class="fa-solid fa-car category-icon"
-                                    ></i>
-                                    Huella de Carbono
+                                    <i class="fa-solid fa-recycle category-icon"
+                                    ></i> Huella de Carbono
                                 </td>
                                 <td class="value-cell purifreze">
                                     <i
                                         class="fa-solid fa-check-circle check-icon"
                                     ></i>
-                                    <span class="value">Mínima</span>
+                                    <span class="value"
+                                        >Mínima (Sin transporte)</span
+                                    >
                                 </td>
                                 <td class="value-cell garrafon">
-                                    <i
-                                        class="fa-solid fa-times-circle cross-icon"
-                                    ></i>
-                                    <span class="value">Por transporte</span>
-                                </td>
-                            </tr>
-
-                            <!-- Salud -->
-                            <tr class="table-row" data-category="health">
-                                <td class="feature-cell">
-                                    <i
-                                        class="fa-solid fa-shield-halved category-icon"
-                                    ></i>
-                                    Control de Calidad
-                                </td>
-                                <td class="value-cell purifreze">
-                                    <i
-                                        class="fa-solid fa-check-circle check-icon"
-                                    ></i>
-                                    <span class="value">Constante</span>
-                                </td>
-                                <td class="value-cell garrafon">
-                                    <i
-                                        class="fa-solid fa-question-circle neutral-icon"
-                                    ></i>
-                                    <span class="value">Variable</span>
-                                </td>
-                            </tr>
-                            <tr class="table-row" data-category="health">
-                                <td class="feature-cell">
-                                    <i class="fa-solid fa-droplet category-icon"
-                                    ></i>
-                                    Minerales Esenciales
-                                </td>
-                                <td class="value-cell purifreze">
-                                    <i
-                                        class="fa-solid fa-check-circle check-icon"
-                                    ></i>
-                                    <span class="value">Preservados</span>
-                                </td>
-                                <td class="value-cell garrafon">
-                                    <i
-                                        class="fa-solid fa-question-circle neutral-icon"
-                                    ></i>
-                                    <span class="value">Variable</span>
+                                    <i class="fa-solid fa-smog cross-icon"></i>
+                                    <span class="value"
+                                        >Alta (Camiones reparto)</span
+                                    >
                                 </td>
                             </tr>
                         </tbody>
@@ -494,26 +340,20 @@
 </section>
 
 <style>
+    /* Estilos Generales */
     .comparison-section {
-        padding: 100px 20px;
+        padding: 80px 20px;
         background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
-        position: relative;
-        overflow: hidden;
+        font-family: "Segoe UI", system-ui, sans-serif;
     }
-
     .container {
         max-width: 1000px;
         margin: 0 auto;
-        position: relative;
-        z-index: 1;
     }
-
-    /* Section Header */
     .section-header {
         text-align: center;
-        margin-bottom: 60px;
+        margin-bottom: 50px;
     }
-
     .badge {
         display: inline-flex;
         align-items: center;
@@ -527,254 +367,149 @@
         margin-bottom: 20px;
         box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
-
     .title {
         font-size: clamp(32px, 5vw, 48px);
         font-weight: 800;
         color: #1e293b;
-        margin-bottom: 16px;
+        margin: 0 0 16px;
         line-height: 1.2;
     }
-
     .gradient-text {
         background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
-
     .subtitle {
         font-size: 18px;
         color: #64748b;
+        margin: 0;
     }
 
-    /* Calculator Container */
+    /* Calculadora */
     .calculator-container {
         max-width: 900px;
         margin: 0 auto;
     }
-
     .calculator-card {
         background: white;
         border-radius: 32px;
-        padding: 48px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e2e8f0;
     }
 
-    /* Input Section */
-    .input-section {
-        margin-bottom: 48px;
-    }
-
+    /* Inputs */
     .input-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 32px;
         margin-bottom: 32px;
     }
-
     .input-group {
         display: flex;
         flex-direction: column;
         gap: 16px;
     }
-
     .input-label {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         font-size: 16px;
         font-weight: 700;
         color: #1e293b;
     }
-
     .input-label i {
         color: #3b82f6;
-        font-size: 20px;
     }
 
-    .input-hint {
-        font-size: 13px;
-        color: #64748b;
-        margin-top: -8px;
-        font-style: italic;
-    }
-
-    /* Dual Input (Slider + Number) */
     .dual-input {
         display: flex;
         flex-direction: column;
         gap: 12px;
     }
 
-    .slider-container {
-        position: relative;
-    }
-
     .slider {
         width: 100%;
         height: 8px;
         border-radius: 50px;
-        background: linear-gradient(90deg, #dbeafe 0%, #3b82f6 100%);
+        background: #e2e8f0;
         outline: none;
         -webkit-appearance: none;
         cursor: pointer;
-        transition: all 0.3s ease;
     }
-
-    .slider:hover {
-        background: linear-gradient(90deg, #bfdbfe 0%, #2563eb 100%);
-    }
-
     .slider::-webkit-slider-thumb {
         -webkit-appearance: none;
-        appearance: none;
-        width: 28px;
-        height: 28px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        background: #3b82f6;
         cursor: pointer;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-        transition: all 0.2s ease;
+        box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+        transition: transform 0.2s;
     }
-
     .slider::-webkit-slider-thumb:hover {
-        transform: scale(1.2);
-        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.6);
+        transform: scale(1.1);
     }
 
-    .slider::-moz-range-thumb {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        cursor: pointer;
-        border: none;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-        transition: all 0.2s ease;
-    }
-
-    .slider::-moz-range-thumb:hover {
-        transform: scale(1.2);
-        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.6);
-    }
-
-    /* Number Input Wrapper */
     .number-input-wrapper {
         display: flex;
         align-items: center;
-        gap: 12px;
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        gap: 8px;
+        background: #f8fafc;
         border: 2px solid #e2e8f0;
-        border-radius: 16px;
-        padding: 12px 20px;
-        transition: all 0.3s ease;
+        border-radius: 12px;
+        padding: 10px 16px;
+        transition: border-color 0.3s;
     }
-
     .number-input-wrapper:focus-within {
         border-color: #3b82f6;
         background: white;
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-    }
-
-    .number-input-wrapper.price {
-        justify-content: center;
-    }
-
-    .input-prefix,
-    .input-suffix {
-        font-size: 16px;
-        font-weight: 600;
-        color: #64748b;
-        flex-shrink: 0;
-    }
-
-    .input-prefix {
-        color: #3b82f6;
-        font-size: 18px;
     }
 
     .number-input {
         border: none;
         background: transparent;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 700;
         color: #1e293b;
-        outline: none;
-        width: 80px;
+        width: 60px;
         text-align: center;
-        -moz-appearance: textfield;
+        outline: none;
+    }
+    .input-hint {
+        font-size: 12px;
+        color: #94a3b8;
+        font-style: italic;
+        margin-top: -8px;
     }
 
-    .number-input::-webkit-outer-spin-button,
-    .number-input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    /* Monthly Spending Display */
+    /* Gasto Mensual Box */
     .monthly-spending {
-        margin-top: 24px;
+        margin-top: 20px;
     }
-
     .spending-card {
         background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
         border: 2px solid rgba(59, 130, 246, 0.3);
         border-radius: 20px;
         padding: 24px;
         text-align: center;
-        position: relative;
-        overflow: hidden;
     }
-
-    .spending-card::before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(
-            circle,
-            rgba(59, 130, 246, 0.1) 0%,
-            transparent 70%
-        );
-        animation: pulse 3s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-        0%,
-        100% {
-            transform: scale(1);
-            opacity: 0.5;
-        }
-        50% {
-            transform: scale(1.1);
-            opacity: 0.8;
-        }
-    }
-
     .spending-label {
         font-size: 13px;
-        font-weight: 600;
+        font-weight: 700;
         color: #1e40af;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
         margin-bottom: 8px;
-        position: relative;
-        z-index: 1;
     }
-
     .spending-amount {
-        font-size: 42px;
+        font-size: 40px;
         font-weight: 900;
-        color: #3b82f6;
-        position: relative;
-        z-index: 1;
-        text-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-        transition: all 0.3s ease;
+        color: #2563eb;
+        line-height: 1;
+        transition: transform 0.2s;
     }
-
     .spending-amount.updating {
         transform: scale(1.1);
     }
@@ -783,553 +518,356 @@
     .calculation-grid {
         display: grid;
         grid-template-columns: 1fr auto 1fr;
-        gap: 32px;
+        gap: 24px;
         margin-bottom: 40px;
-        align-items: center;
+        align-items: stretch;
     }
-
     .cost-card {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        background: #f8fafc;
         border-radius: 24px;
-        padding: 32px;
+        padding: 24px;
         text-align: center;
         border: 2px solid #e2e8f0;
-        transition: all 0.3s ease;
     }
-
-    .cost-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+    .cost-card.purifreze-card {
+        background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+        border-color: #bfdbfe;
     }
-
-    .purifreze-card {
-        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-        border: 2px solid rgba(59, 130, 246, 0.3);
-    }
-
     .card-icon {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         margin: 0 auto 16px;
-        background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-        border-radius: 16px;
+        background: #e2e8f0;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 28px;
+        font-size: 24px;
         color: #64748b;
     }
-
     .card-icon.purifreze {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        background: #3b82f6;
         color: white;
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
     }
-
     .cost-card h3 {
-        font-size: 20px;
-        font-weight: 700;
+        margin: 0 0 8px;
         color: #1e293b;
-        margin-bottom: 8px;
+        font-size: 18px;
     }
-
     .cost-label {
-        font-size: 13px;
+        font-size: 12px;
         color: #64748b;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 12px;
+        font-weight: 600;
+        margin: 0 0 10px;
     }
-
     .cost-amount {
-        font-size: 40px;
-        font-weight: 900;
+        font-size: 32px;
+        font-weight: 800;
         color: #1e293b;
         margin-bottom: 8px;
     }
-
     .cost-amount.purifreze {
         color: #3b82f6;
     }
-
     .cost-detail {
         font-size: 13px;
         color: #64748b;
+        margin: 0;
     }
 
-    /* VS Divider */
     .vs-divider-vertical {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .vs-divider-vertical span {
+        background: #3b82f6;
+        color: white;
+        font-weight: 900;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 18px;
-        font-weight: 900;
-        color: white;
-        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+        font-size: 14px;
+        box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
     }
 
-    /* Savings Section */
+    /* Savings Section - ESTILOS ACTUALIZADOS */
     .savings-section {
         margin-bottom: 32px;
     }
 
     .savings-card {
-        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-        border: 3px solid #22c55e;
-        border-radius: 24px;
-        padding: 32px;
+        border-radius: 20px;
+        padding: 24px;
         display: flex;
         align-items: center;
-        gap: 24px;
-        transition: all 0.3s ease;
+        gap: 20px;
+        transition: all 0.3s;
     }
 
-    .savings-card.negative {
-        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-        border-color: #ef4444;
+    /* --- ESTILO POSITIVO (Ahorro / Verde) --- */
+    .savings-card.positive {
+        background: #dcfce7;
+        border: 2px solid #22c55e;
     }
-
-    .savings-card.neutral {
-        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-        border-color: #94a3b8;
-    }
-
-    .savings-icon {
-        width: 80px;
-        height: 80px;
+    .savings-card.positive .savings-icon {
         background: #22c55e;
+        color: white;
+    }
+    .savings-card.positive .savings-label {
+        color: #15803d;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+    .savings-card.positive .savings-amount {
+        color: #16a34a;
+        font-size: 36px;
+        font-weight: 900;
+        display: block;
+    }
+    .savings-card.positive .savings-annual {
+        color: #15803d;
+        font-size: 14px;
+        font-weight: 600;
+        display: block;
+    }
+    /* Ocultamos la lista en modo verde */
+    .savings-card.positive .premium-benefits-list {
+        display: none;
+    }
+
+    /* --- ESTILO PREMIUM (Más costo / Morado) --- */
+    .savings-card.premium {
+        background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+        border: 2px solid #a855f7;
+    }
+    .savings-card.premium .savings-icon {
+        background: #a855f7;
+        color: white;
+    }
+    .savings-card.premium .savings-label {
+        color: #6b21a8;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        line-height: 1.4;
+        text-transform: none;
+    }
+
+    /* Ocultamos precios grandes en modo morado */
+    .savings-card.premium .savings-amount,
+    .savings-card.premium .savings-annual {
+        display: none;
+    }
+
+    /* Mostramos la lista en modo morado */
+    .savings-card.premium .premium-benefits-list {
+        display: block;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .premium-benefits-list li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #581c87;
+        margin-bottom: 6px;
+        font-weight: 600;
+    }
+    .premium-benefits-list li i {
+        color: #a855f7;
+    }
+    .premium-benefits-list li:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Icono General */
+    .savings-icon {
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 36px;
-        color: white;
+        font-size: 28px;
         flex-shrink: 0;
-        box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
     }
 
-    .savings-card.negative .savings-icon {
-        background: #ef4444;
-        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
-    }
-
-    .savings-card.neutral .savings-icon {
-        background: #94a3b8;
-        box-shadow: 0 8px 24px rgba(148, 163, 184, 0.3);
-    }
-
-    .savings-content {
-        flex: 1;
-    }
-
-    .savings-label {
-        font-size: 14px;
-        font-weight: 600;
-        color: #166534;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 8px;
-    }
-
-    .savings-card.negative .savings-label {
-        color: #991b1b;
-    }
-
-    .savings-card.neutral .savings-label {
-        color: #475569;
-    }
-
-    .savings-amount {
-        font-size: 48px;
-        font-weight: 900;
-        color: #22c55e;
-        line-height: 1;
-        margin-bottom: 8px;
-    }
-
-    .savings-card.negative .savings-amount {
-        color: #ef4444;
-    }
-
-    .savings-card.neutral .savings-amount {
-        color: #64748b;
-    }
-
-    .savings-annual {
-        font-size: 16px;
-        font-weight: 600;
-        color: #16a34a;
-    }
-
-    .savings-card.negative .savings-annual {
-        color: #dc2626;
-    }
-
-    .savings-card.neutral .savings-annual {
-        color: #64748b;
-    }
-
-    /* CTA Section */
+    /* CTA */
     .cta-section {
         text-align: center;
     }
-
     .cta-button {
         display: inline-flex;
         align-items: center;
-        gap: 12px;
-        padding: 18px 40px;
-        background: linear-gradient(135deg, #25d366 0%, #1ea952 100%);
+        gap: 10px;
+        padding: 16px 32px;
+        background: linear-gradient(135deg, #25d366 0%, #16a34a 100%);
         color: white;
         text-decoration: none;
         border-radius: 50px;
         font-weight: 700;
         font-size: 18px;
-        transition: all 0.3s ease;
-        box-shadow: 0 8px 24px rgba(37, 211, 102, 0.3);
+        transition:
+            transform 0.2s,
+            box-shadow 0.2s;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
     }
-
     .cta-button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 32px rgba(37, 211, 102, 0.4);
+        box-shadow: 0 8px 20px rgba(37, 211, 102, 0.5);
     }
 
-    .cta-button i {
-        font-size: 24px;
-    }
-
-    /* Comparison Table Section */
+    /* Table Styles */
     .comparison-table-section {
         margin-top: 60px;
         background: white;
-        border-radius: 32px;
-        padding: 48px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
     }
-
-    .table-header {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-
     .table-title {
-        font-size: clamp(28px, 4vw, 36px);
+        font-size: 2.5rem;
         font-weight: 800;
+        text-align: center;
+        margin-bottom: 24px;
         color: #1e293b;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
     }
-
-    .table-title i {
-        color: #3b82f6;
-        font-size: clamp(24px, 3.5vw, 32px);
-    }
-
-    .table-subtitle {
-        font-size: 16px;
-        color: #64748b;
-        margin-bottom: 32px;
-    }
-
-    /* Category Filters */
     .category-filters {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
-        justify-content: center;
-        padding: 20px;
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        border-radius: 20px;
-    }
-
-    .filter-btn {
-        display: inline-flex;
-        align-items: center;
         gap: 8px;
-        padding: 10px 20px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .filter-btn {
+        border: 1px solid #e2e8f0;
         background: white;
-        border: 2px solid #e2e8f0;
-        border-radius: 50px;
-        font-size: 14px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
         font-weight: 600;
         color: #64748b;
         cursor: pointer;
-        transition: all 0.3s ease;
-        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
     }
-
-    .filter-btn:hover {
-        border-color: #3b82f6;
-        color: #3b82f6;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
-    }
-
+    .filter-btn:hover,
     .filter-btn.active {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        border-color: #3b82f6;
+        background: #3b82f6;
         color: white;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border-color: #3b82f6;
     }
-
     .comparison-table {
         width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        background: white;
+        border-collapse: collapse;
+        margin-top: 20px;
     }
-
-    .comparison-table thead {
-        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    }
-
     .comparison-table th {
-        padding: 24px 20px;
         text-align: left;
-        font-weight: 700;
-        color: #1e293b;
-        border-bottom: 3px solid #e2e8f0;
+        padding: 16px;
+        border-bottom: 2px solid #e2e8f0;
+        color: #475569;
     }
-
-    .comparison-table th:first-child {
-        border-top-left-radius: 16px;
-    }
-
-    .comparison-table th:last-child {
-        border-top-right-radius: 16px;
-    }
-
     .column-header {
         display: flex;
         align-items: center;
-        gap: 12px;
-        font-size: 18px;
+        gap: 8px;
+        font-size: 16px;
     }
-
-    .column-header i {
-        font-size: 24px;
-    }
-
     .column-header.purifreze {
         color: #3b82f6;
     }
-
     .column-header.garrafon {
         color: #64748b;
     }
-
-    /* Table Rows */
     .table-row {
-        transition: all 0.3s ease;
         border-bottom: 1px solid #f1f5f9;
+        transition: background 0.2s;
     }
-
     .table-row:hover {
-        background: linear-gradient(90deg, #eff6ff 0%, #f8fafc 100%);
-        transform: scale(1.01);
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        background: #f8fafc;
     }
-
     .table-row.hidden {
         display: none;
     }
-
     .comparison-table td {
-        padding: 20px;
+        padding: 16px;
+        vertical-align: middle;
     }
-
     .feature-cell {
         font-weight: 600;
         color: #475569;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
     }
-
     .category-icon {
         color: #3b82f6;
-        font-size: 18px;
-        width: 24px;
+        width: 20px;
         text-align: center;
     }
-
-    .value-cell {
-        text-align: center;
-    }
-
     .value-cell .value {
         display: block;
         font-weight: 700;
         color: #1e293b;
-        margin-bottom: 8px;
-        font-size: 15px;
+        margin-bottom: 4px;
     }
-
-    /* Icons */
     .check-icon {
         color: #22c55e;
-        font-size: 20px;
-        margin-right: 8px;
+        margin-right: 6px;
     }
-
     .cross-icon {
         color: #ef4444;
-        font-size: 20px;
-        margin-right: 8px;
+        margin-right: 6px;
     }
-
     .neutral-icon {
         color: #f59e0b;
-        font-size: 20px;
-        margin-right: 8px;
+        margin-right: 6px;
     }
-
-    /* Badges */
-    .badge {
-        display: inline-block;
-        padding: 4px 12px;
-        border-radius: 50px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
     .badge.success {
-        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+        background: #dcfce7;
         color: #166534;
-        border: 1px solid #22c55e;
+        border: 1px solid #86efac;
+        padding: 2px 8px;
+        font-size: 11px;
     }
-
     .badge.warning {
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        background: #fef3c7;
         color: #92400e;
-        border: 1px solid #f59e0b;
+        border: 1px solid #fcd34d;
+        padding: 2px 8px;
+        font-size: 11px;
     }
 
-    .badge.neutral {
-        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-        color: #475569;
-        border: 1px solid #cbd5e1;
-    }
-
-    /* Responsive */
     @media (max-width: 768px) {
-        .calculator-card {
-            padding: 32px 24px;
-        }
-
         .input-grid {
             grid-template-columns: 1fr;
-            gap: 24px;
         }
-
         .calculation-grid {
             grid-template-columns: 1fr;
-            gap: 24px;
         }
-
-        .vs-divider-vertical {
-            margin: 0 auto;
-        }
-
         .savings-card {
             flex-direction: column;
             text-align: center;
         }
-
-        .savings-icon {
-            width: 70px;
-            height: 70px;
-            font-size: 32px;
-        }
-
-        .savings-amount {
-            font-size: 40px;
-        }
-
-        .cost-amount {
-            font-size: 32px;
-        }
-
-        .spending-amount {
-            font-size: 36px;
-        }
-
-        /* Comparison Table Responsive */
-        .comparison-table-section {
-            padding: 32px 24px;
-        }
-
-        .category-filters {
-            gap: 8px;
-        }
-
-        .filter-btn {
-            font-size: 12px;
-            padding: 8px 16px;
-        }
-
-        .comparison-table th,
-        .comparison-table td {
-            padding: 16px 12px;
-            font-size: 14px;
-        }
-
-        .column-header {
-            flex-direction: column;
-            gap: 4px;
-            font-size: 14px;
-        }
-
-        .column-header i {
-            font-size: 18px;
-        }
-
-        .feature-cell {
-            font-size: 13px;
-        }
-
-        .value-cell .value {
-            font-size: 13px;
-        }
-
-        .badge {
-            font-size: 10px;
-            padding: 3px 8px;
-        }
-    }
-
-    @media (max-width: 640px) {
-        .comparison-section {
-            padding: 60px 16px;
-        }
-
-        .title {
-            font-size: 28px;
-        }
-
-        .number-input {
-            font-size: 18px;
-            width: 70px;
-        }
-
-        .spending-amount {
-            font-size: 32px;
+        .premium-benefits-list li {
+            justify-content: center;
         }
     }
 </style>
 
 <script>
     function initCalculator() {
-        // Get all DOM elements
         const slider = document.getElementById(
             "garrafonesSlider",
         ) as HTMLInputElement;
@@ -1340,25 +878,29 @@
             "precioInput",
         ) as HTMLInputElement;
         const gastoMensual = document.getElementById("gastoMensual");
+
+        // Elementos UI
         const costDisplay = document.getElementById("garrafonesCost");
         const garrafonesQty = document.getElementById("garrafonesQty");
-        const garrafonesPrecio = document.getElementById("garrafonesPrecio");
+        const tableGarrafonesCost = document.getElementById(
+            "tableGarrafonesCost",
+        );
+
+        // Elementos de Ahorro
         const savingsCard = document.getElementById("savingsCard");
         const savingsLabel = document.getElementById("savingsLabel");
         const savingsAmount = document.getElementById("savingsAmount");
         const savingsAnnual = document.getElementById("savingsAnnual");
         const savingsIcon = savingsCard?.querySelector(".savings-icon i");
 
-        const PURIFREZE_PRICE = 450;
+        // PRECIO MENSUAL PURIFREZE
+        const PURIFREZE_PRICE_MONTHLY = 220.5;
 
-        // Sync slider and number input
         function syncInputs(source: "slider" | "input") {
             if (!slider || !garrafonesInput) return;
-
             if (source === "slider") {
                 garrafonesInput.value = slider.value;
             } else {
-                // Validate and constrain the input value
                 let value = parseInt(garrafonesInput.value);
                 if (isNaN(value) || value < 0) value = 0;
                 if (value > 30) value = 30;
@@ -1368,7 +910,6 @@
             updateCalculation();
         }
 
-        // Validate precio input
         function validatePrecio() {
             if (!precioInput) return;
             let value = parseInt(precioInput.value);
@@ -1378,99 +919,78 @@
             updateCalculation();
         }
 
-        // Main calculation function
         function updateCalculation() {
-            const garrafones = parseInt(slider?.value || "10");
+            // 1. Obtener datos
+            const garrafonesAlMes = parseInt(slider?.value || "10");
             const precioPorGarrafon = parseInt(precioInput?.value || "45");
-            const garrafonesCost = garrafones * precioPorGarrafon;
-            const difference = garrafonesCost - PURIFREZE_PRICE;
-            const annualDifference = difference * 12;
 
-            // Animate gasto mensual update
+            // 2. Cálculos (Todo Mensual)
+            const gastoMensualActual = garrafonesAlMes * precioPorGarrafon;
+            const diferencia = gastoMensualActual - PURIFREZE_PRICE_MONTHLY;
+            const ahorroAnual = diferencia * 12;
+
+            // 3. Actualizar UI General
             if (gastoMensual) {
+                gastoMensual.textContent = `$${gastoMensualActual.toLocaleString("es-MX")}`;
                 gastoMensual.classList.add("updating");
                 setTimeout(
-                    () => gastoMensual.classList.remove("updating"),
-                    300,
+                    () => gastoMensual?.classList.remove("updating"),
+                    200,
                 );
-                gastoMensual.textContent = `$${garrafonesCost.toLocaleString("es-MX")}`;
             }
-
-            // Update garrafones cost in comparison
-            if (costDisplay) {
+            if (costDisplay)
                 costDisplay.textContent =
-                    garrafonesCost.toLocaleString("es-MX");
-            }
+                    gastoMensualActual.toLocaleString("es-MX");
+            if (garrafonesQty)
+                garrafonesQty.textContent = garrafonesAlMes.toString();
+            if (tableGarrafonesCost)
+                tableGarrafonesCost.textContent = `$${gastoMensualActual.toLocaleString("es-MX")}+`;
 
-            // Update quantity and price detail
-            if (garrafonesQty) {
-                garrafonesQty.textContent = garrafones.toString();
-            }
-            if (garrafonesPrecio) {
-                garrafonesPrecio.textContent = precioPorGarrafon.toString();
-            }
-
-            // Update table garrafones cost
-            const tableGarrafonesCost = document.getElementById(
-                "tableGarrafonesCost",
-            );
-            if (tableGarrafonesCost) {
-                tableGarrafonesCost.textContent = `$${garrafonesCost.toLocaleString("es-MX")}+`;
-            }
-
-            // Update savings card
-            if (savingsCard && savingsLabel && savingsAmount && savingsAnnual) {
-                if (difference > 0) {
-                    // Saving money with Purifreze
+            // 4. Lógica de la Tarjeta de Resultados (Verde vs Morado)
+            if (savingsCard && savingsLabel && savingsAmount) {
+                // ESCENARIO 1: AHORRO (Garrafones son más caros)
+                if (diferencia > 0) {
                     savingsCard.className = "savings-card positive";
                     savingsLabel.textContent = "¡Tu ahorro mensual!";
-                    savingsAmount.textContent = `$${Math.abs(difference).toLocaleString("es-MX")}`;
-                    savingsAnnual.textContent = `$${Math.abs(annualDifference).toLocaleString("es-MX")} al año`;
-                    if (savingsIcon) {
+
+                    if (savingsAmount)
+                        savingsAmount.textContent = `$${diferencia.toLocaleString("es-MX")}`;
+                    if (savingsAnnual)
+                        savingsAnnual.textContent = `$${ahorroAnual.toLocaleString("es-MX")} ahorrados al año`;
+
+                    if (savingsIcon)
                         savingsIcon.className = "fa-solid fa-piggy-bank";
-                    }
-                } else if (difference < 0) {
-                    // Spending more with Purifreze
-                    savingsCard.className = "savings-card negative";
-                    savingsLabel.textContent = "Estarías gastando de más";
-                    savingsAmount.textContent = `$${Math.abs(difference).toLocaleString("es-MX")}`;
-                    savingsAnnual.textContent = `$${Math.abs(annualDifference).toLocaleString("es-MX")} al año de sobrecosto`;
-                    if (savingsIcon) {
-                        savingsIcon.className =
-                            "fa-solid fa-exclamation-triangle";
-                    }
-                } else {
-                    // Same price
-                    savingsCard.className = "savings-card neutral";
-                    savingsLabel.textContent = "Mismo costo";
-                    savingsAmount.textContent = "$0";
-                    savingsAnnual.textContent =
-                        "Pero con Purifreze tienes agua ILIMITADA";
-                    if (savingsIcon) {
-                        savingsIcon.className = "fa-solid fa-equals";
-                    }
                 }
 
-                // Add animation to savings card
+                // ESCENARIO 2: VALOR PREMIUM (Purifreze es más caro)
+                else {
+                    savingsCard.className = "savings-card premium";
+
+                    const costoExtra =
+                        Math.abs(diferencia).toLocaleString("es-MX");
+                    // Mensaje personalizado
+                    savingsLabel.innerHTML = `Es una diferencia de <strong>$${costoExtra}</strong>, pero con Purifreze obtienes:`;
+
+                    if (savingsIcon) savingsIcon.className = "fa-solid fa-gem";
+                }
+
+                // Reiniciar animación pequeña
                 savingsCard.style.animation = "none";
                 setTimeout(() => {
-                    savingsCard.style.animation = "";
+                    if (savingsCard) savingsCard.style.animation = "";
                 }, 10);
             }
         }
 
-        // Event listeners
+        // Listeners
         slider?.addEventListener("input", () => syncInputs("slider"));
         garrafonesInput?.addEventListener("input", () => syncInputs("input"));
-        garrafonesInput?.addEventListener("blur", () => syncInputs("input"));
         precioInput?.addEventListener("input", validatePrecio);
-        precioInput?.addEventListener("blur", validatePrecio);
 
-        // Initial calculation
         updateCalculation();
     }
 
-    // Table filters functionality
+    // Inicializar filtros
     function initTableFilters() {
         const filterButtons =
             document.querySelectorAll<HTMLElement>(".filter-btn");
@@ -1479,60 +999,28 @@
         filterButtons.forEach((button) => {
             button.addEventListener("click", () => {
                 const category = button.dataset.category;
-
-                // Update active button
                 filterButtons.forEach((btn) => btn.classList.remove("active"));
                 button.classList.add("active");
 
-                // Filter rows
                 tableRows.forEach((row) => {
-                    if (category === "all") {
+                    if (
+                        category === "all" ||
+                        row.dataset.category === category
+                    ) {
                         row.classList.remove("hidden");
                     } else {
-                        if (row.dataset.category === category) {
-                            row.classList.remove("hidden");
-                        } else {
-                            row.classList.add("hidden");
-                        }
-                    }
-                });
-
-                // Add animation
-                tableRows.forEach((row, index) => {
-                    if (!row.classList.contains("hidden")) {
-                        row.style.animation = "none";
-                        setTimeout(() => {
-                            row.style.animation = `fadeIn 0.3s ease ${index * 0.05}s forwards`;
-                        }, 10);
+                        row.classList.add("hidden");
                     }
                 });
             });
         });
     }
 
-    // Add fadeIn animation
-    const style = document.createElement("style");
-    style.textContent = `
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    `;
-    document.head.appendChild(style);
-
-    // Initialize on DOM load
     document.addEventListener("DOMContentLoaded", () => {
         initCalculator();
         initTableFilters();
     });
 
-    // Re-initialize after Astro page transitions
     document.addEventListener("astro:page-load", () => {
         initCalculator();
         initTableFilters();

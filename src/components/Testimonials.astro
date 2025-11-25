@@ -1,21 +1,42 @@
 ---
 // Enhanced testimonials section with premium video design
 const testimonials = [
-  { video: '/assets/testimonio2.mp4', label: 'Testimonio Cliente Dueña de Maracuyá', name: 'María Elisea' },
-  { video: '/assets/testimonio.mp4', label: 'Entrevista a Empleada de Benélica Wellness & Coffee', name: 'Leila', featured: true },
-  { video: '/assets/testimonio3.mp4', label: 'Testimonio Cliente Dueño de casa Flauta', name: 'Erick Hernandez' },
+  {
+    video: "/assets/testimonio2.mp4",
+    label: "Dueña de Maracuyá",
+    name: "MARIA DOLORES LICEA SOLIS",
+  },
+  {
+    video: "/assets/testimonio.mp4",
+    label: "Dueña de Benélica Cafetería-Wellness & Coffee",
+    name: "LEYLA FERNANDA CHAVEZ DEL PINO",
+    featured: true,
+  },
+  {
+    video: "/assets/testimonio3.mp4",
+    label: "Dueño de casa Flauta",
+    name: "ERICK HERNANDEZ",
+  },
 ];
 ---
 
-<section class="py-24 bg-gradient-to-br from-blue-50 via-slate-50 to-cyan-50 relative overflow-hidden">
-  <!-- Background decorations -->
-  <div class="absolute top-10 left-10 w-72 h-72 bg-blue-200 rounded-full blur-3xl opacity-20"></div>
-  <div class="absolute bottom-10 right-10 w-96 h-96 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
-  
+<section
+  class="py-24 bg-gradient-to-br from-blue-50 via-slate-50 to-cyan-50 relative overflow-hidden"
+>
+  <div
+    class="absolute top-10 left-10 w-72 h-72 bg-blue-200 rounded-full blur-3xl opacity-20"
+  >
+  </div>
+  <div
+    class="absolute bottom-10 right-10 w-96 h-96 bg-cyan-200 rounded-full blur-3xl opacity-20"
+  >
+  </div>
+
   <div class="max-w-[1200px] mx-auto px-6 relative z-10">
-    <!-- Header -->
     <div class="text-center mb-16">
-      <div class="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-full">
+      <div
+        class="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-full"
+      >
         <i class="fa-solid fa-quote-left text-blue-600"></i>
         <span class="text-xs font-bold uppercase tracking-widest text-blue-700">
           Testimonios
@@ -29,100 +50,107 @@ const testimonials = [
       </p>
     </div>
 
-    <!-- Video Grid -->
     <div class="grid md:grid-cols-3 gap-8 items-start">
-      {testimonials.map((testimonial) => (
-        <div class={`group relative ${testimonial.featured ? 'md:-translate-y-6' : ''}`}>
-          <div class={`${
-            testimonial.featured 
-              ? 'bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 shadow-2xl shadow-blue-500/30' 
-              : 'bg-white shadow-xl shadow-slate-200'
-          } rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
-            testimonial.featured ? 'hover:shadow-blue-500/40' : 'hover:shadow-slate-300'
-          }`}>
-            
-            <!-- Video Container -->
-            <div class="relative aspect-[9/16] overflow-hidden bg-slate-900">
-              <!-- Gradient overlay on hover -->
-              <div class={`absolute inset-0 bg-gradient-to-t ${
-                testimonial.featured 
-                  ? 'from-blue-900/60 to-transparent' 
-                  : 'from-slate-900/60 to-transparent'
-              } opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none`}></div>
-              
-              <video 
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
-                muted 
-                loop 
-                playsinline 
-                controls
-                preload="metadata"
-              >
-                <source src={testimonial.video} type="video/mp4" />
-              </video>
-              
-              <!-- Play Icon Overlay -->
-              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
-                <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <i class="fa-solid fa-play text-white text-xl ml-1"></i>
+      {
+        testimonials.map((testimonial) => (
+          <div
+            class={`group relative ${testimonial.featured ? "md:-translate-y-6" : ""}`}
+          >
+            <div
+              class={`${
+                testimonial.featured
+                  ? "bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 shadow-2xl shadow-blue-500/30"
+                  : "bg-white shadow-xl shadow-slate-200"
+              } rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
+                testimonial.featured
+                  ? "hover:shadow-blue-500/40"
+                  : "hover:shadow-slate-300"
+              }`}
+            >
+              <div class="relative aspect-[9/16] overflow-hidden bg-slate-900">
+                <video
+                  src={testimonial.video}
+                  class="absolute inset-0 w-full h-full object-cover"
+                  controls
+                  preload="metadata"
+                >
+                  Tu navegador no soporta videos HTML5.
+                </video>
+
+                <div
+                  class={`absolute inset-0 bg-gradient-to-t ${
+                    testimonial.featured
+                      ? "from-blue-900/60 via-transparent to-transparent"
+                      : "from-slate-900/60 via-transparent to-transparent"
+                  } pointer-events-none z-10`}
+                />
+              </div>
+
+              <div class="p-6 relative z-20">
+                <div class="flex items-center gap-3 mb-2">
+                  <div
+                    class={`w-10 h-10 rounded-full ${
+                      testimonial.featured ? "bg-white/20" : "bg-blue-100"
+                    } flex items-center justify-center`}
+                  >
+                    <i
+                      class={`fa-solid fa-user ${
+                        testimonial.featured ? "text-white" : "text-blue-600"
+                      }`}
+                    />
+                  </div>
+                  <div>
+                    <p
+                      class={`font-bold leading-tight ${
+                        testimonial.featured ? "text-white" : "text-slate-800"
+                      }`}
+                    >
+                      {testimonial.name}
+                    </p>
+                    <p
+                      class={`text-xs font-semibold uppercase tracking-wider mt-1 ${
+                        testimonial.featured
+                          ? "text-white/80"
+                          : "text-slate-500"
+                      }`}
+                    >
+                      {testimonial.label}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex gap-1 mt-3">
+                  {[...Array(5)].map((_, i) => (
+                    <i
+                      class={`fa-solid fa-star text-sm ${
+                        testimonial.featured
+                          ? "text-yellow-300"
+                          : "text-yellow-500"
+                      }`}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
-            
-            <!-- Info Section -->
-            <div class="p-6">
-              <div class="flex items-center gap-3 mb-2">
-                <div class={`w-10 h-10 rounded-full ${
-                  testimonial.featured ? 'bg-white/20' : 'bg-blue-100'
-                } flex items-center justify-center`}>
-                  <i class={`fa-solid fa-user ${
-                    testimonial.featured ? 'text-white' : 'text-blue-600'
-                  }`}></i>
-                </div>
-                <div>
-                  <p class={`font-bold ${
-                    testimonial.featured ? 'text-white' : 'text-slate-800'
-                  }`}>
-                    {testimonial.name}
-                  </p>
-                  <p class={`text-xs font-semibold uppercase tracking-wider ${
-                    testimonial.featured ? 'text-white/80' : 'text-slate-500'
-                  }`}>
-                    {testimonial.label}
-                  </p>
+
+            {testimonial.featured && (
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full shadow-lg z-30">
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-crown text-white text-xs" />
+                  <span class="text-xs font-black text-white uppercase tracking-wider">
+                    Destacado
+                  </span>
                 </div>
               </div>
-              
-              {/* Star Rating */}
-              <div class="flex gap-1 mt-3">
-                {[...Array(5)].map((_, i) => (
-                  <i class={`fa-solid fa-star text-sm ${
-                    testimonial.featured ? 'text-yellow-300' : 'text-yellow-500'
-                  }`}></i>
-                ))}
-              </div>
-            </div>
+            )}
           </div>
-          
-          {/* Featured Badge */}
-          {testimonial.featured && (
-            <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full shadow-lg z-20">
-              <div class="flex items-center gap-2">
-                <i class="fa-solid fa-crown text-white text-xs"></i>
-                <span class="text-xs font-black text-white uppercase tracking-wider">
-                  Destacado
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-      ))}
+        ))
+      }
     </div>
-    
-    <!-- Bottom CTA -->
+
     <div class="text-center mt-16">
-      <a 
-        href="https://wa.me/5219991336108" 
+      <a
+        href="https://wa.me/5219991336108"
         target="_blank"
         rel="noopener noreferrer"
         class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40 transition-all transform hover:scale-105"
@@ -134,10 +162,3 @@ const testimonials = [
     </div>
   </div>
 </section>
-
-<style>
-  /* Video controls enhancement */
-  video::-webkit-media-controls-panel {
-    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.4));
-  }
-</style>
