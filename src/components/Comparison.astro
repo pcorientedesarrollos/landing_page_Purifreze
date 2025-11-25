@@ -1360,7 +1360,7 @@
             } else {
                 // Validate and constrain the input value
                 let value = parseInt(garrafonesInput.value);
-                if (isNaN(value) || value < 1) value = 1;
+                if (isNaN(value) || value < 0) value = 0;
                 if (value > 30) value = 30;
                 garrafonesInput.value = value.toString();
                 slider.value = value.toString();
@@ -1372,7 +1372,7 @@
         function validatePrecio() {
             if (!precioInput) return;
             let value = parseInt(precioInput.value);
-            if (isNaN(value) || value < 1) value = 1;
+            if (isNaN(value) || value < 0) value = 0;
             if (value > 200) value = 200;
             precioInput.value = value.toString();
             updateCalculation();
