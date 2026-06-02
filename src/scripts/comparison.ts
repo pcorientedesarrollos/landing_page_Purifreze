@@ -5,13 +5,12 @@ import {
   PURIFREZE_PRICE_MONTHLY,
   LIMITS,
   CATEGORY_ICONS,
-  COMPARISON_ROWS_BY_ID,
-  isComparisonBadge,
+  COMPARISON_ROWS_BY_FEATURE,
   type CmsComparisonBadge,
   type ComparisonBadge,
   type ComparisonCategory,
 } from "../data/comparison";
-import { fetchContentSection } from "./cms";
+import { fetchComparisonRows } from "./cms";
 
 function appendIcon(parent: HTMLElement, icon: string, className: string) {
   if (!icon) return;
@@ -30,7 +29,7 @@ function appendBadge(parent: HTMLElement, badge: ComparisonBadge) {
 // Construye una fila enriqueciendo los textos del CMS con los iconos y badges
 // definidos localmente; usa respaldos por categoria si el id es desconocido.
 function buildRow(badge: CmsComparisonBadge): HTMLTableRowElement {
-  const meta = COMPARISON_ROWS_BY_ID.get(badge.id);
+  const meta = COMPARISON_ROWS_BY_FEATURE.get(badge.feature);
 
   const row = document.createElement("tr");
   row.className = "table-row";
@@ -87,10 +86,18 @@ function renderComparisonBadges(badges: CmsComparisonBadge[]) {
 }
 
 async function loadComparisonBadges() {
-  const comparison = await fetchContentSection("comparison");
-  const badges = comparison?.content?.badges;
-  if (!Array.isArray(badges) || !badges.every(isComparisonBadge)) return;
-
+  const rows = await fetchComparisonRows();
+  if (rows.length === 0) return;
+  const badges: CmsComparisonBadge[] = rows
+    .filter((row) => row.category in CATEGORY_ICONS)
+    .map((row) => ({
+      id: row.id,
+      category: row.category as ComparisonCategory,
+      feature: row.feature,
+      purifrezeText: row.purifrezeText,
+      garrafonesText: row.garrafonesText,
+      isVisible: row.isVisible,
+    }));
   renderComparisonBadges(badges);
   initTableFilters();
   updateTableMonthlyCost();

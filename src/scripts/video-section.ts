@@ -1,27 +1,9 @@
 // Controlador client-side de la galeria de videos: reemplaza el video local por
 // los videos administrados desde el CMS cuando estan disponibles.
 
-import { fetchContentSection, getApiUrl, resolveUploadUrl } from "./cms";
+import { fetchVideos, getApiUrl, resolveUploadUrl, type ApiVideo } from "./cms";
 
-interface CmsVideo {
-  id: string;
-  title: string;
-  url: string;
-  vertical: boolean;
-  isVisible?: boolean;
-}
-
-function isCmsVideo(video: unknown): video is CmsVideo {
-  if (!video || typeof video !== "object") return false;
-  const item = video as Record<string, unknown>;
-  return (
-    typeof item.id === "string" &&
-    typeof item.title === "string" &&
-    typeof item.url === "string" &&
-    typeof item.vertical === "boolean" &&
-    (item.isVisible === undefined || typeof item.isVisible === "boolean")
-  );
-}
+type CmsVideo = ApiVideo;
 
 function buildVideoCard(video: CmsVideo, apiUrl: string) {
   const card = document.createElement("article");
@@ -112,16 +94,9 @@ function initVideoCarousel() {
 }
 
 async function loadCmsVideos() {
-  const videoSection = await fetchContentSection("videos");
-  if (
-    !videoSection ||
-    videoSection.isVisible === false ||
-    !Array.isArray(videoSection.content?.videos) ||
-    !videoSection.content.videos.every(isCmsVideo)
-  )
-    return;
-
-  renderVideos(videoSection.content.videos, getApiUrl());
+  const videos = await fetchVideos();
+  if (videos.length === 0) return;
+  renderVideos(videos, getApiUrl());
 }
 
 export function initVideoSection() {

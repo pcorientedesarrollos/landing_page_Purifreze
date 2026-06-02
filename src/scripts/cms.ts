@@ -1,41 +1,76 @@
-// Helper compartido para consumir el CMS de secciones de contenido.
-// Centraliza el patron repetido de fetch + find por key que usaban
-// Comparison.astro y VideoSection.astro.
-
-export interface ContentSection {
-  key?: string;
-  isVisible?: boolean;
-  content?: Record<string, unknown>;
-  [key: string]: unknown;
-}
+// Helpers compartidos para consumir endpoints del CMS por seccion.
+// Cada helper devuelve [] cuando la API falla; los componentes Astro
+// mantienen fallback estatico para esos casos.
 
 export function getApiUrl(): string {
   return import.meta.env.PUBLIC_API_URL ?? "http://localhost:3000";
 }
 
-// Devuelve la seccion con la `key` indicada, o null ante error/ausencia.
-// Las secciones estaticas del componente quedan visibles cuando el CMS no
-// responde.
-export async function fetchContentSection(
-  key: string,
-): Promise<ContentSection | null> {
+async function fetchList<T>(path: string): Promise<T[]> {
   try {
-    const response = await fetch(`${getApiUrl()}/content-sections`);
-    if (!response.ok) return null;
-    const sections = await response.json();
-    if (!Array.isArray(sections)) return null;
-    return (
-      sections.find(
-        (section: { key?: string }) => section.key === key,
-      ) ?? null
-    );
+    const response = await fetch(`${getApiUrl()}${path}`);
+    if (!response.ok) return [];
+    const data = await response.json();
+    return Array.isArray(data) ? (data as T[]) : [];
   } catch {
-    return null;
+    return [];
   }
 }
 
-// Resuelve rutas de uploads del backend a URLs absolutas; deja intactas las
-// URLs externas.
+export interface ApiTestimonial {
+  id: number;
+  name: string;
+  label: string;
+  videoUrl: string;
+  featured: boolean;
+  isVisible: boolean;
+  sortOrder: number;
+}
+
+export interface ApiVideo {
+  id: number;
+  title: string;
+  url: string;
+  vertical: boolean;
+  isVisible: boolean;
+  sortOrder: number;
+}
+
+export interface ApiComparisonRow {
+  id: number;
+  feature: string;
+  category: string;
+  purifrezeText: string;
+  garrafonesText: string;
+  isVisible: boolean;
+  sortOrder: number;
+}
+
+export interface ApiFaqItem {
+  id: number;
+  question: string;
+  answer: string;
+  isVisible: boolean;
+  sortOrder: number;
+}
+
+export function fetchTestimonials(): Promise<ApiTestimonial[]> {
+  return fetchList<ApiTestimonial>("/testimonials");
+}
+
+export function fetchVideos(): Promise<ApiVideo[]> {
+  return fetchList<ApiVideo>("/videos");
+}
+
+export function fetchComparisonRows(): Promise<ApiComparisonRow[]> {
+  return fetchList<ApiComparisonRow>("/comparison-rows");
+}
+
+export function fetchFaqItems(): Promise<ApiFaqItem[]> {
+  return fetchList<ApiFaqItem>("/faq-items");
+}
+
+// Resuelve rutas de uploads del backend a URLs absolutas; deja intactas las URLs externas.
 export function resolveUploadUrl(url: string, apiUrl: string): string {
   return url.startsWith("/uploads/") ? `${apiUrl}${url}` : url;
 }

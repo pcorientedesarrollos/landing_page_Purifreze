@@ -1,29 +1,9 @@
 // Controlador client-side de testimonios: conserva las historias locales como
 // respaldo y las sustituye cuando el CMS entrega testimonios válidos.
 
-import { fetchContentSection, getApiUrl, resolveUploadUrl } from "./cms";
+import { fetchTestimonials, getApiUrl, resolveUploadUrl, type ApiTestimonial } from "./cms";
 
-interface CmsTestimonial {
-  id: string;
-  name: string;
-  label: string;
-  url: string;
-  featured: boolean;
-  isVisible?: boolean;
-}
-
-function isCmsTestimonial(value: unknown): value is CmsTestimonial {
-  if (!value || typeof value !== "object") return false;
-  const item = value as Record<string, unknown>;
-  return (
-    typeof item.id === "string" &&
-    typeof item.name === "string" &&
-    typeof item.label === "string" &&
-    typeof item.url === "string" &&
-    typeof item.featured === "boolean" &&
-    (item.isVisible === undefined || typeof item.isVisible === "boolean")
-  );
-}
+type CmsTestimonial = ApiTestimonial;
 
 function stars() {
   const row = document.createElement("div");
@@ -46,7 +26,7 @@ function buildTestimonial(item: CmsTestimonial, apiUrl: string) {
   const frame = document.createElement("div");
   frame.className = "relative aspect-[9/16] overflow-hidden bg-slate-900";
   const video = document.createElement("video");
-  video.src = resolveUploadUrl(item.url, apiUrl);
+  video.src = resolveUploadUrl(item.videoUrl, apiUrl);
   video.className = "absolute inset-0 w-full h-full object-cover";
   video.controls = true;
   video.preload = "metadata";
@@ -90,16 +70,9 @@ async function loadCmsTestimonials() {
   const section = document.getElementById("testimonialsSection");
   const grid = document.getElementById("testimonialsGrid");
   if (!section || !grid) return;
-  const cms = await fetchContentSection("testimonials");
-  if (!cms) return;
-  if (cms.isVisible === false) {
-    section.hidden = true;
-    return;
-  }
-  const items = cms.content?.testimonials;
-  if (!Array.isArray(items) || !items.every(isCmsTestimonial)) return;
-  const visible = items.filter((item) => item.isVisible !== false);
+  const items = await fetchTestimonials();
   if (items.length === 0) return;
+  const visible = items.filter((item) => item.isVisible !== false);
   section.hidden = visible.length === 0;
   grid.replaceChildren(...visible.map((item) => buildTestimonial(item, getApiUrl())));
   initTestimonialsCarousel();

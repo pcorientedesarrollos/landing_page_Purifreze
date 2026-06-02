@@ -1,25 +1,9 @@
 // Controlador client-side de preguntas frecuentes: conserva el contenido local
 // como respaldo y lo reemplaza cuando el CMS entrega una seccion valida.
 
-import { fetchContentSection } from "./cms";
+import { fetchFaqItems, type ApiFaqItem } from "./cms";
 
-interface CmsFaq {
-  id: string;
-  question: string;
-  answer: string;
-  isVisible?: boolean;
-}
-
-function isCmsFaq(faq: unknown): faq is CmsFaq {
-  if (!faq || typeof faq !== "object") return false;
-  const item = faq as Record<string, unknown>;
-  return (
-    typeof item.id === "string" &&
-    typeof item.question === "string" &&
-    typeof item.answer === "string" &&
-    (item.isVisible === undefined || typeof item.isVisible === "boolean")
-  );
-}
+type CmsFaq = ApiFaqItem;
 
 function buildFaq(faq: CmsFaq, index: number) {
   const card = document.createElement("div");
@@ -70,16 +54,8 @@ async function loadCmsFaqs() {
   const list = document.getElementById("faqList");
   if (!section || !list) return;
 
-  const faqSection = await fetchContentSection("faq");
-  if (!faqSection) return;
-  if (faqSection.isVisible === false) {
-    section.hidden = true;
-    return;
-  }
-
-  const faqs = faqSection.content?.faqs;
-  if (!Array.isArray(faqs) || !faqs.every(isCmsFaq)) return;
-
+  const faqs = await fetchFaqItems();
+  if (faqs.length === 0) return;
   const visibleFaqs = faqs.filter((faq) => faq.isVisible !== false);
   const displayedFaqs =
     section.dataset.preview === "true" ? visibleFaqs.slice(0, 5) : visibleFaqs;

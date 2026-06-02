@@ -132,32 +132,19 @@ export const COMPARISON_ROWS: ComparisonRow[] = [
   },
 ];
 
-// Acceso rapido por id para enriquecer las filas que llegan del CMS con los
-// iconos y badges definidos localmente.
-export const COMPARISON_ROWS_BY_ID = new Map(
-  COMPARISON_ROWS.map((row) => [row.id, row]),
+// Acceso rapido por feature text para enriquecer las filas que llegan del CMS
+// con los iconos y badges definidos localmente. Las filas nuevas o renombradas
+// caen al fallback por categoria.
+export const COMPARISON_ROWS_BY_FEATURE = new Map(
+  COMPARISON_ROWS.map((row) => [row.feature, row]),
 );
 
 // Forma de cada fila tal como la entrega el CMS (solo textos).
 export interface CmsComparisonBadge {
-  id: string;
+  id: number;
   category: ComparisonCategory;
   feature: string;
   purifrezeText: string;
   garrafonesText: string;
   isVisible?: boolean;
-}
-
-export function isComparisonBadge(badge: unknown): badge is CmsComparisonBadge {
-  if (!badge || typeof badge !== "object") return false;
-  const item = badge as Record<string, unknown>;
-  return (
-    typeof item.id === "string" &&
-    typeof item.category === "string" &&
-    item.category in CATEGORY_ICONS &&
-    typeof item.feature === "string" &&
-    typeof item.purifrezeText === "string" &&
-    typeof item.garrafonesText === "string" &&
-    (item.isVisible === undefined || typeof item.isVisible === "boolean")
-  );
 }
