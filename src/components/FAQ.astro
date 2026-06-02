@@ -37,7 +37,7 @@ const faqs = [
 const displayFaqs = preview ? faqs.slice(0, 5) : faqs;
 ---
 
-<section class="py-24 bg-white">
+<section id="faqSection" data-preview={preview ? "true" : "false"} class="py-24 bg-white">
   <div class="max-w-3xl mx-auto px-6">
     {
       !preview && (
@@ -82,7 +82,7 @@ const displayFaqs = preview ? faqs.slice(0, 5) : faqs;
       )
     }
 
-    <div class="space-y-4">
+    <div id="faqList" class="space-y-4">
       {
         displayFaqs.map((faq, index) => (
           <div class="bg-slate-50 rounded-2xl overflow-hidden transition-all hover:bg-white hover:shadow-lg border border-transparent hover:border-slate-100">
@@ -106,33 +106,7 @@ const displayFaqs = preview ? faqs.slice(0, 5) : faqs;
 </section>
 
 <script>
-  // FAQ toggle functionality
-  function initializeFAQs() {
-    const faqToggles = document.querySelectorAll(".faq-toggle");
+  import { initFaqSection } from "../scripts/faq-section";
 
-    faqToggles.forEach((toggle) => {
-      toggle.addEventListener("click", () => {
-        const content = toggle.nextElementSibling as HTMLElement;
-        const icon = toggle.querySelector(".faq-icon") as HTMLElement;
-
-        if (content?.classList.contains("hidden")) {
-          // Open
-          content.classList.remove("hidden");
-          icon?.classList.add("rotate-45", "text-brand-blue");
-          icon?.classList.remove("text-slate-400");
-        } else {
-          // Close
-          content?.classList.add("hidden");
-          icon?.classList.remove("rotate-45", "text-brand-blue");
-          icon?.classList.add("text-slate-400");
-        }
-      });
-    });
-  }
-
-  // Initialize on page load
-  document.addEventListener("DOMContentLoaded", initializeFAQs);
-
-  // Re-initialize after Astro page transitions (if using View Transitions)
-  document.addEventListener("astro:page-load", initializeFAQs);
+  initFaqSection();
 </script>

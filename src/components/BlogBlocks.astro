@@ -1,0 +1,19 @@
+---
+import { mediaUrl, type BlogBlock } from "../lib/blog";
+interface Props { blocks: BlogBlock[]; }
+const { blocks } = Astro.props;
+---
+<div class="blog-prose">
+  {blocks.map((block) => {
+    if (block.type === "paragraph") return <p>{block.data.text}</p>;
+    if (block.type === "heading" && block.data.level === 2) return <h2>{block.data.text}</h2>;
+    if (block.type === "heading") return <h3>{block.data.text}</h3>;
+    if (block.type === "list") return <ul>{block.data.items.map((item) => <li>{item}</li>)}</ul>;
+    if (block.type === "link") return <p><a href={block.data.url}>{block.data.text}</a></p>;
+    if (block.type === "image") return <img src={mediaUrl(block.data.url)} alt={block.data.alt} loading="lazy" />;
+  })}
+</div>
+<style>
+  .blog-prose{max-width:760px;margin:0 auto;color:#334155;font-size:1.08rem;line-height:1.85}
+  .blog-prose p,.blog-prose ul{margin:1.25rem 0}.blog-prose a{color:#2563eb;font-weight:700;text-decoration:underline}.blog-prose h2{margin:3rem 0 1rem;color:#0f172a;font-size:2rem;line-height:1.15}.blog-prose h3{margin:2.25rem 0 .75rem;color:#1e293b;font-size:1.45rem}.blog-prose ul{padding-left:1.4rem;list-style:disc}.blog-prose img{width:100%;margin:2rem 0;border-radius:1.25rem}
+</style>

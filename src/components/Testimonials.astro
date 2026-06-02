@@ -21,6 +21,7 @@ const testimonials = [
 ---
 
 <section
+  id="testimonialsSection"
   class="py-24 bg-gradient-to-br from-blue-50 via-slate-50 to-cyan-50 relative overflow-hidden"
 >
   <div
@@ -50,7 +51,9 @@ const testimonials = [
       </p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-8 items-start">
+    <div class="testimonials-carousel">
+      <button id="testimonialsPrevious" class="testimonials-carousel-button previous" type="button" aria-label="Testimonio anterior"><i class="fa-solid fa-chevron-left"></i></button>
+      <div id="testimonialsGrid" class="testimonials-track">
       {
         testimonials.map((testimonial) => (
           <div
@@ -146,7 +149,10 @@ const testimonials = [
           </div>
         ))
       }
+      </div>
+      <button id="testimonialsNext" class="testimonials-carousel-button next" type="button" aria-label="Siguiente testimonio"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
+    <div id="testimonialsDots" class="testimonials-dots" aria-label="Navegación de testimonios"></div>
 
     <div class="text-center mt-16">
       <a
@@ -162,3 +168,42 @@ const testimonials = [
     </div>
   </div>
 </section>
+
+<style is:global>
+  #testimonialsSection[hidden] { display: none; }
+  .testimonial-card { background: white; box-shadow: 0 20px 25px -5px rgb(226 232 240); }
+  .testimonial-card.featured { background: linear-gradient(135deg, #2563eb, #3b82f6, #06b6d4); box-shadow: 0 25px 50px -12px rgb(59 130 246 / .3); }
+  .testimonial-overlay { --tw-gradient-from: rgb(15 23 42 / .6); }
+  .testimonial-card.featured .testimonial-overlay { --tw-gradient-from: rgb(30 58 138 / .6); }
+  .testimonial-avatar { background: #dbeafe; }
+  .testimonial-card.featured .testimonial-avatar { background: rgb(255 255 255 / .2); }
+  .testimonial-avatar i { color: #2563eb; }
+  .testimonial-card.featured .testimonial-avatar i, .testimonial-card.featured .testimonial-name { color: white; }
+  .testimonial-name { color: #1e293b; }
+  .testimonial-label { color: #64748b; }
+  .testimonial-card.featured .testimonial-label { color: rgb(255 255 255 / .8); }
+  .testimonial-star { color: #eab308; }
+  .testimonial-card.featured .testimonial-star { color: #fde047; }
+  .testimonials-carousel { position: relative; }
+  .testimonials-track { display: flex; gap: 2rem; overflow-x: auto; padding: 1.5rem .25rem 2rem; scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .testimonials-track::-webkit-scrollbar { display: none; }
+  .testimonials-track > * { flex: 0 0 100%; scroll-snap-align: start; }
+  .testimonials-carousel-button { position: absolute; top: 44%; z-index: 35; display: grid; width: 3rem; height: 3rem; border: 1px solid #bfdbfe; border-radius: 50%; background: #ffffffee; color: #1d4ed8; place-items: center; transform: translateY(-50%); box-shadow: 0 10px 24px rgb(30 64 175 / 18%); }
+  .testimonials-carousel-button.previous { left: -.75rem; }
+  .testimonials-carousel-button.next { right: -.75rem; }
+  .testimonials-carousel-button[hidden] { display: none; }
+  .testimonials-dots { display: flex; justify-content: center; gap: .5rem; margin-top: .25rem; }
+  .testimonials-dot { width: .55rem; height: .55rem; border-radius: 999px; background: #bfdbfe; transition: width .2s ease, background-color .2s ease; }
+  .testimonials-dot.active { width: 1.75rem; background: #2563eb; }
+  @media (min-width: 768px) {
+    .testimonials-track > * { flex-basis: calc((100% - 4rem) / 3); }
+    .testimonials-carousel-button.previous { left: -1.5rem; }
+    .testimonials-carousel-button.next { right: -1.5rem; }
+  }
+</style>
+
+<script>
+  import { initTestimonialsSection } from "../scripts/testimonials-section";
+  document.addEventListener("DOMContentLoaded", initTestimonialsSection);
+  document.addEventListener("astro:page-load", initTestimonialsSection);
+</script>

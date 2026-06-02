@@ -1,3 +1,16 @@
+---
+import {
+  COMPARISON_ROWS,
+  DEFAULTS,
+  LIMITS,
+  PURIFREZE_PRICE_MONTHLY,
+} from "../data/comparison";
+
+const gastoInicial = DEFAULTS.garrafones * DEFAULTS.precio;
+const ahorroInicial = gastoInicial - PURIFREZE_PRICE_MONTHLY;
+const ahorroAnualInicial = ahorroInicial * 12;
+---
+
 <section class="comparison-section">
     <div class="container">
         <div class="section-header">
@@ -26,9 +39,9 @@
                                     <input
                                         type="range"
                                         id="garrafonesSlider"
-                                        min="1"
-                                        max="30"
-                                        value="9"
+                                        min={LIMITS.garrafones.min}
+                                        max={LIMITS.garrafones.max}
+                                        value={DEFAULTS.garrafones}
                                         class="slider"
                                     />
                                 </div>
@@ -36,9 +49,9 @@
                                     <input
                                         type="number"
                                         id="garrafonesInput"
-                                        min="1"
-                                        max="30"
-                                        value="9"
+                                        min={LIMITS.garrafones.min}
+                                        max={LIMITS.garrafones.max}
+                                        value={DEFAULTS.garrafones}
                                         class="number-input"
                                     />
                                     <span class="input-suffix">garrafones</span>
@@ -57,16 +70,16 @@
                                     <input
                                         type="number"
                                         id="precioInput"
-                                        min="1"
-                                        max="200"
-                                        value="45"
+                                        min={LIMITS.precio.min}
+                                        max={LIMITS.precio.max}
+                                        value={DEFAULTS.precio}
                                         step="1"
                                         class="number-input"
                                     />
                                     <span class="input-suffix">MXN</span>
                                 </div>
                                 <p class="input-hint">
-                                    El precio promedio es $45
+                                    El precio promedio es ${DEFAULTS.precio}
                                 </p>
                             </div>
                         </div>
@@ -78,7 +91,7 @@
                                 Tu gasto actual en garrafones
                             </p>
                             <div class="spending-amount" id="gastoMensual">
-                                $405
+                                ${gastoInicial}
                             </div>
                         </div>
                     </div>
@@ -91,10 +104,10 @@
                             <h3>Garrafones</h3>
                             <p class="cost-label">Costo Mensual</p>
                             <div class="cost-amount">
-                                $<span id="garrafonesCost">405</span>
+                                $<span id="garrafonesCost">{gastoInicial}</span>
                             </div>
                             <p class="cost-detail">
-                                <span id="garrafonesQty">9</span> garrafones al mes
+                                <span id="garrafonesQty">{DEFAULTS.garrafones}</span> garrafones al mes
                             </p>
                         </div>
 
@@ -109,7 +122,7 @@
                             <h3>Purifreze</h3>
                             <p class="cost-label">Costo Mensual</p>
                             <div class="cost-amount purifreze">
-                                <span style="font-size: 0.6em;">Desde</span> $370
+                                <span style="font-size: 0.6em;">Desde</span> ${PURIFREZE_PRICE_MONTHLY}
                             </div>
                         </div>
                         <p class="cost-detail">Suscripción Todo Incluido</p>
@@ -127,10 +140,10 @@
                             </p>
 
                             <div class="savings-amount" id="savingsAmount">
-                                $35
+                                ${ahorroInicial}
                             </div>
                             <p class="savings-annual" id="savingsAnnual">
-                                $420 al año
+                                ${ahorroAnualInicial} al año
                             </p>
 
                             <ul class="premium-benefits-list">
@@ -214,98 +227,52 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr class="table-row" data-category="cost">
-                        <td class="feature-cell">
-                            <i class="fa-solid fa-tag category-icon"></i> Precio
-                            Mensual
-                        </td>
-                        <td class="value-cell purifreze">
-                            <span class="value">Desde $370</span>
-                            <span class="badge success">Fijo</span>
-                        </td>
-                        <td class="value-cell garrafon">
-                            <span class="value" id="tableGarrafonesCost"
-                                >$405+</span
-                            >
-                            <span class="badge warning">Variable</span>
-                        </td>
-                    </tr>
-                    <tr class="table-row" data-category="quality">
-                        <td class="feature-cell">
-                            <i class="fa-solid fa-microscope category-icon"></i>
-                            Microplásticos
-                        </td>
-                        <td class="value-cell purifreze">
-                            <i class="fa-solid fa-check-circle check-icon"></i>
-                            <span class="value">Libre de microplásticos</span>
-                        </td>
-                        <td class="value-cell garrafon">
-                            <i class="fa-solid fa-times-circle cross-icon"></i>
-                            <span class="value">Presentes por envase</span>
-                        </td>
-                    </tr>
-                    <tr class="table-row" data-category="quality">
-                        <td class="feature-cell">
-                            <i class="fa-solid fa-filter category-icon"></i>
-                            Filtración
-                        </td>
-                        <td class="value-cell purifreze">
-                            <i class="fa-solid fa-check-circle check-icon"></i>
-                            <span class="value">Recién filtrada (5 etapas)</span
-                            >
-                        </td>
-                        <td class="value-cell garrafon">
-                            <i class="fa-solid fa-question-circle neutral-icon"
-                            ></i>
-                            <span class="value">Almacenada semanas</span>
-                        </td>
-                    </tr>
-                    <tr class="table-row" data-category="convenience">
-                        <td class="feature-cell">
-                            <i class="fa-solid fa-weight-hanging category-icon"
-                            ></i>
-                            Esfuerzo físico
-                        </td>
-                        <td class="value-cell purifreze">
-                            <i class="fa-solid fa-check-circle check-icon"></i>
-                            <span class="value">Sin cargar peso</span>
-                        </td>
-                        <td class="value-cell garrafon">
-                            <i class="fa-solid fa-times-circle cross-icon"></i>
-                            <span class="value">Cargar garrafones pesados</span>
-                        </td>
-                    </tr>
-                    <tr class="table-row" data-category="health">
-                        <td class="feature-cell">
-                            <i class="fa-solid fa-flask category-icon"></i> BPA y
-                            Toxinas
-                        </td>
-                        <td class="value-cell purifreze">
-                            <i class="fa-solid fa-check-circle check-icon"></i>
-                            <span class="value">Libre de BPA</span>
-                        </td>
-                        <td class="value-cell garrafon">
-                            <i
-                                class="fa-solid fa-triangle-exclamation warning-icon"
-                            ></i>
-                            <span class="value">Riesgo por calor/sol</span>
-                        </td>
-                    </tr>
-                    <tr class="table-row" data-category="environment">
-                        <td class="feature-cell">
-                            <i class="fa-solid fa-recycle category-icon"></i> Huella
-                            de Carbono
-                        </td>
-                        <td class="value-cell purifreze">
-                            <i class="fa-solid fa-check-circle check-icon"></i>
-                            <span class="value">Mínima (Sin transporte)</span>
-                        </td>
-                        <td class="value-cell garrafon">
-                            <i class="fa-solid fa-smog cross-icon"></i>
-                            <span class="value">Alta (Camiones reparto)</span>
-                        </td>
-                    </tr>
+                <tbody id="comparisonRows">
+                    {
+                        COMPARISON_ROWS.map((row) => (
+                            <tr class="table-row" data-category={row.category}>
+                                <td class="feature-cell">
+                                    <i
+                                        class={`fa-solid ${row.featureIcon} category-icon`}
+                                    />
+                                    {row.feature}
+                                </td>
+                                <td class="value-cell purifreze">
+                                    {row.purifrezeCheck && (
+                                        <i class="fa-solid fa-check-circle check-icon" />
+                                    )}
+                                    <span class="value">{row.purifrezeText}</span>
+                                    {row.purifrezeBadge && (
+                                        <span
+                                            class={`badge ${row.purifrezeBadge.variant}`}
+                                        >
+                                            {row.purifrezeBadge.text}
+                                        </span>
+                                    )}
+                                </td>
+                                <td class="value-cell garrafon">
+                                    {row.garrafonesIcon && (
+                                        <i
+                                            class={`fa-solid ${row.garrafonesIcon} ${row.garrafonesIconClass}`}
+                                        />
+                                    )}
+                                    <span
+                                        class="value"
+                                        id={row.garrafonesValueId}
+                                    >
+                                        {row.garrafonesText}
+                                    </span>
+                                    {row.garrafonesBadge && (
+                                        <span
+                                            class={`badge ${row.garrafonesBadge.variant}`}
+                                        >
+                                            {row.garrafonesBadge.text}
+                                        </span>
+                                    )}
+                                </td>
+                            </tr>
+                        ))
+                    }
                 </tbody>
             </table>
         </div>
@@ -839,170 +806,93 @@
         }
     </style>
 
+    <style is:global>
+        .comparison-table .table-row {
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.2s;
+        }
+
+        .comparison-table .table-row:hover {
+            background: #f8fafc;
+        }
+
+        .comparison-table .table-row.hidden {
+            display: none;
+        }
+
+        .comparison-table td {
+            padding: 16px;
+            vertical-align: middle;
+        }
+
+        .comparison-table .feature-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .comparison-table .category-icon {
+            width: 20px;
+            color: #3b82f6;
+            text-align: center;
+        }
+
+        .comparison-table .value-cell .value {
+            display: block;
+            color: #1e293b;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .comparison-table .check-icon {
+            color: #22c55e;
+            margin-right: 6px;
+        }
+
+        .comparison-table .cross-icon {
+            color: #ef4444;
+            margin-right: 6px;
+        }
+
+        .comparison-table .neutral-icon {
+            color: #f59e0b;
+            margin-right: 6px;
+        }
+
+        .comparison-table .warning-icon {
+            color: #f59e0b;
+            margin-right: 6px;
+        }
+
+        .comparison-table .badge.success,
+        .comparison-table .badge.warning {
+            display: inline-flex;
+            margin-bottom: 0;
+            padding: 2px 8px;
+            border-radius: 50px;
+            box-shadow: none;
+            font-size: 11px;
+        }
+
+        .comparison-table .badge.success {
+            border: 1px solid #86efac;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .comparison-table .badge.warning {
+            border: 1px solid #fcd34d;
+            background: #fef3c7;
+            color: #92400e;
+        }
+    </style>
+
     <script>
-        function initCalculator() {
-            const slider = document.getElementById(
-                "garrafonesSlider",
-            ) as HTMLInputElement;
-            const garrafonesInput = document.getElementById(
-                "garrafonesInput",
-            ) as HTMLInputElement;
-            const precioInput = document.getElementById(
-                "precioInput",
-            ) as HTMLInputElement;
-            const gastoMensual = document.getElementById("gastoMensual");
+        import { initComparison } from "../scripts/comparison";
 
-            // Elementos UI
-            const costDisplay = document.getElementById("garrafonesCost");
-            const garrafonesQty = document.getElementById("garrafonesQty");
-            const tableGarrafonesCost = document.getElementById(
-                "tableGarrafonesCost",
-            );
-
-            // Elementos de Ahorro
-            const savingsCard = document.getElementById("savingsCard");
-            const savingsLabel = document.getElementById("savingsLabel");
-            const savingsAmount = document.getElementById("savingsAmount");
-            const savingsAnnual = document.getElementById("savingsAnnual");
-            const savingsIcon = savingsCard?.querySelector(".savings-icon i");
-
-            // PRECIO MENSUAL PURIFREZE
-            const PURIFREZE_PRICE_MONTHLY = 370;
-
-            function syncInputs(source: "slider" | "input") {
-                if (!slider || !garrafonesInput) return;
-                if (source === "slider") {
-                    garrafonesInput.value = slider.value;
-                } else {
-                    let value = parseInt(garrafonesInput.value);
-                    if (isNaN(value) || value < 0) value = 0;
-                    if (value > 30) value = 30;
-                    garrafonesInput.value = value.toString();
-                    slider.value = value.toString();
-                }
-                updateCalculation();
-            }
-
-            function validatePrecio() {
-                if (!precioInput) return;
-                let value = parseInt(precioInput.value);
-                if (isNaN(value) || value < 0) value = 0;
-                if (value > 200) value = 200;
-                precioInput.value = value.toString();
-                updateCalculation();
-            }
-
-            function updateCalculation() {
-                // 1. Obtener datos
-                const garrafonesAlMes = parseInt(slider?.value || "9");
-                const precioPorGarrafon = parseInt(precioInput?.value || "45");
-
-                // 2. Cálculos (Todo Mensual)
-                const gastoMensualActual = garrafonesAlMes * precioPorGarrafon;
-                const diferencia = gastoMensualActual - PURIFREZE_PRICE_MONTHLY;
-                const ahorroAnual = diferencia * 12;
-
-                // 3. Actualizar UI General
-                if (gastoMensual) {
-                    gastoMensual.textContent = `$${gastoMensualActual.toLocaleString("es-MX")}`;
-                    gastoMensual.classList.add("updating");
-                    setTimeout(
-                        () => gastoMensual?.classList.remove("updating"),
-                        200,
-                    );
-                }
-                if (costDisplay)
-                    costDisplay.textContent =
-                        gastoMensualActual.toLocaleString("es-MX");
-                if (garrafonesQty)
-                    garrafonesQty.textContent = garrafonesAlMes.toString();
-                if (tableGarrafonesCost)
-                    tableGarrafonesCost.textContent = `$${gastoMensualActual.toLocaleString("es-MX")}+`;
-
-                // 4. Lógica de la Tarjeta de Resultados (Verde vs Morado)
-                if (savingsCard && savingsLabel && savingsAmount) {
-                    // ESCENARIO 1: AHORRO (Garrafones son más caros)
-                    if (diferencia > 0) {
-                        savingsCard.className = "savings-card positive";
-                        savingsLabel.textContent = "¡Tu ahorro mensual!";
-
-                        if (savingsAmount)
-                            savingsAmount.textContent = `$${diferencia.toLocaleString("es-MX")}`;
-                        if (savingsAnnual)
-                            savingsAnnual.textContent = `$${ahorroAnual.toLocaleString("es-MX")} ahorrados al año`;
-
-                        if (savingsIcon)
-                            savingsIcon.className = "fa-solid fa-piggy-bank";
-                    }
-
-                    // ESCENARIO 2: VALOR PREMIUM (Purifreze es más caro)
-                    else {
-                        savingsCard.className = "savings-card premium";
-
-                        const costoExtra =
-                            Math.abs(diferencia).toLocaleString("es-MX");
-                        // Mensaje personalizado
-                        savingsLabel.innerHTML = `Es una diferencia de <strong>$${costoExtra}</strong>, pero con Purifreze obtienes:`;
-
-                        if (savingsIcon)
-                            savingsIcon.className = "fa-solid fa-gem";
-                    }
-
-                    // Reiniciar animación pequeña
-                    savingsCard.style.animation = "none";
-                    setTimeout(() => {
-                        if (savingsCard) savingsCard.style.animation = "";
-                    }, 10);
-                }
-            }
-
-            // Listeners
-            slider?.addEventListener("input", () => syncInputs("slider"));
-            garrafonesInput?.addEventListener("input", () =>
-                syncInputs("input"),
-            );
-            precioInput?.addEventListener("input", validatePrecio);
-
-            updateCalculation();
-        }
-
-        // Inicializar filtros
-        function initTableFilters() {
-            const filterButtons =
-                document.querySelectorAll<HTMLElement>(".filter-btn");
-            const tableRows =
-                document.querySelectorAll<HTMLElement>(".table-row");
-
-            filterButtons.forEach((button) => {
-                button.addEventListener("click", () => {
-                    const category = button.dataset.category;
-                    filterButtons.forEach((btn) =>
-                        btn.classList.remove("active"),
-                    );
-                    button.classList.add("active");
-
-                    tableRows.forEach((row) => {
-                        if (
-                            category === "all" ||
-                            row.dataset.category === category
-                        ) {
-                            row.classList.remove("hidden");
-                        } else {
-                            row.classList.add("hidden");
-                        }
-                    });
-                });
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            initCalculator();
-            initTableFilters();
-        });
-
-        document.addEventListener("astro:page-load", () => {
-            initCalculator();
-            initTableFilters();
-        });
+        document.addEventListener("DOMContentLoaded", initComparison);
+        document.addEventListener("astro:page-load", initComparison);
     </script>
 </section>

@@ -1,7 +1,7 @@
 ---
 import FloatingWhatsApp from "../components/FloatingWhatsApp.astro";
 import StickyCTA from "../components/StickyCTA.astro";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import {
   SEO_CONFIG,
   getSEOTitle,
@@ -27,7 +27,7 @@ const schemaJSON = getSchemaJSON();
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <ViewTransitions />
+    <ClientRouter />
 
     <!-- Primary Meta Tags -->
     <title>{title}</title>
@@ -114,6 +114,7 @@ const schemaJSON = getSchemaJSON();
 
     <!-- Structured Data - Local Business -->
     <script type="application/ld+json" set:html={schemaJSON} />
+    <slot name="head" />
   </head>
   <body>
     <slot />
