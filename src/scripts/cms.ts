@@ -7,13 +7,17 @@ export function getApiUrl(): string {
 }
 
 async function fetchList<T>(path: string): Promise<T[]> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 2500);
   try {
-    const response = await fetch(`${getApiUrl()}${path}`);
+    const response = await fetch(`${getApiUrl()}${path}`, { signal: controller.signal });
     if (!response.ok) return [];
     const data = await response.json();
     return Array.isArray(data) ? (data as T[]) : [];
   } catch {
     return [];
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
@@ -31,7 +35,20 @@ export interface ApiVideo {
   id: number;
   title: string;
   url: string;
+  placement?: "gallery" | "uses";
   vertical: boolean;
+  isVisible: boolean;
+  sortOrder: number;
+}
+
+export interface ApiUseCard {
+  id: number;
+  type: "text" | "image" | "video";
+  title: string;
+  description: string | null;
+  icon: string | null;
+  mediaUrl: string | null;
+  altText: string | null;
   isVisible: boolean;
   sortOrder: number;
 }
@@ -58,8 +75,13 @@ export function fetchTestimonials(): Promise<ApiTestimonial[]> {
   return fetchList<ApiTestimonial>("/testimonials");
 }
 
-export function fetchVideos(): Promise<ApiVideo[]> {
-  return fetchList<ApiVideo>("/videos");
+export function fetchVideos(placement?: ApiVideo["placement"]): Promise<ApiVideo[]> {
+  const query = placement ? `?placement=${encodeURIComponent(placement)}` : "";
+  return fetchList<ApiVideo>(`/videos${query}`);
+}
+
+export function fetchUseCards(): Promise<ApiUseCard[]> {
+  return fetchList<ApiUseCard>("/use-cards");
 }
 
 export function fetchComparisonRows(): Promise<ApiComparisonRow[]> {

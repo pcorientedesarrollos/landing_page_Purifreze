@@ -1,174 +1,302 @@
 ---
-// Enhanced UsesGrid component with improved video styling
-const usesData = [
+import { fetchUseCards, getApiUrl, resolveUploadUrl, type ApiUseCard } from "../scripts/cms";
+
+const fallbackUseCards: ApiUseCard[] = [
   {
-    type: 'text',
-    icon: 'fa-home',
-    title: 'USO RESIDENCIAL',
-    description: 'Perfecta para hogares en Mérida, Yucatán que buscan agua de la más alta calidad sin complicaciones.',
-    color: 'blue'
+    id: -1,
+    type: "text",
+    title: "Uso residencial",
+    description: "Perfecta para hogares en Merida, Yucatan que buscan agua de la mas alta calidad sin complicaciones.",
+    icon: "fa-home",
+    mediaUrl: null,
+    altText: null,
+    isVisible: true,
+    sortOrder: 0,
   },
   {
-    type: 'text',
-    icon: 'fa-building',
-    title: 'USO COMERCIAL',
-    description: 'Ideal para oficinas, gimnasios, restaurantes y negocios en Mérida, Yucatán que requieren agua pura constantemente.',
-    color: 'cyan'
+    id: -2,
+    type: "text",
+    title: "Uso comercial",
+    description: "Ideal para oficinas, gimnasios, restaurantes y negocios que requieren agua pura constantemente.",
+    icon: "fa-building",
+    mediaUrl: null,
+    altText: null,
+    isVisible: true,
+    sortOrder: 1,
   },
   {
-    type: 'image',
-    src: '/assets/maquina-dispensadora2.png',
-    alt: 'Dispensador de agua Purifreze - Sistema de purificación moderno'
+    id: -3,
+    type: "image",
+    title: "Sistema de purificacion profesional",
+    description: "Dispensador Purifreze para hogares y negocios.",
+    icon: null,
+    mediaUrl: "/assets/maquina-dispensadora2.png",
+    altText: "Dispensador de agua Purifreze - Sistema de purificacion moderno",
+    isVisible: true,
+    sortOrder: 2,
   },
   {
-    type: 'video',
-    src: '/assets/instalacion.mp4',
-    label: 'Instalación Parte 1',
-    icon: 'fa-tools'
+    id: -4,
+    type: "video",
+    title: "Instalacion Parte 1",
+    description: "Proceso de instalacion del purificador.",
+    icon: "fa-tools",
+    mediaUrl: "/assets/instalacion.mp4",
+    altText: null,
+    isVisible: true,
+    sortOrder: 3,
   },
   {
-    type: 'video',
-    src: '/assets/instalacion2.mp4',
-    label: 'Instalación Parte 2',
-    icon: 'fa-wrench'
+    id: -5,
+    type: "video",
+    title: "Instalacion Parte 2",
+    description: "Uso del sistema Purifreze en casa.",
+    icon: "fa-wrench",
+    mediaUrl: "/assets/instalacion2.mp4",
+    altText: null,
+    isVisible: true,
+    sortOrder: 4,
   },
-  // {
-  //   type: 'video',
-  //   src: '/assets/promocion.mp4',
-  //   label: 'Demo Completo',
-  //   icon: 'fa-play-circle',
-  //   featured: true
-  // },
 ];
+
+const apiUrl = getApiUrl();
+const dynamicCards = (await fetchUseCards()).filter((card) => card.isVisible !== false);
+const useCards = dynamicCards.length > 0 ? dynamicCards : fallbackUseCards;
+
+function mediaUrl(card: ApiUseCard): string {
+  return card.mediaUrl ? resolveUploadUrl(card.mediaUrl, apiUrl) : "";
+}
+
+function iconFor(card: ApiUseCard): string {
+  return card.icon || (card.type === "text" ? "fa-droplet" : card.type === "video" ? "fa-play" : "fa-image");
+}
 ---
 
-<section class="py-24 bg-white">
-  <div class="max-w-[1200px] mx-auto px-6">
-    <!-- Header -->
-    <div class="text-center mb-16">
-      <div class="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-full">
-        <i class="fa-solid fa-grid text-blue-600"></i>
-        <span class="text-xs font-bold uppercase tracking-widest text-blue-700">
-          Aplicaciones
-        </span>
+<section class="uses-section">
+  <div class="uses-shell">
+    <div class="uses-header">
+      <div class="uses-kicker">
+        <i class="fa-solid fa-grid-2"></i>
+        <span>Aplicaciones</span>
       </div>
-      <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-        Usos del purificador de agua
-      </h2>
-      <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-        Versatilidad para cada necesidad: hogares, oficinas y negocios
-      </p>
+      <h2>Usos del purificador de agua</h2>
+      <p>Versatilidad para cada necesidad: hogares, oficinas y negocios</p>
     </div>
 
-    <!-- Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {usesData.map((item, index) => (
-        <div class={`${index === 2 ? 'lg:row-span-2' : ''}`}>
-          {item.type === 'text' && (
-            <div class={`h-full bg-gradient-to-br ${
-              item.color === 'blue' 
-                ? 'from-blue-50 to-blue-100 border-blue-200' 
-                : 'from-cyan-50 to-cyan-100 border-cyan-200'
-            } border-2 rounded-3xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group`}>
-              <div class={`w-16 h-16 rounded-2xl ${
-                item.color === 'blue' ? 'bg-blue-500' : 'bg-cyan-500'
-              } flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                <i class={`fa-solid ${item.icon} text-white text-2xl`}></i>
+    <div class="uses-grid">
+      {useCards.map((card) => (
+        <article class={`use-card use-card-${card.type}`}>
+          <div class="use-card-media">
+            {card.type === "video" && card.mediaUrl && (
+              <video controls playsinline preload="metadata">
+                <source src={mediaUrl(card)} type="video/mp4" />
+                Tu navegador no soporta video HTML5.
+              </video>
+            )}
+            {card.type === "image" && card.mediaUrl && (
+              <img src={mediaUrl(card)} alt={card.altText || card.title} loading="lazy" />
+            )}
+            {card.type === "text" && (
+              <div class="use-card-icon">
+                <i class={`fa-solid ${iconFor(card)}`}></i>
               </div>
-              <h3 class={`text-xl font-black ${
-                item.color === 'blue' ? 'text-blue-900' : 'text-cyan-900'
-              } mb-3 uppercase tracking-wide`}>
-                {item.title}
-              </h3>
-              <p class="text-slate-700 leading-relaxed">
-                {item.description}
-              </p>
-            </div>
-          )}
+            )}
+          </div>
 
-          {item.type === 'image' && (
-            <div class="h-full group cursor-pointer overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300">
-              <div class="relative h-full">
-                <img 
-                  src={item.src}
-                  alt={item.alt}
-                  class="w-full h-full object-cover transition duration-700 group-hover:scale-110"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-blue-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div class="absolute bottom-6 left-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <p class="text-white font-bold text-lg drop-shadow-lg">
-                    Sistema de Purificación Profesional
-                  </p>
-                </div>
-              </div>
+          <div class="use-card-copy">
+            <div class="use-card-label">
+              <i class={`fa-solid ${iconFor(card)}`}></i>
+              <span>{card.type === "video" ? "Video" : card.type === "image" ? "Imagen" : "Uso"}</span>
             </div>
-          )}
-
-          {item.type === 'video' && (
-            <div class="h-full group">
-              <div class="relative h-full rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                <!-- Gradient border on hover -->
-                <div class="absolute inset-0 bg-gradient-to-br from-blue-500 via-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl p-[3px] -z-10"></div>
-                
-                <!-- Video wrapper -->
-                <div class="relative h-full bg-slate-900 rounded-3xl overflow-hidden">
-                  <video 
-                    class="w-full h-full object-cover"
-                    muted 
-                    loop 
-                    playsinline 
-                    controls
-                    preload="metadata"
-                  >
-                    <source src={item.src} type="video/mp4" />
-                  </video>
-                  
-                  <!-- Overlay decoration -->
-                  <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent pointer-events-none"></div>
-                  
-                  <!-- Label -->
-                  <div class="absolute bottom-0 left-0 right-0 p-4 pointer-events-none">
-                    <div class="flex items-center gap-3">
-                      <div class="w-10 h-10 rounded-full bg-blue-500/20 backdrop-blur-sm flex items-center justify-center">
-                        <i class={`fa-solid ${item.icon} text-white`}></i>
-                      </div>
-                      <div>
-                        <p class="text-white font-bold text-sm drop-shadow-lg">
-                          {item.label}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+            <h3>{card.title}</h3>
+            {card.description && <p>{card.description}</p>}
+          </div>
+        </article>
       ))}
     </div>
 
-    <!-- Bottom CTA -->
-    <div class="text-center mt-16">
-      <a 
-        href="https://wa.me/5219991336108?text=Hola,%20quiero%20información%20sobre%20el%20purificador%20de%20agua" 
+    <div class="uses-action">
+      <a
+        href="https://wa.me/5219991336108?text=Hola,%20quiero%20información%20sobre%20el%20purificador%20de%20agua"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-10 py-5 rounded-full font-bold text-lg shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40 transition-all transform hover:scale-105"
       >
-        <i class="fa-brands fa-whatsapp text-2xl"></i>
-        <span>Solicita una Demostración</span>
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>Solicita una demostración</span>
         <i class="fa-solid fa-arrow-right"></i>
       </a>
-      <p class="text-sm text-slate-500 mt-4">
-        Instalación profesional • Sin costo inicial
-      </p>
+      <p>Instalación profesional • Sin costo inicial</p>
     </div>
   </div>
 </section>
 
 <style>
-  /* Video controls styling */
-  video::-webkit-media-controls-panel {
-    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
+  .uses-section {
+    background: #ffffff;
+    padding: clamp(4.5rem, 8vw, 7rem) 0;
+  }
+
+  .uses-shell {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 0 1.5rem;
+  }
+
+  .uses-header {
+    margin: 0 auto 3.5rem;
+    max-width: 720px;
+    text-align: center;
+  }
+
+  .uses-kicker {
+    align-items: center;
+    background: #dff7ff;
+    border-radius: 999px;
+    color: #1d66d8;
+    display: inline-flex;
+    font-size: .72rem;
+    font-weight: 800;
+    gap: .5rem;
+    margin-bottom: 1rem;
+    padding: .45rem .9rem;
+    text-transform: uppercase;
+  }
+
+  .uses-header h2 {
+    color: #071c3c;
+    font-size: clamp(2rem, 4vw, 3.15rem);
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1;
+    margin: 0;
+  }
+
+  .uses-header p {
+    color: #52647a;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 1rem 0 0;
+  }
+
+  .uses-grid {
+    display: grid;
+    gap: 1.1rem;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  }
+
+  .use-card {
+    background: #f7fbff;
+    border: 1px solid #c9e8fb;
+    border-radius: 8px;
+    display: grid;
+    grid-template-rows: minmax(190px, 1fr) auto;
+    min-height: 360px;
+    overflow: hidden;
+  }
+
+  .use-card-media {
+    background: linear-gradient(135deg, #e7f7ff, #f5fcff);
+    display: grid;
+    min-height: 190px;
+    place-items: center;
+  }
+
+  .use-card-media img,
+  .use-card-media video {
+    height: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    width: 100%;
+  }
+
+  .use-card-video .use-card-media {
+    background: #0a1630;
+  }
+
+  .use-card-video .use-card-media video {
+    object-fit: cover;
+  }
+
+  .use-card-icon {
+    align-items: center;
+    background: #2367f0;
+    border-radius: 8px;
+    color: #ffffff;
+    display: flex;
+    font-size: 2rem;
+    height: 5rem;
+    justify-content: center;
+    width: 5rem;
+  }
+
+  .use-card-copy {
+    background: #ffffff;
+    display: grid;
+    gap: .65rem;
+    padding: 1.2rem;
+  }
+
+  .use-card-label {
+    align-items: center;
+    color: #2470e8;
+    display: flex;
+    font-size: .7rem;
+    font-weight: 900;
+    gap: .45rem;
+    text-transform: uppercase;
+  }
+
+  .use-card-copy h3 {
+    color: #08265a;
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.2;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .use-card-copy p {
+    color: #42566f;
+    font-size: .92rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .uses-action {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  .uses-action a {
+    align-items: center;
+    background: #14b8d4;
+    border-radius: 999px;
+    box-shadow: 0 18px 38px rgba(20, 184, 212, .25);
+    color: #ffffff;
+    display: inline-flex;
+    font-size: 1rem;
+    font-weight: 900;
+    gap: .75rem;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .uses-action p {
+    color: #64748b;
+    font-size: .9rem;
+    margin: .9rem 0 0;
+  }
+
+  @media (max-width: 640px) {
+    .use-card {
+      min-height: 320px;
+    }
+
+    .uses-action a {
+      justify-content: center;
+      width: 100%;
+    }
   }
 </style>

@@ -94,7 +94,7 @@ function initVideoCarousel() {
 }
 
 async function loadCmsVideos() {
-  const videos = await fetchVideos();
+  const videos = await fetchVideos("gallery");
   if (videos.length === 0) return;
   renderVideos(videos, getApiUrl());
 }
