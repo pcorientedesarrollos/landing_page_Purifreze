@@ -11,9 +11,24 @@ const { blocks } = Astro.props;
     if (block.type === "list") return <ul>{block.data.items.map((item) => <li>{item}</li>)}</ul>;
     if (block.type === "link") return <p><a href={block.data.url}>{block.data.text}</a></p>;
     if (block.type === "image") return <img src={mediaUrl(block.data.url)} alt={block.data.alt} loading="lazy" />;
+    if (block.type === "quote") return <blockquote>{block.data.text}</blockquote>;
+    if (block.type === "callout") return (
+      <aside class="callout">
+        <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+        <span>{block.data.text}</span>
+      </aside>
+    );
   })}
 </div>
 <style>
   .blog-prose{max-width:760px;margin:0 auto;color:#334155;font-size:1.08rem;line-height:1.85}
-  .blog-prose p,.blog-prose ul{margin:1.25rem 0}.blog-prose a{color:#2563eb;font-weight:700;text-decoration:underline}.blog-prose h2{margin:3rem 0 1rem;color:#0f172a;font-size:2rem;line-height:1.15}.blog-prose h3{margin:2.25rem 0 .75rem;color:#1e293b;font-size:1.45rem}.blog-prose ul{padding-left:1.4rem;list-style:disc}.blog-prose img{width:100%;margin:2rem 0;border-radius:1.25rem}
+  .blog-prose p,.blog-prose ul{margin:1.25rem 0}
+  .blog-prose a{color:#2563eb;font-weight:700;text-decoration:underline}
+  .blog-prose h2{margin:3rem 0 1rem;color:#0f172a;font-size:2rem;line-height:1.15}
+  .blog-prose h3{margin:2.25rem 0 .75rem;color:#1e293b;font-size:1.45rem}
+  .blog-prose ul{padding-left:1.4rem;list-style:disc}
+  .blog-prose img{width:100%;margin:2rem 0;border-radius:1.25rem}
+  .blog-prose blockquote{margin:2rem 0;padding:.25rem 0 .25rem 1.25rem;border-left:4px solid #2563eb;font-style:italic;color:#1e293b;font-size:1.18rem;line-height:1.6}
+  .blog-prose .callout{display:flex;gap:.85rem;align-items:flex-start;margin:2rem 0;padding:1rem 1.15rem;border-left:4px solid #f59e0b;background:#fffbeb;border-radius:.5rem;color:#78350f;font-weight:500}
+  .blog-prose .callout i{color:#d97706;font-size:1.15rem;margin-top:.2rem}
 </style>

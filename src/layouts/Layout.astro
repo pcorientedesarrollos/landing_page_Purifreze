@@ -12,13 +12,33 @@ import {
 interface Props {
   title?: string;
   description?: string;
+  ogImage?: string | null;
+  ogType?: "website" | "article";
+  canonical?: string | null;
+  noIndex?: boolean;
+  publishedTime?: string | null;
+  modifiedTime?: string | null;
 }
 
-const { title = getSEOTitle(), description = getMetaDescription() } =
-  Astro.props;
+const {
+  title = getSEOTitle(),
+  description = getMetaDescription(),
+  ogImage = null,
+  ogType = "website",
+  canonical = null,
+  noIndex = false,
+  publishedTime = null,
+  modifiedTime = null,
+} = Astro.props;
 
 const baseSite = Astro.site ? Astro.site.toString() : SEO_CONFIG.business.url;
-const canonicalURL = new URL(Astro.url.pathname, baseSite);
+const canonicalURL = canonical
+  ? canonical
+  : new URL(Astro.url.pathname, baseSite).toString();
+const effOgImage = ogImage || SEO_CONFIG.business.logo;
+const robotsValue = noIndex
+  ? "noindex, nofollow"
+  : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
 const schemaJSON = getSchemaJSON();
 ---
 
@@ -42,10 +62,7 @@ const schemaJSON = getSchemaJSON();
         .join(", ")}
     />
     <meta name="author" content="Purifreze - Purificación de Agua" />
-    <meta
-      name="robots"
-      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
-    />
+    <meta name="robots" content={robotsValue} />
     <link rel="canonical" href={canonicalURL} />
 
     <!-- Geo Tags for Local SEO -->
@@ -70,22 +87,28 @@ const schemaJSON = getSchemaJSON();
     />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={SEO_CONFIG.business.logo} />
+    <meta property="og:image" content={effOgImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="es_MX" />
     <meta property="og:site_name" content={SEO_CONFIG.business.name} />
+    {ogType === "article" && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    {ogType === "article" && modifiedTime && (
+      <meta property="article:modified_time" content={modifiedTime} />
+    )}
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content="/assets/nombre-logo.png" />
+    <meta property="twitter:image" content={effOgImage} />
 
     <!-- Additional SEO Tags -->
     <meta name="theme-color" content="#0066FF" />

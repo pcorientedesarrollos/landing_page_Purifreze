@@ -1,0 +1,36 @@
+---
+import { mediaUrl } from "../lib/blog";
+interface Props {
+  coverImageUrl: string | null;
+  coverColor: string | null;
+  coverIcon: string | null;
+  alt?: string;
+  class?: string;
+  aspect?: string;
+}
+const {
+  coverImageUrl,
+  coverColor,
+  coverIcon,
+  alt = "",
+  class: extraClass = "",
+  aspect = "aspect-[16/10]",
+} = Astro.props;
+---
+{coverImageUrl ? (
+  <img
+    src={mediaUrl(coverImageUrl)}
+    alt={alt}
+    loading="lazy"
+    class={`${aspect} w-full object-cover ${extraClass}`}
+  />
+) : coverColor && coverIcon ? (
+  <div
+    class={`${aspect} w-full grid place-items-center ${extraClass}`}
+    style={`background-color:${coverColor}`}
+  >
+    <i class={`fa-solid fa-${coverIcon}`} style="font-size:clamp(40px,8vw,96px);color:rgba(255,255,255,.82)"></i>
+  </div>
+) : (
+  <div class={`${aspect} w-full bg-blue-100 ${extraClass}`}></div>
+)}

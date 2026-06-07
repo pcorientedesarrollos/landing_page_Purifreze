@@ -4,6 +4,13 @@ export interface BlogCard {
   slug: string;
   excerpt: string;
   coverImageUrl: string | null;
+  coverColor: string | null;
+  coverIcon: string | null;
+  category: string | null;
+  authorName: string | null;
+  authorInitials: string | null;
+  readMin: number | null;
+  views: number;
   publishedAt: string | null;
 }
 
@@ -12,13 +19,39 @@ export type BlogBlock =
   | { id: string; type: "heading"; data: { text: string; level: 2 | 3 } }
   | { id: string; type: "list"; data: { items: string[] } }
   | { id: string; type: "link"; data: { text: string; url: string } }
-  | { id: string; type: "image"; data: { url: string; alt: string } };
+  | { id: string; type: "image"; data: { url: string; alt: string } }
+  | { id: string; type: "quote"; data: { text: string } }
+  | { id: string; type: "callout"; data: { text: string } };
 
-export interface BlogPost extends BlogCard { blocks: BlogBlock[]; }
-export interface BlogPage { items: BlogCard[]; page: number; pageSize: number; total: number; pageCount: number; }
+export interface BlogPost extends BlogCard {
+  blocks: BlogBlock[];
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface BlogPage {
+  items: BlogCard[];
+  page: number;
+  pageSize: number;
+  total: number;
+  pageCount: number;
+}
+
+export interface SeoMetadata {
+  metaTitle: string | null;
+  metaDesc: string | null;
+  ogTitle: string | null;
+  ogDesc: string | null;
+  ogImage: string | null;
+  twitterCard: string | null;
+  canonicalUrl: string | null;
+  noIndex: boolean;
+  noFollow: boolean;
+}
 
 const apiUrl = import.meta.env.PUBLIC_API_URL ?? "http://localhost:3000";
-export const mediaUrl = (path: string | null) => path?.startsWith("/uploads/") ? `${apiUrl}${path}` : path;
+export const mediaUrl = (path: string | null) =>
+  path?.startsWith("/uploads/") ? `${apiUrl}${path}` : path;
 
 export async function fetchBlogPage(page: number): Promise<BlogPage> {
   const response = await fetch(`${apiUrl}/blog/posts?page=${page}&pageSize=9`);
@@ -26,9 +59,26 @@ export async function fetchBlogPage(page: number): Promise<BlogPage> {
   return response.json();
 }
 
-export async function fetchBlogPost(slug: string): Promise<{ post: BlogPost; canonicalSlug: string } | null> {
+export async function fetchBlogPost(
+  slug: string,
+): Promise<{ post: BlogPost; canonicalSlug: string } | null> {
   const response = await fetch(`${apiUrl}/blog/posts/${encodeURIComponent(slug)}`);
   if (response.status === 404) return null;
   if (!response.ok) throw new Error("Blog API unavailable");
   return response.json();
+}
+
+export async function fetchSeo(
+  entityType: string,
+  entityId: string | number,
+): Promise<SeoMetadata | null> {
+  try {
+    const r = await fetch(
+      `${apiUrl}/seo/${entityType}/${encodeURIComponent(String(entityId))}`,
+    );
+    if (!r.ok) return null;
+    return r.json();
+  } catch {
+    return null;
+  }
 }

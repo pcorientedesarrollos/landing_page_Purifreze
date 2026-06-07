@@ -280,16 +280,7 @@ Funcional:
 - Creacion manual de una seccion desde el navegador.
 - Filas de la tabla comparativa editables desde el admin con orden y visibilidad.
 - Galeria de videos editable con subida MP4, visibilidad y borrado de uploads.
-
-Pendiente:
-
-- Pulir el estilo del listado de secciones en el admin.
-- Conectar las demas secciones de la landing publica con el contenido guardado.
-- Agregar autenticacion antes de publicar el admin.
-- Diseñar formularios especificos para cada tipo de seccion.
-- Definir almacenamiento externo para imagenes y videos.
-- Establecer una estrategia de migraciones para produccion.
-
+-Articulos de blog editables 
 ## Multimedia
 
 El MVP guarda videos subidos desde el admin en el disco local del backend:

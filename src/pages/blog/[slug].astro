@@ -3,25 +3,76 @@ import Layout from "../../layouts/Layout.astro";
 import Navigation from "../../components/Navigation.astro";
 import Footer from "../../components/Footer.astro";
 import BlogBlocks from "../../components/BlogBlocks.astro";
-import { fetchBlogPost, mediaUrl } from "../../lib/blog";
+import BlogCover from "../../components/BlogCover.astro";
+import { fetchBlogPost, fetchSeo, mediaUrl } from "../../lib/blog";
 const slug = Astro.params.slug ?? "";
 const result = await fetchBlogPost(slug);
 if (!result) return Astro.redirect("/404", 302);
 if (result.canonicalSlug !== slug) return Astro.redirect(`/blog/${result.canonicalSlug}`, 301);
 const { post } = result;
-const articleSchema = JSON.stringify({ "@context": "https://schema.org", "@type": "Article", headline: post.title, description: post.excerpt, image: mediaUrl(post.coverImageUrl), datePublished: post.publishedAt, dateModified: post.updatedAt, publisher: { "@type": "Organization", name: "Purifreze" } });
+const seo = await fetchSeo("blog", post.id);
+
+const effTitle = seo?.metaTitle || `${post.title} | Purifreze`;
+const effDesc = seo?.metaDesc || post.excerpt;
+const effOgImage = seo?.ogImage || mediaUrl(post.coverImageUrl) || null;
+const effCanonical = seo?.canonicalUrl || null;
+const effNoIndex = seo?.noIndex ?? false;
+
+const articleSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.title,
+  description: post.excerpt,
+  image: effOgImage,
+  datePublished: post.publishedAt,
+  dateModified: post.updatedAt,
+  ...(post.authorName ? { author: { "@type": "Person", name: post.authorName } } : {}),
+  publisher: { "@type": "Organization", name: "Purifreze" },
+});
 ---
-<Layout title={`${post.title} | Purifreze`} description={post.excerpt}>
+<Layout
+  title={effTitle}
+  description={effDesc}
+  ogImage={effOgImage}
+  ogType="article"
+  canonical={effCanonical}
+  noIndex={effNoIndex}
+  publishedTime={post.publishedAt}
+  modifiedTime={post.updatedAt}
+>
   <script type="application/ld+json" set:html={articleSchema} slot="head" />
   <Navigation />
   <main class="min-h-screen bg-[#f8fbff] pb-24 pt-44">
     <article>
       <header class="mx-auto max-w-4xl px-6 text-center">
         <a href="/blog" class="text-xs font-black uppercase tracking-[.2em] text-blue-600">← Blog Purifreze</a>
+        {post.category && (
+          <div class="mt-6 flex justify-center">
+            <span class="rounded-full bg-blue-50 px-4 py-1.5 text-[11px] font-black uppercase tracking-[.18em] text-blue-700">{post.category}</span>
+          </div>
+        )}
         <h1 class="mt-6 text-4xl font-black leading-[1.05] tracking-tight text-slate-900 md:text-6xl">{post.title}</h1>
         <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">{post.excerpt}</p>
+        {(post.authorName || post.authorInitials || post.readMin) && (
+          <div class="mt-6 flex items-center justify-center gap-3 text-sm text-slate-600">
+            {post.authorInitials && (
+              <span class="grid h-9 w-9 place-items-center rounded-full bg-blue-600 text-xs font-black text-white">{post.authorInitials}</span>
+            )}
+            {post.authorName && <span class="font-bold text-slate-800">{post.authorName}</span>}
+            {(post.authorName || post.authorInitials) && post.readMin && <span class="text-slate-400">•</span>}
+            {post.readMin && <span class="font-bold">{post.readMin} min de lectura</span>}
+          </div>
+        )}
       </header>
-      {post.coverImageUrl && <img class="mx-auto mt-12 aspect-[16/8] w-[min(1120px,calc(100%-3rem))] rounded-[2rem] object-cover" src={mediaUrl(post.coverImageUrl)} alt="" />}
+      <div class="mx-auto mt-12 w-[min(1120px,calc(100%-3rem))] overflow-hidden rounded-[2rem]">
+        <BlogCover
+          coverImageUrl={post.coverImageUrl}
+          coverColor={post.coverColor}
+          coverIcon={post.coverIcon}
+          alt={post.title}
+          aspect="aspect-[16/8]"
+        />
+      </div>
       <div class="mt-14 px-6"><BlogBlocks blocks={post.blocks} /></div>
     </article>
   </main>
