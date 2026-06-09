@@ -64,13 +64,13 @@ const articleSchema = JSON.stringify({
           </div>
         )}
       </header>
-      <div class="mx-auto mt-12 w-[min(1120px,calc(100%-3rem))] overflow-hidden rounded-[2rem]">
+      <div class="mx-auto mt-12 w-[min(1120px,calc(100%-3rem))]">
         <BlogCover
           coverImageUrl={post.coverImageUrl}
           coverColor={post.coverColor}
           coverIcon={post.coverIcon}
+          coverSize={post.coverSize}
           alt={post.title}
-          aspect="aspect-[16/8]"
         />
       </div>
       <div class="mt-14 px-6"><BlogBlocks blocks={post.blocks} /></div>

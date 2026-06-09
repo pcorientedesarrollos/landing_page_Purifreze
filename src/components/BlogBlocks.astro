@@ -5,17 +5,17 @@ const { blocks } = Astro.props;
 ---
 <div class="blog-prose">
   {blocks.map((block) => {
-    if (block.type === "paragraph") return <p>{block.data.text}</p>;
-    if (block.type === "heading" && block.data.level === 2) return <h2>{block.data.text}</h2>;
-    if (block.type === "heading") return <h3>{block.data.text}</h3>;
-    if (block.type === "list") return <ul>{block.data.items.map((item) => <li>{item}</li>)}</ul>;
-    if (block.type === "link") return <p><a href={block.data.url}>{block.data.text}</a></p>;
+    if (block.type === "paragraph") return <p set:html={block.data.text} />;
+    if (block.type === "heading" && block.data.level === 2) return <h2 set:html={block.data.text} />;
+    if (block.type === "heading") return <h3 set:html={block.data.text} />;
+    if (block.type === "list") return <ul>{block.data.items.map((item) => <li set:html={item} />)}</ul>;
+    if (block.type === "link") return <a href={block.data.url} target="_blank" rel="noopener noreferrer">{block.data.text}</a>;
     if (block.type === "image") return <img src={mediaUrl(block.data.url)} alt={block.data.alt} loading="lazy" />;
-    if (block.type === "quote") return <blockquote>{block.data.text}</blockquote>;
+    if (block.type === "quote") return <blockquote set:html={block.data.text} />;
     if (block.type === "callout") return (
       <aside class="callout">
         <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-        <span>{block.data.text}</span>
+        <span set:html={block.data.text} />
       </aside>
     );
   })}

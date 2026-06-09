@@ -6,6 +6,7 @@ export interface BlogCard {
   coverImageUrl: string | null;
   coverColor: string | null;
   coverIcon: string | null;
+  coverSize: "small" | "medium" | "large" | null;
   category: string | null;
   authorName: string | null;
   authorInitials: string | null;

@@ -4,6 +4,7 @@ interface Props {
   coverImageUrl: string | null;
   coverColor: string | null;
   coverIcon: string | null;
+  coverSize?: "small" | "medium" | "large" | null;
   alt?: string;
   class?: string;
   aspect?: string;
@@ -12,25 +13,34 @@ const {
   coverImageUrl,
   coverColor,
   coverIcon,
+  coverSize = "medium",
   alt = "",
   class: extraClass = "",
   aspect = "aspect-[16/10]",
 } = Astro.props;
+
+// Map size to aspect ratio
+const aspectBySize = {
+  small: "aspect-[16/6]",
+  medium: "aspect-[16/8]",
+  large: "aspect-[16/10]",
+};
+const effectiveAspect = coverImageUrl && coverSize ? aspectBySize[coverSize] : aspect;
 ---
 {coverImageUrl ? (
   <img
     src={mediaUrl(coverImageUrl)}
     alt={alt}
     loading="lazy"
-    class={`${aspect} w-full object-cover ${extraClass}`}
+    class={`${effectiveAspect} w-full object-cover ${extraClass}`}
   />
 ) : coverColor && coverIcon ? (
   <div
-    class={`${aspect} w-full grid place-items-center ${extraClass}`}
+    class={`${effectiveAspect} w-full grid place-items-center ${extraClass}`}
     style={`background-color:${coverColor}`}
   >
     <i class={`fa-solid fa-${coverIcon}`} style="font-size:clamp(40px,8vw,96px);color:rgba(255,255,255,.82)"></i>
   </div>
 ) : (
-  <div class={`${aspect} w-full bg-blue-100 ${extraClass}`}></div>
+  <div class={`${effectiveAspect} w-full bg-blue-100 ${extraClass}`}></div>
 )}

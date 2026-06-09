@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Purifreze · Editor de contenido — Wireframes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#e9eef4;
+  --ink:#334155;
+  --ink-2:#64748b;
+  --ph:#9aa7b8;
+  --line:#c2cdda;
+  --line-2:#94a3b8;
+  --fill:#dde4ee;
+  --fill-2:#cdd6e3;
+  --surface:#ffffff;
+  --accent:#0984e3;
+  --accent-soft:#e1effd;
+  --accent-line:#9cc9f4;
+  --violet:#a29bfe;
+  --green:#16a34a;
+  --green-soft:#dcfce7;
+  --amber:#f59e0b;
+  --amber-soft:#fef3c7;
+  --red:#dc2626;
+  --red-soft:#fde2e2;
+  --ui:'Manrope',system-ui,sans-serif;
+  --hand:'Caveat',cursive;
+}
+/* B&W tweak */
+body.bw{
+  --accent:#475569; --accent-soft:#e7ebf1; --accent-line:#b6c0cd;
+  --violet:#8a93a3; --green:#475569; --green-soft:#e7ebf1;
+  --amber:#64748b; --amber-soft:#eef1f5; --red:#475569; --red-soft:#e7ebf1;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{
+  background:var(--paper);
+  font-family:var(--ui);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+body.no-notes .note{display:none !important;}
+
+/* ---------- page header ---------- */
+.page-head{
+  position:sticky;top:0;z-index:50;
+  background:rgba(233,238,244,.86);
+  backdrop-filter:blur(8px);
+  border-bottom:1.5px dashed var(--line);
+}
+.ph-row{
+  max-width:1240px;margin:0 auto;
+  padding:14px 24px 0;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+.ph-title{display:flex;align-items:baseline;gap:12px;}
+.ph-title b{font-family:var(--hand);font-size:30px;font-weight:700;color:var(--ink);line-height:1;}
+.ph-title span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:700;}
+.controls{display:flex;align-items:center;gap:8px;}
+.ctl{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--ink);
+  background:var(--surface);border:1.5px solid var(--line);border-radius:999px;
+  padding:6px 12px;cursor:pointer;user-select:none;
+}
+.ctl:hover{border-color:var(--line-2);}
+.ctl .dot{width:13px;height:13px;border-radius:4px;border:1.5px solid var(--line-2);background:transparent;display:inline-block;}
+.ctl.on{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent);}
+.ctl.on .dot{background:var(--accent);border-color:var(--accent);}
+/* tabs */
+.tabs{
+  max-width:1240px;margin:0 auto;
+  padding:12px 24px 0;
+  display:flex;gap:4px;flex-wrap:wrap;
+}
+.tab{
+  font-family:var(--ui);font-size:13.5px;font-weight:700;color:var(--ink-2);
+  background:transparent;border:none;border-bottom:3px solid transparent;
+  padding:9px 14px 11px;cursor:pointer;border-radius:8px 8px 0 0;white-space:nowrap;
+}
+.tab small{display:block;font-size:10.5px;font-weight:600;color:var(--ph);letter-spacing:.02em;}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.5);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--surface);}
+
+/* ---------- panels ---------- */
+.panel{display:none;max-width:1240px;margin:0 auto;padding:26px 24px 90px;}
+.panel.active{display:block;}
+.lead{font-family:var(--hand);font-size:23px;color:var(--accent);margin:0 0 4px;line-height:1.15;}
+.lead-sub{font-size:13.5px;color:var(--ink-2);margin:0 0 22px;max-width:760px;line-height:1.5;}
+
+/* ---------- browser frame ---------- */
+.frame{
+  background:var(--surface);
+  border:1.5px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 18px 40px rgba(15,23,42,.10);
+  overflow:hidden;
+}
+.bbar{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 14px;border-bottom:1.5px solid var(--line);background:#f4f7fb;
+}
+.bdots{display:flex;gap:6px;}
+.bdots i{width:10px;height:10px;border-radius:50%;background:var(--fill-2);display:block;}
+.burl{
+  flex:1;font-size:12px;color:var(--ink-2);font-weight:600;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:7px;
+  padding:5px 12px;max-width:420px;
+}
+.bwin{display:flex;min-height:560px;}
+
+/* collapsed icon sidebar */
+.iconbar{
+  width:58px;flex:none;background:#0f2942;
+  padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+body.bw .iconbar{background:#2b3441;}
+.iconbar .logo{width:30px;height:30px;border-radius:8px;background:var(--accent);margin-bottom:10px;flex:none;
+  display:grid;place-items:center;color:#fff;font-family:var(--hand);font-weight:700;font-size:18px;}
+.ico{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;color:#9fb6cd;cursor:pointer;}
+.ico svg{width:19px;height:19px;}
+.ico.sel{background:rgba(255,255,255,.12);color:#fff;}
+.iconbar .expand{margin-top:auto;color:#7f97ae;}
+
+/* generic bits */
+.app{flex:1;min-width:0;display:flex;flex-direction:column;}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;font-family:var(--ui);font-weight:700;font-size:13px;
+  border-radius:9px;padding:8px 14px;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);white-space:nowrap;
+}
+.btn svg{width:15px;height:15px;}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.btn.ghost{background:transparent;}
+.btn.sm{padding:6px 11px;font-size:12px;}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;padding:3px 10px;}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;}
+.pill.pub{background:var(--green-soft);color:var(--green);}
+.pill.draft{background:var(--fill);color:var(--ink-2);}
+.pill.sched{background:var(--amber-soft);color:#a86a06;}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);}
+
+/* placeholder text bars */
+.ln{height:11px;border-radius:5px;background:var(--fill);}
+.ln.dk{background:var(--fill-2);}
+.ln+.ln{margin-top:9px;}
+.w95{width:95%;}.w90{width:90%;}.w80{width:80%;}.w70{width:70%;}.w60{width:60%;}.w50{width:50%;}.w45{width:45%;}.w40{width:40%;}.w35{width:35%;}.w30{width:30%;}.w25{width:25%;}
+.titlebar{height:22px;border-radius:6px;background:var(--fill-2);}
+
+/* annotation note */
+.note{
+  position:relative;font-family:var(--hand);font-size:16.5px;line-height:1.25;color:var(--accent);
+  background:var(--accent-soft);border:1.5px dashed var(--accent-line);border-radius:10px;
+  padding:8px 12px;max-width:260px;
+}
+.note b{font-weight:700;}
+.note.free{position:absolute;z-index:8;box-shadow:0 6px 16px rgba(9,132,227,.14);}
+.note .arrow{position:absolute;color:var(--accent);font-size:20px;}
+
+/* ============ EDITOR doc surface ============ */
+.editbar{display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1.5px solid var(--line);background:#fbfcfe;}
+.crumb{font-size:13px;color:var(--ink-2);font-weight:600;}
+.crumb b{color:var(--ink);}
+.save{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-2);font-weight:600;margin-left:6px;}
+.save .ck{width:14px;height:14px;color:var(--green);}
+.editbar .spacer{flex:1;}
+
+.canvas{flex:1;display:flex;background:#fbfcfe;overflow:hidden;}
+.scroller{flex:1;overflow:auto;padding:30px 0 60px;}
+.doc{max-width:680px;margin:0 auto;padding:0 28px;position:relative;}
+.cover{
+  height:120px;border:1.5px dashed var(--line-2);border-radius:12px;background:
+   repeating-linear-gradient(135deg,#f1f5f9 0 12px,#eaeff5 12px 24px);
+  display:flex;align-items:center;justify-content:center;gap:8px;color:var(--ink-2);font-weight:600;font-size:13px;margin-bottom:22px;
+}
+.cover svg{width:18px;height:18px;}
+.doc-title{font-family:var(--hand);font-size:38px;font-weight:700;color:var(--ph);line-height:1.05;margin:2px 0 12px;}
+.doc-title.filled{color:var(--ink);}
+.doc-sub{font-size:15px;color:var(--ph);margin:0 0 26px;font-style:italic;}
+.doc-sub.filled{color:var(--ink-2);font-style:normal;}
+
+.block{position:relative;margin:0 0 18px;padding-left:0;}
+.gutter{position:absolute;left:-44px;top:-1px;display:flex;gap:3px;color:var(--ink-2);}
+.gh{width:20px;height:20px;border-radius:6px;display:grid;place-items:center;background:var(--surface);border:1.5px solid var(--line);cursor:pointer;}
+.gh svg{width:13px;height:13px;}
+.sel{background:var(--accent-soft);border-radius:3px;box-shadow:0 0 0 2px var(--accent-soft);}
+
+/* slash menu */
+.slash{
+  position:absolute;left:0;top:30px;width:248px;background:var(--surface);
+  border:1.5px solid var(--line);border-radius:11px;box-shadow:0 16px 36px rgba(15,23,42,.16);padding:7px;z-index:9;
+}
+.slash .sh{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ph);padding:5px 9px 3px;}
+.si{display:flex;align-items:center;gap:10px;padding:7px 9px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink);}
+.si:first-of-type{background:var(--accent-soft);color:var(--accent);}
+.si .ib{width:26px;height:26px;border-radius:7px;background:var(--fill);display:grid;place-items:center;color:var(--ink-2);flex:none;}
+.si:first-of-type .ib{background:#fff;color:var(--accent);}
+.si svg{width:15px;height:15px;}
+.si small{margin-left:auto;font-family:var(--ui);font-size:11px;color:var(--ph);font-weight:600;}
+
+/* floating selection toolbar */
+.seltool{
+  position:absolute;display:inline-flex;align-items:center;gap:2px;background:#10243a;border-radius:9px;
+  padding:5px 6px;box-shadow:0 10px 26px rgba(15,23,42,.3);z-index:9;
+}
+body.bw .seltool{background:#2b3441;}
+.seltool b{color:#cfe0f1;font-weight:700;font-size:13px;padding:4px 8px;border-radius:6px;cursor:pointer;display:grid;place-items:center;min-width:24px;}
+.seltool b.act{background:var(--accent);color:#fff;}
+.seltool .sep{width:1px;height:16px;background:#3a5067;margin:0 3px;}
+.seltool svg{width:15px;height:15px;}
+
+/* right drawer / inspector */
+.inspector{
+  width:330px;flex:none;border-left:1.5px solid var(--line);background:var(--surface);display:flex;flex-direction:column;
+}
+.insp-tabs{display:flex;gap:4px;padding:12px 14px 0;border-bottom:1.5px solid var(--line);}
+.insp-tab{font-size:12.5px;font-weight:700;color:var(--ink-2);padding:7px 11px 10px;border-bottom:2.5px solid transparent;cursor:pointer;}
+.insp-tab.on{color:var(--accent);border-bottom-color:var(--accent);}
+.insp-body{padding:18px 16px;overflow:auto;flex:1;}
+.field{margin-bottom:16px;}
+.flabel{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;}
+.flabel .cnt{font-family:var(--ui);font-weight:700;color:var(--ph);letter-spacing:0;text-transform:none;}
+.flabel .cnt.ok{color:var(--green);}
+.input{border:1.5px solid var(--line);border-radius:8px;background:#fbfcfe;padding:9px 11px;font-size:12.5px;color:var(--ph);}
+.input.area{min-height:54px;}
+.input.filled{color:var(--ink);}
+.seg{display:flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden;}
+.seg span{flex:1;text-align:center;font-size:12px;font-weight:700;color:var(--ink-2);padding:7px 0;cursor:pointer;}
+.seg span.on{background:var(--accent-soft);color:var(--accent);}
+
+/* google snippet preview */
+.snippet{border:1.5px solid var(--line);border-radius:10px;padding:12px 13px;background:#fbfcfe;}
+.snip-url{font-size:11.5px;color:var(--green);font-weight:600;margin-bottom:3px;}
+.snip-title{font-size:15px;color:#1a0dab;font-weight:600;line-height:1.25;margin-bottom:4px;}
+body.bw .snip-title{color:#475569;}
+.snip-desc{font-size:11.5px;color:var(--ink-2);line-height:1.45;}
+
+/* accordion (inspector B) */
+.acc{border:1.5px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden;}
+.acc-head{display:flex;align-items:center;gap:9px;padding:11px 13px;font-size:12.5px;font-weight:700;color:var(--ink);background:#f6f9fc;}
+.acc-head svg{width:15px;height:15px;color:var(--ink-2);}
+.acc-head .chev{margin-left:auto;color:var(--ink-2);}
+.acc-body{padding:13px;border-top:1.5px solid var(--line);}
+
+/* status bar (focus mode) */
+.statusbar{
+  display:flex;align-items:center;gap:14px;padding:10px 18px;border-top:1.5px solid var(--line);background:#fbfcfe;
+}
+.statusbar .meta{font-size:12px;color:var(--ink-2);font-weight:600;display:flex;align-items:center;gap:6px;}
+.statusbar .meta svg{width:14px;height:14px;}
+.statusbar .spacer{flex:1;}
+
+/* minimal top (focus) */
+.minitop{display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1.5px solid var(--line);background:#fbfcfe;}
+.hamb{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line);display:grid;place-items:center;color:var(--ink-2);cursor:pointer;}
+.hamb svg{width:17px;height:17px;}
+
+/* publish checklist overlay */
+.overlay{position:absolute;inset:0;background:rgba(15,23,42,.42);display:flex;align-items:flex-start;justify-content:center;padding-top:46px;z-index:20;}
+.sheet{width:460px;max-width:92%;background:var(--surface);border-radius:14px;box-shadow:0 30px 60px rgba(15,23,42,.3);overflow:hidden;}
+.sheet-head{padding:16px 18px;border-bottom:1.5px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
+.sheet-head b{font-family:var(--hand);font-size:22px;color:var(--ink);}
+.sheet-body{padding:18px;}
+.check{display:flex;align-items:center;gap:11px;padding:9px 0;font-size:13px;font-weight:600;color:var(--ink);}
+.check .mk{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;}
+.check .mk.ok{background:var(--green-soft);color:var(--green);}
+.check .mk.no{background:var(--amber-soft);color:#a86a06;}
+.check .mk svg{width:13px;height:13px;}
+.check .act{margin-left:auto;font-size:12px;font-weight:700;color:var(--accent);}
+
+/* ---------- list view ---------- */
+.listhead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:22px 24px 0;flex-wrap:wrap;}
+.listhead h2{font-family:var(--hand);font-size:30px;margin:0;color:var(--ink);}
+.listhead .sub{font-size:12.5px;color:var(--ink-2);font-weight:600;margin-top:2px;}
+.search{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:9px;padding:7px 12px;color:var(--ph);font-size:12.5px;font-weight:600;background:#fbfcfe;min-width:200px;}
+.search svg{width:15px;height:15px;}
+.filters{display:flex;align-items:center;gap:8px;padding:16px 24px 4px;flex-wrap:wrap;}
+.chip{font-size:12px;font-weight:700;color:var(--ink-2);border:1.5px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;background:var(--surface);}
+.chip.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line);}
+.optlabel{display:flex;align-items:center;gap:10px;padding:24px 24px 10px;}
+.optlabel .b{font-family:var(--hand);font-size:21px;color:var(--accent);}
+.optlabel .ln-fill{flex:1;height:1.5px;background:var(--line);border-radius:2px;}
+
+.tbl{margin:0 24px;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;}
+.tr{display:grid;grid-template-columns:38px 64px 1fr 120px 110px 80px 40px;align-items:center;gap:14px;padding:12px 16px;border-bottom:1.5px solid var(--line);}
+.tr:last-child{border-bottom:none;}
+.tr.head{background:#f6f9fc;}
+.tr.head span{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);}
+.cbx{width:17px;height:17px;border:1.5px solid var(--line-2);border-radius:5px;}
+.thumb{width:64px;height:42px;border-radius:7px;background:var(--fill);display:grid;place-items:center;color:var(--ph);}
+.thumb svg{width:16px;height:16px;}
+.dots{color:var(--ink-2);cursor:pointer;}
+.meta-sm{font-size:12px;color:var(--ink-2);font-weight:600;}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 24px;}
+.card{border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);}
+.card .cv{height:110px;background:var(--fill);display:grid;place-items:center;color:var(--ph);position:relative;}
+.card .cv svg{width:22px;height:22px;}
+.card .cv .pill{position:absolute;top:9px;left:9px;}
+.card .cb{padding:13px 14px 16px;}
+.card .cb .titlebar{margin-bottom:9px;}
+.card .crow{display:flex;align-items:center;justify-content:space-between;margin-top:13px;}
+
+.spacer-v{height:18px;}
+.foot-note{font-family:var(--hand);font-size:16px;color:var(--ink-2);text-align:center;margin-top:30px;}
+@media(max-width:900px){
+  .cards{grid-template-columns:1fr 1fr;}
+  .inspector{display:none;}
+  .tr{grid-template-columns:38px 1fr 100px 40px;}
+  .tr .hide-sm{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE HEADER ============ -->
+<header class="page-head">
+  <div class="ph-row">
+    <div class="ph-title">
+      <b>Editor de contenido</b>
+      <span>Wireframes · Purifreze</span>
+    </div>
+    <div class="controls">
+      <div class="ctl on" id="t-notes"><span class="dot"></span>Anotaciones</div>
+      <div class="ctl" id="t-bw"><span class="dot"></span>Blanco y negro</div>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-p="list">Listado del blog<small>tabla · tarjetas</small></button>
+    <button class="tab" data-p="ed-a">Editor A<small>documento</small></button>
+    <button class="tab" data-p="ed-b">Editor B<small>inspector fijo</small></button>
+    <button class="tab" data-p="ed-c">Editor C<small>modo enfoque</small></button>
+    <button class="tab" data-p="edit">Editar existente<small>estado publicado</small></button>
+  </nav>
+</header>
+
+<!-- ============ TAB 1 · LISTADO ============ -->
+<section class="panel active" data-panel="list">
+  <p class="lead">Listado del blog — el lugar donde llegas antes de escribir</p>
+  <p class="lead-sub">El admin actual te lanza directo a un formulario sin contexto. Primero deberías ver tus artículos, su estado y poder crear uno nuevo desde aquí. Dos formas de mostrarlos:</p>
+
+  <div class="frame">
+    <div class="bbar"><div class="bdots"><i></i><i></i><i></i></div><div class="burl">purifreze.app/admin/blog</div></div>
+    <div class="bwin">
+      <aside class="iconbar">
+        <div class="logo">P</div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h18M3 6h18M3 18h18"/></svg></div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+        <div class="ico sel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg></div>
+        <div class="ico expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18l6-6-6-6"/></svg></div>
+      </aside>
+      <div class="app">
+        <div class="listhead">
+          <div>
+            <h2>Blog</h2>
+            <div class="sub">12 artículos · 8 publicados · 3 borradores · 1 programado</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>Buscar artículo…</div>
+            <button class="btn primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Nuevo artículo</button>
+          </div>
+        </div>
+        <div class="filters">
+          <span class="chip on">Todos</span>
+          <span class="chip">Publicados</span>
+          <span class="chip">Borradores</span>
+          <span class="chip">Programados</span>
+          <div style="flex:1"></div>
+          <span class="chip">Más recientes ▾</span>
+        </div>
+
+        <!-- option A: table -->
+        <div class="optlabel"><span class="b">Opción A — Tabla</span><span class="ln-fill"></span></div>
+        <div class="tbl">
+          <div class="tr head">
+            <span></span><span></span><span>Título</span><span class="hide-sm">Estado</span><span class="hide-sm">Fecha</span><span class="hide-sm">Vistas</span><span></span>
+          </div>
+          <div class="tr">
+            <div class="cbx"></div>
+            <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+            <div><div class="ln dk w70"></div><div class="ln w45" style="margin-top:7px;height:8px"></div></div>
+            <span class="pill pub hide-sm">Publicado</span>
+            <span class="meta-sm hide-sm">20/03/2026</span>
+            <span class="meta-sm hide-sm">1,204</span>
+            <span class="dots">⋯</span>
+          </div>
+          <div class="tr">
+            <div class="cbx"></div>
+            <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+            <div><div class="ln dk w60"></div><div class="ln w35" style="margin-top:7px;height:8px"></div></div>
+            <span class="pill draft hide-sm">Borrador</span>
+            <span class="meta-sm hide-sm">18/03/2026</span>
+            <span class="meta-sm hide-sm">—</span>
+            <span class="dots">⋯</span>
+          </div>
+          <div class="tr">
+            <div class="cbx"></div>
+            <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+            <div><div class="ln dk w80"></div><div class="ln w40" style="margin-top:7px;height:8px"></div></div>
+            <span class="pill sched hide-sm">Programado</span>
+            <span class="meta-sm hide-sm">25/03/2026</span>
+            <span class="meta-sm hide-sm">—</span>
+            <span class="dots">⋯</span>
+          </div>
+        </div>
+        <div style="padding:14px 24px 0;position:relative;">
+          <div class="note" style="display:inline-block;">Estado a la vista, <b>vistas/SEO</b> en columnas, y editas con un clic en la fila → contexto que hoy no existe</div>
+        </div>
+
+        <!-- option B: cards -->
+        <div class="optlabel"><span class="b">Opción B — Tarjetas</span><span class="ln-fill"></span></div>
+        <div class="cards">
+          <div class="card"><div class="cv"><span class="pill pub">Publicado</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/></svg></div><div class="cb"><div class="titlebar w80"></div><div class="ln w95" style="height:8px"></div><div class="ln w70" style="height:8px"></div><div class="crow"><span class="meta-sm">20 mar</span><span class="dots">⋯</span></div></div></div>
+          <div class="card"><div class="cv"><span class="pill draft">Borrador</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/></svg></div><div class="cb"><div class="titlebar w60"></div><div class="ln w90" style="height:8px"></div><div class="ln w50" style="height:8px"></div><div class="crow"><span class="meta-sm">18 mar</span><span class="dots">⋯</span></div></div></div>
+          <div class="card"><div class="cv"><span class="pill sched">Programado</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/></svg></div><div class="cb"><div class="titlebar w70"></div><div class="ln w95" style="height:8px"></div><div class="ln w60" style="height:8px"></div><div class="crow"><span class="meta-sm">25 mar</span><span class="dots">⋯</span></div></div></div>
+        </div>
+        <div style="padding:16px 24px 22px;">
+          <div class="note" style="display:inline-block;">Más visual, ideal si la <b>portada</b> importa. Recomendado solo si suben imagen siempre</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="foot-note">↑ Crear artículo abre el editor (pestañas A / B / C) →</p>
+</section>
+
+<!-- ============ TAB 2 · EDITOR A — DOCUMENTO ============ -->
+<section class="panel" data-panel="ed-a">
+  <p class="lead">Editor A — Documento estilo Notion</p>
+  <p class="lead-sub">Escribes directo sobre la página: lo que ves <b>es</b> el artículo. El título es un encabezado real, y para insertar bloques escribes “/” o usas el botón <b>+</b> del margen. Los ajustes y el SEO viven en un cajón lateral que abres cuando los necesitas.</p>
+
+  <div class="frame">
+    <div class="bbar"><div class="bdots"><i></i><i></i><i></i></div><div class="burl">purifreze.app/admin/blog/nuevo</div></div>
+    <div class="bwin">
+      <aside class="iconbar">
+        <div class="logo">P</div>
+        <div class="ico sel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/></svg></div>
+        <div class="ico expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18l6-6-6-6"/></svg></div>
+      </aside>
+      <div class="app">
+        <div class="editbar">
+          <span class="crumb">Blog <b>›</b> Nuevo artículo</span>
+          <span class="save"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Guardado · hace 2 s</span>
+          <span class="spacer"></span>
+          <button class="btn ghost sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Vista previa</button>
+          <button class="btn sm" id="a-settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.82 1.17V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 3.6 14H3.5a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 5 8.6"/></svg>Ajustes</button>
+          <button class="btn primary sm">Publicar</button>
+        </div>
+        <div class="canvas">
+          <div class="scroller">
+            <div class="doc">
+              <div class="cover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>Agregar portada</div>
+              <div class="doc-title">Escribe el título…</div>
+              <div class="doc-sub">Agrega un extracto o empieza a escribir abajo</div>
+
+              <div class="block">
+                <div class="gutter"><div class="gh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div><div class="gh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg></div></div>
+                <div class="ln w95"></div><div class="ln w90"></div><div class="ln w70"></div>
+              </div>
+
+              <div class="block" style="height:30px">
+                <div class="slash">
+                  <div class="sh">Insertar bloque</div>
+                  <div class="si"><span class="ib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>Párrafo<small>texto</small></div>
+                  <div class="si"><span class="ib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4v16M18 4v16M6 12h12"/></svg></span>Título</div>
+                  <div class="si"><span class="ib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span>Lista</div>
+                  <div class="si"><span class="ib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></span>Imagen</div>
+                  <div class="si"><span class="ib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></span>Enlace</div>
+                </div>
+                <div class="note free" style="left:268px;top:6px;">Escribe <b>“/”</b> y aparece este menú → reemplaza los botones sueltos de hoy</div>
+              </div>
+
+              <div class="block" style="margin-top:70px;">
+                <div class="ln w90"></div>
+                <div style="margin-top:9px;position:relative;">
+                  <div class="ln w80"><span class="sel" style="position:absolute;left:0;top:-1px;width:46%;height:13px;"></span></div>
+                  <div class="seltool" style="left:8%;top:-44px;">
+                    <b class="act" style="font-style:italic">B</b><b style="font-style:italic">i</b><b style="text-decoration:underline">U</b><span class="sep"></span><b>H₂</b><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/></svg></b>
+                  </div>
+                </div>
+                <div class="ln w60" style="margin-top:9px"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- right drawer: ajustes / SEO -->
+          <aside class="inspector">
+            <div class="insp-tabs">
+              <span class="insp-tab">General</span>
+              <span class="insp-tab on">SEO</span>
+            </div>
+            <div class="insp-body">
+              <div class="field"><div class="flabel">Meta título <span class="cnt">42/60</span></div><div class="input">Cómo prolongar la vida de tu cámara frigorífica</div></div>
+              <div class="field"><div class="flabel">Meta descripción <span class="cnt ok">138/160 ✓</span></div><div class="input area">Guía práctica de Purifreze para el mantenimiento de equipos de refrigeración industrial y ahorro energético…</div></div>
+              <div class="field"><div class="flabel">Slug</div><div class="input">/blog/vida-camara-frigorifica</div></div>
+              <div class="field"><div class="flabel">Palabra clave</div><div class="input">mantenimiento refrigeración</div></div>
+              <div class="field">
+                <div class="flabel">Vista en Google</div>
+                <div class="snippet">
+                  <div class="snip-url">purifreze.app › blog › vida-camara…</div>
+                  <div class="snip-title">Cómo prolongar la vida de tu cámara frigorífica</div>
+                  <div class="snip-desc">Guía práctica de Purifreze para el mantenimiento de equipos de refrigeración industrial y ahorro energético.</div>
+                </div>
+              </div>
+              <div class="note">El <b>SEO</b> vive aquí, sin estorbar la escritura. Lo abres con “Ajustes” cuando quieras</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="foot-note">Lo más cercano a “escribir en Word”, pero limpio. Cajón lateral = SEO sin ruido.</p>
+</section>
+
+<!-- ============ TAB 3 · EDITOR B — INSPECTOR FIJO ============ -->
+<section class="panel" data-panel="ed-b">
+  <p class="lead">Editor B — Documento + inspector siempre visible</p>
+  <p class="lead-sub">Mismo lienzo de escritura, pero con una barra de formato <b>fija arriba</b> (en vez de la flotante) y un panel derecho permanente con portada, extracto, categoría y SEO. Pensado para quien prefiere ver todos los campos a la mano y no descubrir atajos.</p>
+
+  <div class="frame">
+    <div class="bbar"><div class="bdots"><i></i><i></i><i></i></div><div class="burl">purifreze.app/admin/blog/nuevo</div></div>
+    <div class="bwin">
+      <aside class="iconbar">
+        <div class="logo">P</div>
+        <div class="ico sel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/></svg></div>
+        <div class="ico expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18l6-6-6-6"/></svg></div>
+      </aside>
+      <div class="app">
+        <div class="editbar">
+          <span class="crumb">Blog <b>›</b> Nuevo artículo</span>
+          <span class="save"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Autoguardado</span>
+          <span class="spacer"></span>
+          <button class="btn ghost sm">Vista previa</button>
+          <button class="btn primary sm">Publicar</button>
+        </div>
+        <!-- fixed formatting toolbar -->
+        <div class="editbar" style="background:#fff;gap:4px;padding:8px 18px;">
+          <button class="btn ghost sm" style="font-weight:800;min-width:36px">B</button>
+          <button class="btn ghost sm" style="font-style:italic;min-width:36px">i</button>
+          <button class="btn ghost sm" style="text-decoration:underline;min-width:36px">U</button>
+          <span style="width:1px;height:22px;background:var(--line);margin:0 4px"></span>
+          <button class="btn ghost sm">H1</button>
+          <button class="btn ghost sm">H2</button>
+          <button class="btn ghost sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Lista</button>
+          <button class="btn ghost sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/></svg>Enlace</button>
+          <button class="btn ghost sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Imagen</button>
+          <span style="position:relative;flex:1;text-align:right;">
+            <span class="note" style="display:inline-block;">Barra de formato <b>siempre visible</b> = nada de atajos ocultos</span>
+          </span>
+        </div>
+        <div class="canvas">
+          <div class="scroller">
+            <div class="doc" style="max-width:560px">
+              <div class="doc-title filled">Cómo prolongar la vida de tu cámara frigorífica</div>
+              <div class="block" style="margin-top:18px"><div class="ln w95"></div><div class="ln w90"></div><div class="ln w80"></div><div class="ln w60"></div></div>
+              <div class="block"><div class="ln dk w50" style="height:15px"></div></div>
+              <div class="block"><div class="ln w90"></div><div class="ln w95"></div><div class="ln w70"></div></div>
+            </div>
+          </div>
+          <aside class="inspector">
+            <div class="insp-body">
+              <div class="acc">
+                <div class="acc-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Portada<span class="chev">▾</span></div>
+                <div class="acc-body"><div class="cover" style="height:88px;margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>Subir imagen</div></div>
+              </div>
+              <div class="acc">
+                <div class="acc-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/></svg>Extracto<span class="chev">▾</span></div>
+                <div class="acc-body"><div class="input area filled">Guía práctica para el mantenimiento de equipos de refrigeración industrial.</div></div>
+              </div>
+              <div class="acc">
+                <div class="acc-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h18M3 12h18M3 17h18"/></svg>Categoría y estado<span class="chev">▾</span></div>
+                <div class="acc-body">
+                  <div class="field"><div class="flabel">Categoría</div><div class="input filled">Mantenimiento</div></div>
+                  <div class="seg"><span class="on">Borrador</span><span>Publicar</span><span>Programar</span></div>
+                </div>
+              </div>
+              <div class="acc">
+                <div class="acc-head" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>SEO<span class="chev">▴</span></div>
+                <div class="acc-body">
+                  <div class="field"><div class="flabel">Meta descripción <span class="cnt ok">138/160 ✓</span></div><div class="input area filled">Guía práctica de Purifreze para el mantenimiento de equipos de refrigeración industrial…</div></div>
+                  <div class="snippet">
+                    <div class="snip-url">purifreze.app › blog › vida-camara…</div>
+                    <div class="snip-title">Cómo prolongar la vida de tu cámara frigorífica</div>
+                    <div class="snip-desc">Guía práctica de Purifreze para el mantenimiento de equipos de refrigeración industrial.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="note">Todo el “meta” del artículo en acordeones → siempre presente, nunca tapa el texto</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="foot-note">La opción más “segura” para usuarios no técnicos: nada está oculto.</p>
+</section>
+
+<!-- ============ TAB 4 · EDITOR C — MODO ENFOQUE ============ -->
+<section class="panel" data-panel="ed-c">
+  <p class="lead">Editor C — Modo enfoque, sin distracciones</p>
+  <p class="lead-sub">Lienzo a pantalla completa, sin sidebar (se abre con el menú). Máximo espacio para escribir, barra flotante al seleccionar texto (estilo Medium), y abajo el estado vivo: palabras, lectura y autoguardado. El <b>SEO</b> y la verificación final se resuelven en una <b>lista de comprobación al publicar</b>.</p>
+
+  <div class="frame" style="position:relative">
+    <div class="bbar"><div class="bdots"><i></i><i></i><i></i></div><div class="burl">purifreze.app/admin/blog/nuevo</div></div>
+    <div class="bwin" style="min-height:600px">
+      <div class="app">
+        <div class="minitop">
+          <div class="hamb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></div>
+          <span class="crumb">Modo enfoque</span>
+          <span class="spacer"></span>
+          <span class="note" style="display:inline-block;font-size:14px;padding:5px 10px;">Sidebar oculto → todo el ancho para escribir</span>
+        </div>
+        <div class="canvas">
+          <div class="scroller" style="padding-top:40px">
+            <div class="doc" style="max-width:740px">
+              <div class="doc-title filled" style="font-family:var(--ui);font-weight:800;font-size:34px">Cómo prolongar la vida de tu cámara frigorífica</div>
+              <div class="block" style="margin-top:26px"><div class="ln w95"></div><div class="ln w90"></div><div class="ln w95"></div><div class="ln w70"></div></div>
+              <div class="block" style="position:relative">
+                <div class="ln w90"></div>
+                <div style="margin-top:9px;position:relative">
+                  <div class="ln w95"><span class="sel" style="position:absolute;left:18%;top:-1px;width:40%;height:13px;"></span></div>
+                  <div class="seltool" style="left:22%;top:-44px;">
+                    <b class="act">B</b><b style="font-style:italic">i</b><span class="sep"></span><b>H₂</b><b>“”</b><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/></svg></b>
+                  </div>
+                </div>
+                <div class="ln w80" style="margin-top:9px"></div>
+              </div>
+              <div class="block"><div class="ln w95"></div><div class="ln w60"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="statusbar">
+          <span class="meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/></svg>320 palabras</span>
+          <span class="meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>2 min de lectura</span>
+          <span class="meta"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--green)"><path d="M20 6L9 17l-5-5"/></svg>Guardado</span>
+          <span class="spacer"></span>
+          <button class="btn sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>SEO</button>
+          <button class="btn primary sm">Publicar →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- publish checklist overlay -->
+    <div class="overlay">
+      <div class="sheet">
+        <div class="sheet-head"><b>Antes de publicar</b><span class="dots">✕</span></div>
+        <div class="sheet-body">
+          <div class="check"><span class="mk ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>Título listo</div>
+          <div class="check"><span class="mk ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>Extracto (138 caracteres)</div>
+          <div class="check"><span class="mk no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 8v5M12 17h.01"/></svg></span>Falta imagen de portada<span class="act">Subir</span></div>
+          <div class="check"><span class="mk no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 8v5M12 17h.01"/></svg></span>Meta descripción SEO<span class="act">Completar</span></div>
+          <div style="border-top:1.5px solid var(--line);margin:14px 0;"></div>
+          <div class="field"><div class="flabel">Meta descripción <span class="cnt">0/160</span></div><div class="input area">Resumen para Google…</div></div>
+          <div class="snippet" style="margin-bottom:16px">
+            <div class="snip-url">purifreze.app › blog › vida-camara…</div>
+            <div class="snip-title">Cómo prolongar la vida de tu cámara frigorífica</div>
+            <div class="snip-desc">Agrega una meta descripción para mejorar tu posición en buscadores.</div>
+          </div>
+          <button class="btn primary" style="width:100%;justify-content:center">Publicar artículo</button>
+          <div class="note" style="margin-top:14px;display:block">El SEO se resuelve <b>justo al publicar</b>: una checklist evita publicar a medias</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="foot-note">Máxima concentración al escribir; el SEO no estorba pero es obligatorio antes de salir.</p>
+</section>
+
+<!-- ============ TAB 5 · EDITAR EXISTENTE ============ -->
+<section class="panel" data-panel="edit">
+  <p class="lead">Editar un artículo existente</p>
+  <p class="lead-sub">Mismo editor (aquí sobre la dirección A), pero abierto sobre contenido ya publicado. Cambia lo que rodea al lienzo: el estado, el historial, y acciones como ver en vivo, despublicar o eliminar.</p>
+
+  <div class="frame">
+    <div class="bbar"><div class="bdots"><i></i><i></i><i></i></div><div class="burl">purifreze.app/admin/blog/vida-camara-frigorifica/editar</div></div>
+    <div class="bwin">
+      <aside class="iconbar">
+        <div class="logo">P</div>
+        <div class="ico sel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div class="ico expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18l6-6-6-6"/></svg></div>
+      </aside>
+      <div class="app">
+        <div class="editbar">
+          <span class="crumb">Blog <b>›</b> Editar</span>
+          <span class="pill pub" style="margin-left:4px">Publicado</span>
+          <span class="save" style="margin-left:8px">Editado hace 3 h · v4</span>
+          <span class="spacer"></span>
+          <button class="btn ghost sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 3h6v6M10 14L21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Ver en vivo</button>
+          <button class="btn primary sm">Actualizar</button>
+          <button class="btn sm" id="edit-menu" style="position:relative;padding:7px 9px">⋯</button>
+        </div>
+        <div class="canvas">
+          <div class="scroller">
+            <div class="doc">
+              <div class="cover" style="border-style:solid;background:linear-gradient(135deg,#d6e7f6,#cfe0ef);color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>portada-camara.jpg</div>
+              <div class="doc-title filled">Cómo prolongar la vida de tu cámara frigorífica</div>
+              <div class="doc-sub filled">Guía práctica para el mantenimiento de equipos de refrigeración industrial.</div>
+              <div class="block"><div class="ln dk w95"></div><div class="ln dk w90"></div><div class="ln dk w80"></div></div>
+              <div class="block"><div class="ln dk w40" style="height:15px"></div></div>
+              <div class="block"><div class="ln dk w90"></div><div class="ln dk w95"></div><div class="ln dk w70"></div></div>
+              <div class="note" style="display:inline-block">Contenido ya cargado: editas en el mismo lienzo, sin “formulario” aparte</div>
+            </div>
+          </div>
+          <aside class="inspector">
+            <div class="insp-tabs"><span class="insp-tab">General</span><span class="insp-tab on">SEO</span></div>
+            <div class="insp-body">
+              <div class="field"><div class="flabel">Meta descripción <span class="cnt ok">138/160 ✓</span></div><div class="input area filled">Guía práctica de Purifreze para el mantenimiento de equipos de refrigeración industrial y ahorro energético.</div></div>
+              <div class="snippet">
+                <div class="snip-url">purifreze.app › blog › vida-camara…</div>
+                <div class="snip-title">Cómo prolongar la vida de tu cámara frigorífica</div>
+                <div class="snip-desc">Guía práctica de Purifreze para el mantenimiento de equipos de refrigeración industrial y ahorro energético.</div>
+              </div>
+              <div style="margin-top:18px;border-top:1.5px solid var(--line);padding-top:16px">
+                <div class="flabel">Acciones</div>
+                <button class="btn sm" style="width:100%;justify-content:flex-start;margin-bottom:8px">Duplicar artículo</button>
+                <button class="btn sm" style="width:100%;justify-content:flex-start;margin-bottom:8px">Despublicar</button>
+                <button class="btn sm" style="width:100%;justify-content:flex-start;color:var(--red);border-color:var(--red-soft)">Eliminar</button>
+              </div>
+              <div class="note">Acciones de ciclo de vida (despublicar, eliminar) separadas del texto</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="foot-note">El editor no cambia entre “nuevo” y “editar” — solo el contexto alrededor.</p>
+</section>
+
+<script>
+(function(){
+  // tabs
+  var tabs=document.querySelectorAll('.tab');
+  var panels=document.querySelectorAll('.panel');
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){
+      tabs.forEach(function(x){x.classList.remove('active');});
+      panels.forEach(function(p){p.classList.remove('active');});
+      t.classList.add('active');
+      var p=document.querySelector('.panel[data-panel="'+t.dataset.p+'"]');
+      if(p)p.classList.add('active');
+      window.scrollTo({top:0,behavior:'instant'});
+    });
+  });
+  // tweaks
+  var notes=document.getElementById('t-notes');
+  notes.addEventListener('click',function(){
+    notes.classList.toggle('on');
+    document.body.classList.toggle('no-notes',!notes.classList.contains('on'));
+  });
+  var bw=document.getElementById('t-bw');
+  bw.addEventListener('click',function(){
+    bw.classList.toggle('on');
+    document.body.classList.toggle('bw',bw.classList.contains('on'));
+  });
+})();
+</script>
+</body>
+</html>
