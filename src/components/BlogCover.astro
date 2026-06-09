@@ -19,7 +19,13 @@ const {
   aspect = "aspect-[16/10]",
 } = Astro.props;
 
-// Map size to aspect ratio
+// Map size to max-height
+const maxHeightBySize = {
+  small: "max-h-[280px]",
+  medium: "max-h-[420px]",
+  large: "max-h-[560px]",
+};
+const effectiveMaxHeight = coverImageUrl && coverSize ? maxHeightBySize[coverSize] : "max-h-[420px]";
 const aspectBySize = {
   small: "aspect-[16/6]",
   medium: "aspect-[16/8]",
@@ -32,7 +38,7 @@ const effectiveAspect = coverImageUrl && coverSize ? aspectBySize[coverSize] : a
     src={mediaUrl(coverImageUrl)}
     alt={alt}
     loading="lazy"
-    class={`${effectiveAspect} w-full object-cover ${extraClass}`}
+    class={`w-full h-auto ${effectiveMaxHeight} object-contain ${extraClass}`}
   />
 ) : coverColor && coverIcon ? (
   <div
