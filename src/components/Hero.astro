@@ -1,35 +1,10 @@
 ---
-// Enhanced Hero section with floating animated statistics
-const images = [
-  "/assets/imagen1.png",
-  "/assets/imagen2.png",
-  "/assets/imagen3.png",
-  "/assets/imagen4.png",
-];
+// Hero section with white background
 ---
 
 <section
-  class="relative min-h-[95vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden"
+  class="relative min-h-[95vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden bg-white"
 >
-  <!-- Background Image Slider Layer (z-index: 0) -->
-  <div class="absolute inset-0 w-full h-full z-0">
-    {
-      images.map((img, index) => (
-        <img
-          src={img}
-          class={`image-slide ${index === 0 ? "active" : ""}`}
-          alt={`Sistema de purificación de agua Purifreze - Vista ${index + 1} mostrando purificador de agua de alta calidad`}
-          loading={index === 0 ? "eager" : "lazy"}
-        />
-      ))
-    }
-  </div>
-
-  <!-- Animated Gradient Overlay (z-index: 1) -->
-  <div
-    class="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-cyan-900/30 to-blue-900/40 pointer-events-none animate-pulse-soft z-[1]"
-  >
-  </div>
 
   <!-- Content -->
   <div
@@ -37,13 +12,13 @@ const images = [
   >
     <!-- Badge -->
     <div
-      class="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-md rounded-full border border-blue-300/30 shadow-lg animate-fade-in"
+      class="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full border border-blue-300 shadow-lg animate-fade-in"
     >
       <span
-        class="w-2 h-2 bg-blue-400 rounded-full animate-pulse-soft shadow-glow-blue"
+        class="w-2 h-2 bg-blue-500 rounded-full animate-pulse-soft"
       ></span>
       <span
-        class="text-xs font-bold uppercase tracking-widest text-white drop-shadow-lg"
+        class="text-xs font-bold uppercase tracking-widest text-blue-700"
       >
         💧 Agua Purificada Ilimitada
       </span>
@@ -51,27 +26,46 @@ const images = [
 
     <!-- Title -->
     <h1
-      class="text-5xl md:text-7xl lg:text-8xl text-white leading-[0.9] mb-8 animate-fade-up drop-shadow-2xl"
+      class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-slate-900 leading-tight md:leading-[0.9] mb-8 animate-fade-up px-2"
     >
-      <span class="font-light block mb-3">PURIFICADOR</span>
+      <span class="font-light block mb-2 md:mb-3">PURIFICADOR</span>
       <span
-        class="font-black bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent"
+        class="font-black bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-700 bg-clip-text text-transparent"
       >
         DE AGUA
       </span>
     </h1>
 
     <!-- Description -->
-    <p
-      class="text-lg md:text-2xl text-white/95 max-w-3xl mx-auto mb-10 leading-relaxed font-medium animate-fade-up backdrop-blur-sm bg-black/20 px-6 py-4 rounded-2xl shadow-xl"
-      style="animation-delay: 0.2s;"
-    >
-      Renta un sistema de purificación con <span class="font-bold text-cyan-300"
-        >instalación en 48hrs</span
-      >,
-      <span class="font-bold text-green-300">$0 inicial</span> y
-      <span class="font-bold text-purple-300">mantenimiento incluido</span>
-    </p>
+    <div class="max-w-4xl mx-auto mb-10 space-y-4 animate-fade-up px-4" style="animation-delay: 0.2s;">
+      <h2 class="text-xl sm:text-2xl md:text-3xl text-slate-800 font-bold mb-6 leading-tight">
+        Renta nuestro sistema de purificación de agua
+      </h2>
+      
+      <div class="grid md:grid-cols-2 gap-4 text-left px-2">
+        <div class="bg-blue-50 px-4 sm:px-6 py-4 rounded-2xl shadow-lg border border-blue-200">
+          <div class="flex items-start gap-3">
+            <i class="fa-solid fa-clock text-cyan-600 text-xl sm:text-2xl mt-1 flex-shrink-0"></i>
+            <div>
+              <p class="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed font-medium">
+                Te instalamos el equipo en un <span class="font-bold text-cyan-700">máximo de 48 horas</span>, con costo de instalación de <span class="font-bold text-green-700">$0 pesos</span>.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-purple-50 px-4 sm:px-6 py-4 rounded-2xl shadow-lg border border-purple-200">
+          <div class="flex items-start gap-3">
+            <i class="fa-solid fa-wrench text-purple-600 text-xl sm:text-2xl mt-1 flex-shrink-0"></i>
+            <div>
+              <p class="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed font-medium">
+                Todos los <span class="font-bold text-purple-700">mantenimientos preventivos y correctivos</span> están incluidos dentro de la renta, <span class="font-bold text-green-700">sin cargos adicionales</span>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- CTA Buttons -->
     <div
@@ -100,100 +94,30 @@ const images = [
       style="animation-delay: 0.6s;"
     >
       <div
-        class="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20"
+        class="bg-green-50 rounded-2xl p-4 border border-green-200 shadow-lg"
       >
-        <div class="text-3xl md:text-4xl font-black text-white mb-1">$0</div>
-        <div class="text-xs font-bold text-white/80 uppercase">
+        <div class="text-3xl md:text-4xl font-black text-green-700 mb-1">$0</div>
+        <div class="text-xs font-bold text-green-600 uppercase">
           Pago Inicial
         </div>
       </div>
       <div
-        class="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20"
+        class="bg-cyan-50 rounded-2xl p-4 border border-cyan-200 shadow-lg"
       >
-        <div class="text-3xl md:text-4xl font-black text-white mb-1">48hrs</div>
-        <div class="text-xs font-bold text-white/80 uppercase">Instalación</div>
+        <div class="text-3xl md:text-4xl font-black text-cyan-700 mb-1">48hrs</div>
+        <div class="text-xs font-bold text-cyan-600 uppercase">Instalación</div>
       </div>
       <div
-        class="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20"
+        class="bg-purple-50 rounded-2xl p-4 border border-purple-200 shadow-lg"
       >
-        <div class="text-3xl md:text-4xl font-black text-white mb-1">100%</div>
-        <div class="text-xs font-bold text-white/80 uppercase">Incluido</div>
+        <div class="text-3xl md:text-4xl font-black text-purple-700 mb-1">100%</div>
+        <div class="text-xs font-bold text-purple-600 uppercase">Incluido</div>
       </div>
     </div>
   </div>
 
-  <!-- Bottom Gradient Fade -->
-  <div
-    class="absolute bottom-0 w-full h-32 bg-gradient-to-t from-white to-transparent pointer-events-none"
-  >
-  </div>
-
   <!-- Scroll Indicator -->
   <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-    <i class="fa-solid fa-chevron-down text-white text-2xl opacity-70"></i>
+    <i class="fa-solid fa-chevron-down text-slate-400 text-2xl"></i>
   </div>
 </section>
-
-<script>
-  // Hero image slider - Ensure DOM is loaded
-  function initializeSlider() {
-    const imageSlides = document.querySelectorAll(".image-slide");
-    let currentImageIndex = 0;
-
-    console.log(`Found ${imageSlides.length} images for Hero slider`);
-
-    if (imageSlides.length > 1) {
-      // Start slider
-      const intervalId = setInterval(() => {
-        imageSlides[currentImageIndex].classList.remove("active");
-        currentImageIndex = (currentImageIndex + 1) % imageSlides.length;
-        imageSlides[currentImageIndex].classList.add("active");
-        console.log(`Switched to image ${currentImageIndex}`);
-      }, 5000); // Change every 5 seconds
-
-      console.log("Hero slider initialized");
-    } else {
-      console.log("Not enough images for slider");
-    }
-  }
-
-  // Run on page load
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializeSlider);
-  } else {
-    initializeSlider();
-  }
-
-  // Re-initialize on Astro page transitions
-  document.addEventListener("astro:page-load", initializeSlider);
-</script>
-
-<style>
-  /* Image Slider Styles */
-  .image-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-  }
-
-  .image-slide.active {
-    opacity: 1;
-    z-index: 1;
-  }
-
-  /* Gradient animation for title */
-  @keyframes gradientShift {
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
-</style>
