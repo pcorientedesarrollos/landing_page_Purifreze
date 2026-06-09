@@ -1,53 +1,54 @@
 ---
-// Hero section with white background
+// Hero section with white background - two column layout
 ---
 
 <section
-  class="relative min-h-[95vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden bg-white"
+  class="relative min-h-[95vh] flex items-center justify-center px-4 overflow-hidden bg-white"
 >
-
-  <!-- Content -->
+  <!-- Content Container -->
   <div
-    class="relative z-10 max-w-5xl mx-auto w-full flex flex-col items-center justify-center mt-10"
+    class="relative z-10 max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-8 lg:gap-12 items-center py-12"
   >
-    <!-- Badge -->
-    <div
-      class="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full border border-blue-300 shadow-lg animate-fade-in"
-    >
-      <span
-        class="w-2 h-2 bg-blue-500 rounded-full animate-pulse-soft"
-      ></span>
-      <span
-        class="text-xs font-bold uppercase tracking-widest text-blue-700"
+    <!-- Left Column - Content -->
+    <div class="flex flex-col justify-center text-left">
+      <!-- Badge -->
+      <div
+        class="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full border border-blue-300 shadow-lg animate-fade-in w-fit"
       >
-        💧 Agua Purificada Ilimitada
-      </span>
-    </div>
+        <span
+          class="w-2 h-2 bg-blue-500 rounded-full animate-pulse-soft"
+        ></span>
+        <span
+          class="text-xs font-bold uppercase tracking-widest text-blue-700"
+        >
+          💧 Agua Purificada Ilimitada
+        </span>
+      </div>
 
-    <!-- Title -->
-    <h1
-      class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-slate-900 leading-tight md:leading-[0.9] mb-8 animate-fade-up px-2"
-    >
-      <span class="font-light block mb-2 md:mb-3">PURIFICADOR</span>
-      <span
-        class="font-black bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-700 bg-clip-text text-transparent"
+      <!-- Title -->
+      <h1
+        class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-slate-900 leading-tight mb-6 animate-fade-up"
       >
-        DE AGUA
-      </span>
-    </h1>
+        <span class="font-light block mb-2">PURIFICADOR</span>
+        <span
+          class="font-black bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-700 bg-clip-text text-transparent"
+        >
+          DE AGUA
+        </span>
+      </h1>
 
-    <!-- Description -->
-    <div class="max-w-4xl mx-auto mb-10 space-y-4 animate-fade-up px-4" style="animation-delay: 0.2s;">
-      <h2 class="text-xl sm:text-2xl md:text-3xl text-slate-800 font-bold mb-6 leading-tight">
+      <!-- Subtitle -->
+      <h2 class="text-lg sm:text-xl md:text-2xl text-slate-800 font-bold mb-8 animate-fade-up" style="animation-delay: 0.1s;">
         Renta nuestro sistema de purificación de agua
       </h2>
-      
-      <div class="grid md:grid-cols-2 gap-4 text-left px-2">
+
+      <!-- Info Cards -->
+      <div class="space-y-4 mb-8 animate-fade-up" style="animation-delay: 0.2s;">
         <div class="bg-blue-50 px-4 sm:px-6 py-4 rounded-2xl shadow-lg border border-blue-200">
           <div class="flex items-start gap-3">
             <i class="fa-solid fa-clock text-cyan-600 text-xl sm:text-2xl mt-1 flex-shrink-0"></i>
             <div>
-              <p class="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed font-medium">
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-medium">
                 Te instalamos el equipo en un <span class="font-bold text-cyan-700">máximo de 48 horas</span>, con costo de instalación de <span class="font-bold text-green-700">$0 pesos</span>.
               </p>
             </div>
@@ -58,61 +59,44 @@
           <div class="flex items-start gap-3">
             <i class="fa-solid fa-wrench text-purple-600 text-xl sm:text-2xl mt-1 flex-shrink-0"></i>
             <div>
-              <p class="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed font-medium">
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-medium">
                 Todos los <span class="font-bold text-purple-700">mantenimientos preventivos y correctivos</span> están incluidos dentro de la renta, <span class="font-bold text-green-700">sin cargos adicionales</span>.
               </p>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- CTA Button -->
+      <div class="animate-fade-up" style="animation-delay: 0.3s;">
+        <a
+          href="https://wa.me/5219991336108"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-black text-base sm:text-lg tracking-wide shadow-2xl shadow-green-500/40 hover:shadow-green-500/60 transition-all transform hover:scale-105 hover:-translate-y-1 items-center gap-3 w-fit"
+        >
+          <i
+            class="fa-brands fa-whatsapp text-2xl group-hover:rotate-12 transition-transform"
+          ></i>
+          AGENDAR VISITA GRATIS
+          <i
+            class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"
+          ></i>
+        </a>
+      </div>
     </div>
 
-    <!-- CTA Buttons -->
+    <!-- Right Column - Image -->
     <div
-      class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 w-full animate-fade-up"
+      class="flex items-center justify-center animate-fade-up"
       style="animation-delay: 0.4s;"
     >
-      <a
-        href="https://wa.me/5219991336108"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-10 py-5 rounded-full font-black text-lg tracking-wide shadow-2xl shadow-green-500/40 hover:shadow-green-500/60 transition-all transform hover:scale-110 hover:-translate-y-1 flex items-center gap-3"
-      >
-        <i
-          class="fa-brands fa-whatsapp text-2xl group-hover:rotate-12 transition-transform"
-        ></i>
-        AGENDAR VISITA GRATIS
-        <i
-          class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"
-        ></i>
-      </a>
-    </div>
-
-    <!-- Quick Stats Row -->
-    <div
-      class="grid grid-cols-3 gap-4 md:gap-8 max-w-2xl animate-fade-up"
-      style="animation-delay: 0.6s;"
-    >
-      <div
-        class="bg-green-50 rounded-2xl p-4 border border-green-200 shadow-lg"
-      >
-        <div class="text-3xl md:text-4xl font-black text-green-700 mb-1">$0</div>
-        <div class="text-xs font-bold text-green-600 uppercase">
-          Pago Inicial
-        </div>
-      </div>
-      <div
-        class="bg-cyan-50 rounded-2xl p-4 border border-cyan-200 shadow-lg"
-      >
-        <div class="text-3xl md:text-4xl font-black text-cyan-700 mb-1">48hrs</div>
-        <div class="text-xs font-bold text-cyan-600 uppercase">Instalación</div>
-      </div>
-      <div
-        class="bg-purple-50 rounded-2xl p-4 border border-purple-200 shadow-lg"
-      >
-        <div class="text-3xl md:text-4xl font-black text-purple-700 mb-1">100%</div>
-        <div class="text-xs font-bold text-purple-600 uppercase">Incluido</div>
-      </div>
+      <img
+        src="/assets/imagen3.png"
+        alt="Mujer disfrutando agua purificada en su cocina con sistema Purifreze"
+        class="w-full h-auto rounded-2xl shadow-2xl max-w-2xl"
+        loading="eager"
+      />
     </div>
   </div>
 
