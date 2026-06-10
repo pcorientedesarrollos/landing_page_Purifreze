@@ -3,19 +3,19 @@
 ---
 
 <section
-  class="relative min-h-[95vh] flex items-center justify-center px-4 overflow-hidden bg-gradient-to-br from-cyan-50 via-blue-50 to-sky-100 pt-20"
+  class="relative min-h-screen w-full max-w-full flex items-center justify-center px-4 sm:px-6 overflow-hidden bg-gradient-to-br from-cyan-50 via-blue-50 to-sky-100 pt-24 sm:pt-28 lg:pt-20"
 >
   <!-- Content Container -->
   <div
-    class="relative z-10 max-w-[1400px] mx-auto w-full grid lg:grid-cols-[1fr_1.2fr] gap-8 lg:gap-12 items-center py-12"
+    class="relative z-10 max-w-[1400px] mx-auto w-full min-w-0 grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-6 sm:gap-8 lg:gap-12 items-center py-8 sm:py-12"
   >
     <!-- Left Column - Content -->
-    <div class="flex flex-col justify-center text-left">
+    <div class="min-w-0 flex flex-col justify-center text-left order-2 lg:order-1">
       <!-- Title -->
       <h1
-        class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-slate-900 leading-tight mb-6 animate-fade-up"
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-slate-900 leading-tight mb-4 sm:mb-6 animate-fade-up"
       >
-        <span class="font-light block mb-2">PURIFICADOR</span>
+        <span class="font-light block mb-1 sm:mb-2">PURIFICADOR</span>
         <span
           class="font-black bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-700 bg-clip-text text-transparent"
         >
@@ -24,37 +24,37 @@
       </h1>
 
       <!-- Info Cards -->
-      <div class="space-y-4 mb-8 animate-fade-up" style="animation-delay: 0.1s;">
-        <div class="bg-gradient-to-br from-orange-50 to-amber-100 px-4 sm:px-6 py-5 rounded-2xl shadow-lg border-2 border-orange-300">
-          <div class="space-y-2">
-            <p class="text-xs sm:text-sm font-bold uppercase tracking-wide text-orange-600">
+      <div class="space-y-3 sm:space-y-4 mb-6 sm:mb-8 animate-fade-up" style="animation-delay: 0.1s;">
+        <div class="bg-gradient-to-br from-orange-50 to-amber-100 px-3 sm:px-4 md:px-6 py-4 sm:py-5 rounded-xl sm:rounded-2xl shadow-lg border-2 border-orange-300">
+          <div class="space-y-1 sm:space-y-2">
+            <p class="text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-wide text-orange-600">
               LA NUEVA ERA EN PURIFICACIÓN
             </p>
-            <h2 class="text-xl sm:text-2xl md:text-3xl text-slate-900 font-black leading-tight">
+            <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl text-slate-900 font-black leading-tight">
               Desinfección Cuántica
             </h2>
-            <p class="text-sm sm:text-base text-orange-700 font-medium">
+            <p class="text-xs sm:text-sm md:text-base text-orange-700 font-medium">
               Tecnología exclusiva Purifreze
             </p>
           </div>
         </div>
 
-        <div class="bg-blue-50 px-4 sm:px-6 py-4 rounded-2xl shadow-lg border border-blue-200">
-          <div class="flex items-start gap-3">
-            <i class="fa-solid fa-clock text-cyan-600 text-xl sm:text-2xl mt-1 flex-shrink-0"></i>
+        <div class="bg-blue-50 px-3 sm:px-4 md:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-lg border border-blue-200">
+          <div class="flex items-start gap-2 sm:gap-3">
+            <i class="fa-solid fa-clock text-cyan-600 text-lg sm:text-xl md:text-2xl mt-0.5 sm:mt-1 flex-shrink-0"></i>
             <div>
-              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-medium">
+              <p class="text-sm sm:text-base md:text-lg text-slate-700 leading-relaxed font-medium">
                 Te instalamos el equipo en un <span class="font-bold text-cyan-700">máximo de 48 horas</span>, con costo de instalación de <span class="font-bold text-green-700">$0 pesos</span>.
               </p>
             </div>
           </div>
         </div>
         
-        <div class="bg-purple-50 px-4 sm:px-6 py-4 rounded-2xl shadow-lg border border-purple-200">
-          <div class="flex items-start gap-3">
-            <i class="fa-solid fa-wrench text-purple-600 text-xl sm:text-2xl mt-1 flex-shrink-0"></i>
+        <div class="bg-purple-50 px-3 sm:px-4 md:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-lg border border-purple-200">
+          <div class="flex items-start gap-2 sm:gap-3">
+            <i class="fa-solid fa-wrench text-purple-600 text-lg sm:text-xl md:text-2xl mt-0.5 sm:mt-1 flex-shrink-0"></i>
             <div>
-              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-medium">
+              <p class="text-sm sm:text-base md:text-lg text-slate-700 leading-relaxed font-medium">
                 Todos los <span class="font-bold text-purple-700">mantenimientos preventivos y correctivos</span> están incluidos dentro de la renta, <span class="font-bold text-green-700">sin cargos adicionales</span>.
               </p>
             </div>
@@ -68,12 +68,12 @@
           href="https://wa.me/5219991336108"
           target="_blank"
           rel="noopener noreferrer"
-          class="group inline-flex bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-black text-base sm:text-lg tracking-wide shadow-2xl shadow-green-500/40 hover:shadow-green-500/60 transition-all transform hover:scale-105 hover:-translate-y-1 items-center gap-3 w-fit"
+          class="group inline-flex bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-black text-sm sm:text-base md:text-lg tracking-wide shadow-2xl shadow-green-500/40 hover:shadow-green-500/60 transition-all transform hover:scale-105 hover:-translate-y-1 items-center gap-2 sm:gap-3 w-full sm:w-fit justify-center"
         >
           <i
-            class="fa-brands fa-whatsapp text-2xl group-hover:rotate-12 transition-transform"
+            class="fa-brands fa-whatsapp text-xl sm:text-2xl group-hover:rotate-12 transition-transform"
           ></i>
-          AGENDAR VISITA GRATIS
+          <span class="whitespace-nowrap">AGENDAR VISITA GRATIS</span>
           <i
             class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"
           ></i>
@@ -83,20 +83,20 @@
 
     <!-- Right Column - Image -->
     <div
-      class="flex items-center justify-center animate-fade-up"
+      class="min-w-0 flex items-center justify-center animate-fade-up order-1 lg:order-2"
       style="animation-delay: 0.4s;"
     >
       <img
         src="/assets/imagen3.png"
         alt="Mujer disfrutando agua purificada en su cocina con sistema Purifreze"
-        class="w-full h-auto rounded-2xl shadow-2xl"
+        class="block w-full max-w-full h-auto rounded-xl sm:rounded-2xl shadow-2xl sm:max-w-lg lg:max-w-none"
         loading="eager"
       />
     </div>
   </div>
 
   <!-- Scroll Indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+  <div class="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 animate-bounce hidden sm:block">
     <i class="fa-solid fa-chevron-down text-slate-400 text-2xl"></i>
   </div>
 </section>
