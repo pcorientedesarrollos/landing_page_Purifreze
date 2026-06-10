@@ -20,10 +20,16 @@ const { blocks } = Astro.props;
     );
   })}
 </div>
-<style>
+<style is:global>
   .blog-prose{max-width:760px;margin:0 auto;color:#334155;font-size:1.08rem;line-height:1.85}
   .blog-prose p,.blog-prose ul{margin:1.25rem 0}
-  .blog-prose a{color:#2563eb;font-weight:700;text-decoration:underline}
+  .blog-prose a{color:#2563eb;font-weight:700;text-decoration:underline;text-underline-offset:2px}
+  .blog-prose b,.blog-prose strong{font-weight:800;color:#0f172a}
+  .blog-prose i,.blog-prose em{font-style:italic}
+  .blog-prose u{text-decoration-thickness:2px;text-underline-offset:.18em;text-decoration-color:#93c5fd}
+  .blog-prose .inline-blue{color:#2563eb;font-weight:700}
+  .blog-prose .inline-green{color:#16a34a;font-weight:700}
+  .blog-prose .inline-orange{color:#ea580c;font-weight:700}
   .blog-prose h2{margin:3rem 0 1rem;color:#0f172a;font-size:2rem;line-height:1.15}
   .blog-prose h3{margin:2.25rem 0 .75rem;color:#1e293b;font-size:1.45rem}
   .blog-prose ul{padding-left:1.4rem;list-style:disc}
@@ -32,3 +38,14 @@ const { blocks } = Astro.props;
   .blog-prose .callout{display:flex;gap:.85rem;align-items:flex-start;margin:2rem 0;padding:1rem 1.15rem;border-left:4px solid #f59e0b;background:#fffbeb;border-radius:.5rem;color:#78350f;font-weight:500}
   .blog-prose .callout i{color:#d97706;font-size:1.15rem;margin-top:.2rem}
 </style>
+<script>
+  function prepareBlogLinks() {
+    document.querySelectorAll<HTMLAnchorElement>('.blog-prose a[href]').forEach((link) => {
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', prepareBlogLinks);
+  document.addEventListener('astro:page-load', prepareBlogLinks);
+</script>
