@@ -188,6 +188,11 @@
       touch-action: none;
     }
 
+    html,
+    body {
+      overflow-x: hidden;
+    }
+
     @media (max-width: 360px) {
       .mobile-menu-panel {
         width: 84vw;
@@ -207,15 +212,22 @@
 
       if (!menuToggle || !mobileMenu || !mobileBackdrop) return;
 
+      const resetHorizontalScroll = () => {
+        document.documentElement.scrollLeft = 0;
+        document.body.scrollLeft = 0;
+      };
+
       const closeMobileMenu = () => {
         mobileMenu.classList.remove("is-open");
         mobileBackdrop.classList.remove("is-open");
         mobileMenu.setAttribute("aria-hidden", "true");
         menuToggle.setAttribute("aria-expanded", "false");
         document.body.classList.remove("mobile-menu-open");
+        resetHorizontalScroll();
       };
 
       const openMobileMenu = () => {
+        resetHorizontalScroll();
         mobileMenu.classList.add("is-open");
         mobileBackdrop.classList.add("is-open");
         mobileMenu.setAttribute("aria-hidden", "false");
