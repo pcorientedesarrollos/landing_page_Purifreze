@@ -7,8 +7,10 @@ export const SEO_CONFIG = {
     url: "https://purifreze.mx",
     logo: "/assets/nombre-logo.png",
     contact: {
-      phone: "+52-999-133-6108",
-      whatsapp: "https://wa.me/5219991336108",
+      phone: "+52-1-999-899-9110",
+      whatsapp: "https://wa.me/5219998999110",
+      phoneTel: "+5219998999110",
+      phoneDisplay: "+52 1 999 899 9110",
       email: "contacto@purifreze.com", // Asumido, verificar
       address: {
         streetAddress: "Nuevo Yucatán",

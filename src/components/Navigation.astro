@@ -1,4 +1,5 @@
 ---
+import { SEO_CONFIG } from "../config/seo.config";
 // Navigation with live statistics bar
 ---
 
@@ -71,10 +72,10 @@
       </a>
     </div>
 
-    <!-- Botón Cotizar -->
-    <div class="flex items-center gap-4">
+    <!-- Botones Cotizar -->
+    <div class="flex items-center gap-2">
       <a
-        href="https://wa.me/5219991336108"
+        href={SEO_CONFIG.business.contact.whatsapp}
         target="_blank"
         rel="noopener noreferrer"
         class="hidden md:inline-flex bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-bold px-4 py-2 lg:px-6 lg:py-3 rounded-lg shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition transform hover:-translate-y-0.5 hover:scale-105"
@@ -123,8 +124,15 @@
       <span class="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Blog</span>
       <span class="ml-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-xs font-black px-2 py-1 rounded-full animate-pulse shadow-lg">NUEVO</span>
     </a>
+<a
+      href={`tel:${SEO_CONFIG.business.contact.phoneTel}`}
+      class="text-2xl font-bold text-slate-800 mobile-menu-link inline-flex items-center gap-2"
+    >
+      <i class="fa-solid fa-phone text-lg"></i>
+      Llamar
+    </a>
     <a
-      href="https://wa.me/5219991336108"
+      href={SEO_CONFIG.business.contact.whatsapp}
       target="_blank"
       rel="noopener noreferrer"
       class="text-2xl font-bold text-brand-blue mobile-menu-link"

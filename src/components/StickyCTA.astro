@@ -1,10 +1,11 @@
 ---
+import { SEO_CONFIG } from "../config/seo.config";
 // Sticky CTA Button for Mobile
 ---
 
 <div class="sticky-cta">
     <a
-        href="https://wa.me/5219991336108?text=Hola,%20quiero%20agendar%20mi%20instalación"
+        href={`${SEO_CONFIG.business.contact.whatsapp}?text=Hola,%20quiero%20agendar%20mi%20instalación`}
         target="_blank"
         rel="noopener noreferrer"
         class="sticky-cta-button"

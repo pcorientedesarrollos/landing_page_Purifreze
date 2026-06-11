@@ -11,6 +11,7 @@ import Testimonials from "../components/Testimonials.astro";
 import FAQ from "../components/FAQ.astro";
 import CTA from "../components/CTA.astro";
 import Footer from "../components/Footer.astro";
+import { SEO_CONFIG } from "../config/seo.config";
 ---
 
 <Layout
@@ -38,7 +39,7 @@ import Footer from "../components/Footer.astro";
         titleAccent="para casa."
         description="Disfruta agua purificada siempre disponible en casa, sin cargar garrafones ni preocuparte por el mantenimiento."
         ctaText="Agendar Instalación"
-        ctaLink="https://wa.me/5219991336108"
+        ctaLink={SEO_CONFIG.business.contact.whatsapp}
         reverse={false}
         floatingInfo={{
           label: "Pago Inicial de",
@@ -57,7 +58,7 @@ import Footer from "../components/Footer.astro";
         titleAccent="para oficinas."
         description="La solución ideal para tu espacio de trabajo. Agua filtrada sin interrupciones, para cuidar de tu equipo y tus clientes."
         ctaText="Hablar con un Asesor"
-        ctaLink="https://wa.me/5219991336108"
+        ctaLink={SEO_CONFIG.business.contact.whatsapp}
         reverse={true}
         floatingInfo={{
           label: "Instalación",

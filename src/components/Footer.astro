@@ -1,4 +1,5 @@
 ---
+import { SEO_CONFIG } from "../config/seo.config";
 // Footer component with social media links
 ---
 
@@ -26,7 +27,7 @@
           <i class="fa-brands fa-facebook-f"></i>
         </a>
         <a
-          href="https://wa.me/5219991336108"
+          href={SEO_CONFIG.business.contact.whatsapp}
           target="_blank"
           rel="noopener noreferrer"
           class="social-link whatsapp"
@@ -34,13 +35,20 @@
         >
           <i class="fa-brands fa-whatsapp"></i>
         </a>
+        <a
+          href={`tel:${SEO_CONFIG.business.contact.phoneTel}`}
+          class="social-link phone md:hidden"
+          aria-label="Llámanos"
+        >
+          <i class="fa-solid fa-phone"></i>
+        </a>
       </div>
 
-      <div class="flex gap-8 text-sm font-bold text-slate-900">
+<div class="flex gap-8 text-sm font-bold text-slate-900">
         <a href="/" class="hover:text-brand-blue transition">INICIO</a>
         <a href="/blog" class="hover:text-brand-blue transition">BLOG</a>
         <a
-          href="https://wa.me/5219991336108"
+          href={SEO_CONFIG.business.contact.whatsapp}
           target="_blank"
           class="hover:text-brand-blue transition"
         >
@@ -88,5 +96,15 @@
   .social-link.whatsapp:hover {
     transform: translateY(-4px) scale(1.1);
     box-shadow: 0 12px 24px rgba(37, 211, 102, 0.4);
+  }
+
+  .social-link.phone {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+  }
+
+  .social-link.phone:hover {
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4);
   }
 </style>
