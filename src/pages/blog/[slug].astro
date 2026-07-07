@@ -10,11 +10,12 @@ const result = await fetchBlogPost(slug);
 if (!result) return Astro.redirect("/404", 302);
 if (result.canonicalSlug !== slug) return Astro.redirect(`/blog/${result.canonicalSlug}`, 301);
 const { post } = result;
-const seo = await fetchSeo("blog", post.id);
+const seo = await fetchSeo("blog_post", slug);
 
+const BLOG_DEFAULT_OG = "/assets/og-blog-default.png";
 const effTitle = seo?.metaTitle || `${post.title} | Purifreze`;
 const effDesc = seo?.metaDesc || post.excerpt;
-const effOgImage = seo?.ogImage || mediaUrl(post.coverImageUrl) || null;
+const effOgImage = seo?.ogImage || mediaUrl(post.coverImageUrl) || BLOG_DEFAULT_OG;
 const effCanonical = seo?.canonicalUrl || null;
 const effNoIndex = seo?.noIndex ?? false;
 

@@ -7,6 +7,7 @@ import {
   getSEOTitle,
   getMetaDescription,
   getSchemaJSON,
+  absoluteUrl,
 } from "../config/seo.config";
 
 interface Props {
@@ -35,7 +36,7 @@ const baseSite = Astro.site ? Astro.site.toString() : SEO_CONFIG.business.url;
 const canonicalURL = canonical
   ? canonical
   : new URL(Astro.url.pathname, baseSite).toString();
-const effOgImage = ogImage || SEO_CONFIG.business.logo;
+const effOgImage = absoluteUrl(ogImage) || absoluteUrl(SEO_CONFIG.business.logo);
 const robotsValue = noIndex
   ? "noindex, nofollow"
   : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";

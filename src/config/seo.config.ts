@@ -79,6 +79,12 @@ export const getMetaDescription = (pageDescription?: string) => {
   return pageDescription || SEO_CONFIG.business.description;
 };
 
+export const absoluteUrl = (path: string | null | undefined) => {
+  if (!path) return null;
+  if (path.startsWith("http")) return path;
+  return `${SEO_CONFIG.business.url}${path.startsWith("/") ? "" : "/"}${path}`;
+};
+
 export const getSchemaJSON = () => {
   const { business, services } = SEO_CONFIG;
 
