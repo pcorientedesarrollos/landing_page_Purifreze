@@ -4,7 +4,7 @@ import Navigation from "../../components/Navigation.astro";
 import Footer from "../../components/Footer.astro";
 import BlogBlocks from "../../components/BlogBlocks.astro";
 import BlogCover from "../../components/BlogCover.astro";
-import { fetchBlogPost, fetchSeo, mediaUrl } from "../../lib/blog";
+import { fetchBlogPost, fetchSeo, mediaUrl, ogImageUrl } from "../../lib/blog";
 const slug = Astro.params.slug ?? "";
 const result = await fetchBlogPost(slug);
 if (!result) return Astro.redirect("/404", 302);
@@ -15,7 +15,7 @@ const seo = await fetchSeo("blog_post", slug);
 const BLOG_DEFAULT_OG = "/assets/og-blog-default.png";
 const effTitle = seo?.metaTitle || `${post.title} | Purifreze`;
 const effDesc = seo?.metaDesc || post.excerpt;
-const effOgImage = seo?.ogImage || mediaUrl(post.coverImageUrl) || BLOG_DEFAULT_OG;
+const effOgImage = seo?.ogImage || ogImageUrl(post.coverImageUrl) || BLOG_DEFAULT_OG;
 const effCanonical = seo?.canonicalUrl || null;
 const effNoIndex = seo?.noIndex ?? false;
 

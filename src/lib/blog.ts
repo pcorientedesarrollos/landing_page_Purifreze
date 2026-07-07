@@ -54,6 +54,16 @@ const apiUrl = import.meta.env.PUBLIC_API_URL ?? "http://localhost:3000";
 export const mediaUrl = (path: string | null) =>
   path?.startsWith("/uploads/") ? `${apiUrl}${path}` : path;
 
+// Deriva la URL absoluta de la variante OG optimizada (<uuid>-og.jpg) que el
+// backend genera al subir. Para posts viejos sin variante, esta URL da 404
+// hasta re-subir la imagen (aceptado). Si el path no matchea, cae a la cover.
+export const ogImageUrl = (path: string | null) => {
+  if (!path) return null;
+  const match = path.match(/^\/uploads\/images\/([0-9a-f-]{36})\.[a-z]+$/i);
+  if (!match) return mediaUrl(path);
+  return `${apiUrl}/uploads/images/${match[1]}-og.jpg`;
+};
+
 export async function fetchBlogPage(page: number): Promise<BlogPage> {
   const response = await fetch(`${apiUrl}/blog/posts?page=${page}&pageSize=9`);
   if (!response.ok) throw new Error("Blog API unavailable");
