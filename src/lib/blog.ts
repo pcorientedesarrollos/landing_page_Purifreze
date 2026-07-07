@@ -66,7 +66,9 @@ export async function fetchBlogPost(
   const response = await fetch(`${apiUrl}/blog/posts/${encodeURIComponent(slug)}`);
   if (response.status === 404) return null;
   if (!response.ok) throw new Error("Blog API unavailable");
-  return response.json();
+  const text = await response.text();
+  if (!text) throw new Error("Blog API empty response");
+  return JSON.parse(text);
 }
 
 export async function fetchSeo(
@@ -78,7 +80,8 @@ export async function fetchSeo(
       `${apiUrl}/seo/${entityType}/${encodeURIComponent(String(entityId))}`,
     );
     if (!r.ok) return null;
-    return r.json();
+    const text = await r.text();
+    return text ? (JSON.parse(text) as SeoMetadata) : null;
   } catch {
     return null;
   }
