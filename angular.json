@@ -18,8 +18,13 @@
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.portal.json",
             "inlineStyleLanguage": "scss",
-            "assets": [],
-            "styles": ["portal/styles.scss"],
+            "assets": [
+              { "glob": "**/*", "input": "portal/assets", "output": "assets" }
+            ],
+            "styles": [
+              "node_modules/driver.js/dist/driver.css",
+              "portal/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -57,5 +62,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

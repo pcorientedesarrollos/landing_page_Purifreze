@@ -17,99 +17,13 @@
       </div>
       <div class="pf-progreso-etapas">
         <span [class.pf-etapa-activa]="esEtapa(1)" [class.pf-etapa-hecha]="etapaActual > 1">
-          Identificación
-        </span>
-        <span [class.pf-etapa-activa]="esEtapa(2)" [class.pf-etapa-hecha]="etapaActual > 2">
           Tu servicio
         </span>
-        <span [class.pf-etapa-activa]="esEtapa(3)">
+        <span [class.pf-etapa-activa]="esEtapa(2)">
           Método de pago
         </span>
       </div>
     </div>
-
-    <!-- ─── Identidad ─────────────────────────────────────────────────── -->
-    <section class="pf-tarjeta" *ngIf="paso === 'identidad'" #panel>
-      <h1>Registra tu método de pago</h1>
-      <p class="pf-entrada">
-        Escribe tu RFC y el correo que tienes registrado con nosotros.
-        Te enviaremos un código para confirmar tu identidad.
-      </p>
-
-      <form (ngSubmit)="solicitarCodigo()" autocomplete="off">
-        <label class="pf-campo">
-          <span>RFC</span>
-          <input type="text" [(ngModel)]="rfc" [ngModelOptions]="{ standalone: true }"
-                 placeholder="XAXX010101000" maxlength="13" autocapitalize="characters"
-                 spellcheck="false" class="pf-mayusculas" />
-        </label>
-
-        <label class="pf-campo">
-          <span>Correo electrónico</span>
-          <input type="email" [(ngModel)]="correo" [ngModelOptions]="{ standalone: true }"
-                 placeholder="tucorreo@ejemplo.com" inputmode="email" spellcheck="false" />
-        </label>
-
-        <div class="pf-alerta" *ngIf="error" #cajaError role="alert">
-          <svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true">
-            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.6" />
-            <path d="M10 5.6v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-            <circle cx="10" cy="14" r="1" fill="currentColor" />
-          </svg>
-          <span>{{ error }}</span>
-        </div>
-
-        <button type="submit" class="pf-boton" [disabled]="!identidadValida || cargando">
-          <span *ngIf="!cargando">Continuar</span>
-          <span *ngIf="cargando" class="pf-cargando-texto">Enviando código…</span>
-        </button>
-      </form>
-
-      <p class="pf-pie">
-        ¿No reconoces estos datos o no recibes el código?
-        Comunícate con Purifreze y verificamos tu información.
-      </p>
-    </section>
-
-    <!-- ─── Código ────────────────────────────────────────────────────── -->
-    <section class="pf-tarjeta" *ngIf="paso === 'codigo'" #panel>
-      <h1>Revisa tu correo</h1>
-      <p class="pf-entrada">
-        Enviamos un código de 6 dígitos a <strong>{{ correoEnviado }}</strong>.
-        Vence en 10 minutos.
-      </p>
-
-      <form (ngSubmit)="verificarCodigo()" autocomplete="off">
-        <label class="pf-campo">
-          <span>Código de verificación</span>
-          <input type="text" [(ngModel)]="codigo" [ngModelOptions]="{ standalone: true }"
-                 class="pf-codigo" placeholder="000000" inputmode="numeric" maxlength="6"
-                 autocomplete="one-time-code" />
-        </label>
-
-        <div class="pf-alerta" *ngIf="error" #cajaError role="alert">
-          <svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true">
-            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.6" />
-            <path d="M10 5.6v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-            <circle cx="10" cy="14" r="1" fill="currentColor" />
-          </svg>
-          <span>{{ error }}</span>
-        </div>
-
-        <button type="submit" class="pf-boton" [disabled]="!codigoValido || cargando">
-          <span *ngIf="!cargando">Verificar</span>
-          <span *ngIf="cargando" class="pf-cargando-texto">Verificando…</span>
-        </button>
-      </form>
-
-      <button type="button" class="pf-enlace" (click)="volverAIdentidad()" [disabled]="cargando">
-        Usar otros datos
-      </button>
-
-      <p class="pf-pie">
-        Si no aparece en tu bandeja de entrada, revisa la carpeta de correo no deseado.
-      </p>
-    </section>
 
     <!-- ─── Plan ──────────────────────────────────────────────────────── -->
     <section class="pf-tarjeta" *ngIf="paso === 'plan'" #panel>

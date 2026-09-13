@@ -26,22 +26,23 @@ import {
 } from '../confirmacion/confirmacion.component';
 import { tarjetaAConfirmar } from '../confirmacion/tarjeta';
 
-type Paso = 'identidad' | 'codigo' | 'plan' | 'tarjeta' | 'listo';
+type Paso = 'plan' | 'tarjeta' | 'listo';
 
 /** Porcentaje de la barra de progreso para cada paso. */
 const PROGRESO: Record<Paso, number> = {
-  identidad: 12,
-  codigo: 34,
-  plan: 62,
-  tarjeta: 88,
+  plan: 40,
+  tarjeta: 85,
   listo: 100,
 };
 
 /**
  * Portal público de autoservicio.
  *
- * El cliente se identifica con RFC y correo más un código enviado a su correo
- * registrado, revisa el servicio que tiene contratado, y registra su tarjeta.
+ * El cliente entra con un enlace de un solo uso que alguien de Purifreze generó
+ * y le compartió: no teclea RFC, ni correo, ni código. El servidor de la landing
+ * validó ese enlace antes de servir la pantalla, así que acá se canjea por una
+ * sesión y se va directo al servicio contratado.
+ *
  * Los datos de la tarjeta viven solo en este componente y viajan directo a
  * Openpay: al servidor de Purifreze únicamente llega el token resultante.
  */
@@ -65,18 +66,14 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
 
   readonly formId = 'portal-payment-form';
 
-  public paso: Paso = 'identidad';
+  /**
+   * Arranca en 'plan' porque ya no hay pantallas previas: mientras se canjea el
+   * enlace se ve el servicio cargando, y si el canje falla, el error aparece ahí.
+   */
+  public paso: Paso = 'plan';
   public cargando = false;
   public error = '';
   public sandbox = false;
-
-  // Identidad
-  public rfc = '';
-  public correo = '';
-
-  // Código
-  public codigo = '';
-  public correoEnviado = '';
 
   // Servicio contratado
   public sesion: SesionPortal | null = null;
@@ -175,12 +172,28 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
   private errorAnimado = '';
 
   ngOnInit(): void {
-    // Con una sesión viva se omite la identificación.
-    const sesion = this.portal.sesionActual;
-    if (sesion) {
-      this.sesion = sesion;
-      void this.irAPlanes();
+    const enlace = this.portal.tokenDelEnlace();
+
+    if (!enlace) {
+      // Sólo pasa si alguien sirvió esta pantalla sin el atributo del servidor.
+      this.error = 'Abre el enlace que te compartió Purifreze para continuar.';
+      return;
     }
+
+    // MANDA EL ENLACE, no la sesión guardada. Se reusa la sesión únicamente si
+    // nació de este mismo enlace —así el cliente que recarga sigue donde
+    // estaba—; con cualquier otra se empieza de cero. Al revés, abrir el enlace
+    // de otro cliente en el mismo navegador mostraba los contratos del
+    // anterior, porque la sesión vieja ganaba y el enlace ni se canjeaba.
+    const previa = this.portal.sesionDelEnlace(enlace);
+    if (previa) {
+      this.sesion = previa;
+      void this.irAPlanes();
+      return;
+    }
+
+    this.portal.limpiarSesion();
+    void this.entrarConEnlace(enlace);
   }
 
   /**
@@ -219,74 +232,36 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
   // ─── Progreso ────────────────────────────────────────────────────────────
 
   get etapaActual(): number {
-    if (this.paso === 'identidad' || this.paso === 'codigo') return 1;
-    if (this.paso === 'plan') return 2;
-    return 3;
+    return this.paso === 'plan' ? 1 : 2;
   }
 
   esEtapa(n: number): boolean {
     return this.etapaActual === n;
   }
 
-  // ─── Identidad ───────────────────────────────────────────────────────────
+  // ─── Entrada por enlace ──────────────────────────────────────────────────
 
-  get identidadValida(): boolean {
-    return (
-      /^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/i.test(this.rfc.trim()) &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(this.correo.trim())
-    );
-  }
-
-  async solicitarCodigo(): Promise<void> {
-    if (!this.identidadValida || this.enviando) return;
-    this.enviando = true;
+  /**
+   * Canjea el enlace por una sesión y entra.
+   *
+   * Un fallo acá no tiene salida por pantalla y no debería tenerla: para llegar
+   * hasta este punto el servidor ya validó el enlace, así que si el canje se
+   * cae es un problema del ERP, no algo que el cliente pueda resolver tecleando
+   * datos. Se le dice qué pasó y a quién recurrir.
+   */
+  private async entrarConEnlace(token: string): Promise<void> {
     this.cargando = true;
     this.error = '';
     try {
-      await firstValueFrom(
-        this.portal.solicitarCodigo(this.rfc.trim().toUpperCase(), this.correo.trim())
-      );
-      this.correoEnviado = this.correo.trim();
-      this.paso = 'codigo';
-    } catch (e: any) {
-      this.error = mensajeParaCliente(e, 'No pudimos enviar el código. Intenta de nuevo.');
-    } finally {
-      this.enviando = false;
-      this.cargando = false;
-    }
-  }
-
-  // ─── Código ──────────────────────────────────────────────────────────────
-
-  get codigoValido(): boolean {
-    return /^\d{6}$/.test(this.codigo.trim());
-  }
-
-  async verificarCodigo(): Promise<void> {
-    if (!this.codigoValido || this.enviando) return;
-    this.enviando = true;
-    this.cargando = true;
-    this.error = '';
-    try {
-      this.sesion = await this.portal.verificarCodigo(
-        this.rfc.trim().toUpperCase(),
-        this.correo.trim(),
-        this.codigo.trim()
-      );
-      this.codigo = '';
+      this.sesion = await this.portal.canjearEnlace(token);
       await this.irAPlanes();
     } catch (e: any) {
-      this.error = mensajeParaCliente(e, 'El código no es válido o ya venció.');
-    } finally {
-      this.enviando = false;
       this.cargando = false;
+      this.error = mensajeParaCliente(
+        e,
+        'Este enlace venció o ya se usó. Comunícate con Purifreze para que te envíen uno nuevo.'
+      );
     }
-  }
-
-  volverAIdentidad(): void {
-    this.paso = 'identidad';
-    this.codigo = '';
-    this.error = '';
   }
 
   // ─── Servicio contratado ─────────────────────────────────────────────────
@@ -302,8 +277,8 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
       if (e?.status === 401) {
         this.portal.limpiarSesion();
         this.sesion = null;
-        this.paso = 'identidad';
-        this.error = 'Tu sesión expiró. Solicita un código nuevo.';
+        this.error =
+          'Tu sesión expiró. Vuelve a abrir el enlace que te compartió Purifreze.';
       } else {
         this.error = mensajeParaCliente(e, 'No pudimos cargar tus contratos.');
       }

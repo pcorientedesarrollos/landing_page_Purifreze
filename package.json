@@ -3,13 +3,14 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "npm run build:portal:dev && astro dev",
     "build": "npm run build:portal && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "build:portal": "ng build portal && mv public/portal-app/index.html portal-index.html",
+    "build:portal": "ng build portal --configuration production && mv public/portal-app/index.html portal-index.html",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "build:portal:dev": "ng build portal --configuration development && mv public/portal-app/index.html portal-index.html"
   },
   "dependencies": {
     "@angular/animations": "^16.1.0",

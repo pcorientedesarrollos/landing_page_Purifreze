@@ -17,3 +17,145 @@ body {
   color: #12275a;
   -webkit-font-smoothing: antialiased;
 }
+
+// ─── Guía del portal (Driver.js) ──────────────────────────────────────────
+// Driver.js inserta la ventana en body, fuera del componente del portal, así que
+// no ve sus variables --pf-*: los colores se repiten aquí. Los tamaños son para
+// quien casi no usa el celular: texto de 17px y botones de 48px de alto.
+.driver-popover.pf-guia {
+  box-sizing: border-box;
+  width: min(92vw, 420px);
+  max-width: min(92vw, 420px);
+  padding: 1.25rem 1.25rem 1rem;
+  border-radius: 14px;
+  background: #fff;
+  color: #1b2430;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  box-shadow: 0 12px 40px -12px rgba(18, 39, 90, 0.45);
+
+  // Arriba, cuánto falta: el contador y una barra que se llena.
+  .pf-guia-progreso {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .pf-guia-progreso .driver-popover-progress-text {
+    flex-shrink: 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: #5b6675;
+  }
+
+  .pf-guia-barra {
+    flex: 1;
+    height: 6px;
+    border-radius: 999px;
+    background: #dce6f0;
+    overflow: hidden;
+
+    span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #1a4c8b 0%, #1785c4 100%);
+    }
+  }
+
+  // El título es la instrucción, lo que la persona tiene que hacer, y es lo que
+  // más pesa. La descripción solo dice dónde encontrar el dato o qué va a pasar.
+  .driver-popover-title {
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: #12275a;
+  }
+
+  .driver-popover-description {
+    margin-top: 0.45rem;
+    font-size: 17px;
+    line-height: 1.55;
+    color: #3f4a59;
+
+    strong {
+      font-weight: 600;
+      color: #1b2430;
+    }
+  }
+
+  // Abajo, las acciones: Atrás / Siguiente en una fila y Omitir debajo.
+  .driver-popover-footer {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+  }
+
+  .driver-popover-navigation-btns {
+    display: flex;
+    flex: 1 1 100%;
+    gap: 0.6rem;
+  }
+
+  .driver-popover-navigation-btns button,
+  .pf-guia-omitir {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 48px;
+    margin: 0;
+    padding: 0 1rem;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-shadow: none;
+    cursor: pointer;
+  }
+
+  .driver-popover-prev-btn {
+    order: 1;
+    background: #fff;
+    border: 1.5px solid #dfe5ec;
+    color: #1a4c8b;
+  }
+
+  .driver-popover-next-btn {
+    order: 2;
+    background: #1a4c8b;
+    border: 0;
+    color: #fff;
+
+    &:hover,
+    &:focus {
+      background: #12275a;
+    }
+  }
+
+  .pf-guia-omitir {
+    flex: 1 1 100%;
+    min-height: 44px;
+    background: transparent;
+    border: 0;
+    color: #5b6675;
+    text-decoration: underline;
+  }
+
+  button:focus-visible {
+    outline: 3px solid #1785c4;
+    outline-offset: 2px;
+  }
+}
+
+// Lo que la guía señala lleva un anillo además del recorte del fondo: con el
+// brillo del celular bajo, el recorte solo no alcanza para ver dónde tocar.
+[data-guia].driver-active-element {
+  outline: 3px solid #1785c4;
+  outline-offset: 4px;
+  border-radius: 10px;
+}
