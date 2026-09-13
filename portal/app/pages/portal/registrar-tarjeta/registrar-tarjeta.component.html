@@ -1,0 +1,429 @@
+<div class="pf-shell">
+
+  <header class="pf-header">
+    <div class="pf-marca">
+      <img src="assets/icono_gota.png" alt="" class="pf-gota" aria-hidden="true" />
+      <span class="pf-nombre">Purifreze</span>
+    </div>
+    <span class="pf-pruebas" *ngIf="sandbox">Modo de pruebas</span>
+  </header>
+
+  <main class="pf-main">
+
+    <!-- Progreso -->
+    <div class="pf-progreso" *ngIf="paso !== 'listo'">
+      <div class="pf-progreso-pista">
+        <div class="pf-progreso-barra" #barraProgreso></div>
+      </div>
+      <div class="pf-progreso-etapas">
+        <span [class.pf-etapa-activa]="esEtapa(1)" [class.pf-etapa-hecha]="etapaActual > 1">
+          Identificación
+        </span>
+        <span [class.pf-etapa-activa]="esEtapa(2)" [class.pf-etapa-hecha]="etapaActual > 2">
+          Tu servicio
+        </span>
+        <span [class.pf-etapa-activa]="esEtapa(3)">
+          Método de pago
+        </span>
+      </div>
+    </div>
+
+    <!-- ─── Identidad ─────────────────────────────────────────────────── -->
+    <section class="pf-tarjeta" *ngIf="paso === 'identidad'" #panel>
+      <h1>Registra tu método de pago</h1>
+      <p class="pf-entrada">
+        Escribe tu RFC y el correo que tienes registrado con nosotros.
+        Te enviaremos un código para confirmar tu identidad.
+      </p>
+
+      <form (ngSubmit)="solicitarCodigo()" autocomplete="off">
+        <label class="pf-campo">
+          <span>RFC</span>
+          <input type="text" [(ngModel)]="rfc" [ngModelOptions]="{ standalone: true }"
+                 placeholder="XAXX010101000" maxlength="13" autocapitalize="characters"
+                 spellcheck="false" class="pf-mayusculas" />
+        </label>
+
+        <label class="pf-campo">
+          <span>Correo electrónico</span>
+          <input type="email" [(ngModel)]="correo" [ngModelOptions]="{ standalone: true }"
+                 placeholder="tucorreo@ejemplo.com" inputmode="email" spellcheck="false" />
+        </label>
+
+        <div class="pf-alerta" *ngIf="error" #cajaError role="alert">
+          <svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.6" />
+            <path d="M10 5.6v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <circle cx="10" cy="14" r="1" fill="currentColor" />
+          </svg>
+          <span>{{ error }}</span>
+        </div>
+
+        <button type="submit" class="pf-boton" [disabled]="!identidadValida || cargando">
+          <span *ngIf="!cargando">Continuar</span>
+          <span *ngIf="cargando" class="pf-cargando-texto">Enviando código…</span>
+        </button>
+      </form>
+
+      <p class="pf-pie">
+        ¿No reconoces estos datos o no recibes el código?
+        Comunícate con Purifreze y verificamos tu información.
+      </p>
+    </section>
+
+    <!-- ─── Código ────────────────────────────────────────────────────── -->
+    <section class="pf-tarjeta" *ngIf="paso === 'codigo'" #panel>
+      <h1>Revisa tu correo</h1>
+      <p class="pf-entrada">
+        Enviamos un código de 6 dígitos a <strong>{{ correoEnviado }}</strong>.
+        Vence en 10 minutos.
+      </p>
+
+      <form (ngSubmit)="verificarCodigo()" autocomplete="off">
+        <label class="pf-campo">
+          <span>Código de verificación</span>
+          <input type="text" [(ngModel)]="codigo" [ngModelOptions]="{ standalone: true }"
+                 class="pf-codigo" placeholder="000000" inputmode="numeric" maxlength="6"
+                 autocomplete="one-time-code" />
+        </label>
+
+        <div class="pf-alerta" *ngIf="error" #cajaError role="alert">
+          <svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.6" />
+            <path d="M10 5.6v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <circle cx="10" cy="14" r="1" fill="currentColor" />
+          </svg>
+          <span>{{ error }}</span>
+        </div>
+
+        <button type="submit" class="pf-boton" [disabled]="!codigoValido || cargando">
+          <span *ngIf="!cargando">Verificar</span>
+          <span *ngIf="cargando" class="pf-cargando-texto">Verificando…</span>
+        </button>
+      </form>
+
+      <button type="button" class="pf-enlace" (click)="volverAIdentidad()" [disabled]="cargando">
+        Usar otros datos
+      </button>
+
+      <p class="pf-pie">
+        Si no aparece en tu bandeja de entrada, revisa la carpeta de correo no deseado.
+      </p>
+    </section>
+
+    <!-- ─── Plan ──────────────────────────────────────────────────────── -->
+    <section class="pf-tarjeta" *ngIf="paso === 'plan'" #panel>
+      <!-- El encabezado se calla mientras carga y cuando hay bloqueo: anunciar
+           "esto es lo que tienes contratado" para después no mostrar nada deja al
+           cliente buscando una lista que no va a llegar. -->
+      <h1 *ngIf="!bloqueo">Tu servicio</h1>
+      <p class="pf-entrada" *ngIf="sesion && !cargando && !bloqueo">
+        Hola {{ sesion.cliente.nombre }}, esto es lo que tienes contratado con nosotros.
+      </p>
+
+      <button type="button" class="pf-guia-enlace" *ngIf="!cargando && hayServicio"
+              (click)="abrirGuiaServicio()">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+          <circle cx="10" cy="10" r="8.2" fill="none" stroke="currentColor" stroke-width="1.5" />
+          <path d="M7.8 7.7a2.3 2.3 0 114 1.6c-.8.6-1.8 1.1-1.8 2.3" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <circle cx="10" cy="14.4" r="0.95" fill="currentColor" />
+        </svg>
+        ¿Cómo funciona?
+      </button>
+
+      <div class="pf-esqueleto" *ngIf="cargando">
+        <div class="pf-esqueleto-linea"></div>
+        <div class="pf-esqueleto-linea corta"></div>
+      </div>
+
+      <ng-container *ngIf="!cargando">
+        <!-- Un solo bloque para todos los motivos, con el texto que redacta el
+             servidor: es el mismo que devolvería al registrar la tarjeta, así que
+             el cliente no puede leer dos versiones del mismo problema. -->
+        <div class="pf-bloqueo" *ngIf="bloqueo">
+          <h1>{{ bloqueo.titulo }}</h1>
+          <p>{{ bloqueo.message }}</p>
+        </div>
+
+        <!-- Un solo cargo, con los contratos como renglones: es lo que el
+             cliente va a ver después en su factura y en su estado de cuenta. -->
+        <div class="pf-plan pf-plan-unico" *ngIf="hayServicio" data-guia="servicio">
+          <div class="pf-plan-marca" aria-hidden="true"></div>
+
+          <div class="pf-plan-cuerpo">
+            <div class="pf-plan-encabezado">
+              <div>
+                <div class="pf-plan-etiqueta">Renta de equipo Purifreze</div>
+                <div class="pf-plan-titulo">
+                  {{ servicio!.contratos.length }}
+                  {{ servicio!.contratos.length === 1 ? 'contrato' : 'contratos' }}
+                </div>
+              </div>
+              <div class="pf-plan-precio">
+                <div class="pf-monto">{{ formatoMonto(servicio!.total) }}</div>
+                <div class="pf-frecuencia" *ngIf="periodicidadComun">{{ periodicidadComun }}</div>
+              </div>
+            </div>
+
+            <ul class="pf-conceptos">
+              <li *ngFor="let c of servicio!.contratos">
+                <span class="pf-concepto-nombre">
+                  Contrato {{ c.idContrato }}
+                  <span class="pf-detalle">{{ textoEquipos(c.equipos) }}</span>
+                  <span class="pf-detalle" *ngIf="!periodicidadComun && c.periodicidad">
+                    · {{ c.periodicidad }}
+                  </span>
+                </span>
+                <span class="pf-concepto-monto">{{ formatoMonto(c.monto) }}</span>
+              </li>
+            </ul>
+
+            <div class="pf-totales">
+              <div class="pf-totales-linea">
+                <span>Subtotal</span>
+                <span>{{ formatoMonto(servicio!.subtotal) }}</span>
+              </div>
+              <div class="pf-totales-linea">
+                <span>{{ etiquetaIva }}</span>
+                <span>{{ formatoMonto(servicio!.iva) }}</span>
+              </div>
+              <div class="pf-totales-linea pf-totales-total">
+                <span>Total</span>
+                <span>{{ formatoMonto(servicio!.total) }}</span>
+              </div>
+            </div>
+
+            <!-- Cuándo. Es lo que el cliente vino a averiguar antes de entregar su
+                 tarjeta —sobre todo el que ya pagó el mes y teme el cobro doble— y
+                 no estaba en ninguna de las tres pantallas. La frecuencia no se
+                 repite acá: ya se ve arriba, junto al monto. -->
+            <div class="pf-cuando" *ngIf="servicio!.primerCobro">
+              <p>
+                Tu primer cargo será <strong>{{ fechaCobro(servicio!.primerCobro) }}</strong><ng-container
+                  *ngIf="esHoy(servicio!.primerCobro) && servicio!.fechaMensualidad">
+                  y corresponde a tu mensualidad del
+                  <strong>{{ diaMensualidad(servicio!.fechaMensualidad) }}</strong></ng-container>.
+              </p>
+
+              <!-- El cargo inmediato es el único que necesita explicación: un
+                   importe que se cobra en el acto, sin decir a qué mes
+                   corresponde, se lee como un cargo sorpresa y el cliente llama
+                   al banco antes que a Purifreze. Cuando el cargo cae en su
+                   fecha normal no hay nada que aclarar. -->
+              <p *ngIf="servicio!.cobroVencido">
+                Se cobra ahora porque esa fecha ya pasó y la mensualidad sigue
+                pendiente. Es <strong>un solo cargo</strong> por ese mes, no un
+                cobro adicional ni la suma de meses anteriores.
+              </p>
+
+              <p>Los siguientes se cobran solos en la misma fecha de cada mes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pf-alerta" *ngIf="error" #cajaError role="alert">
+          <svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.6" />
+            <path d="M10 5.6v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <circle cx="10" cy="14" r="1" fill="currentColor" />
+          </svg>
+          <span>{{ error }}</span>
+        </div>
+
+        <button type="button" class="pf-boton" *ngIf="hayServicio" data-guia="continuar"
+                (click)="continuarATarjeta()">
+          Continuar
+        </button>
+      </ng-container>
+    </section>
+
+    <!-- ─── Tarjeta ───────────────────────────────────────────────────── -->
+    <section class="pf-tarjeta" *ngIf="paso === 'tarjeta'" #panel>
+      <h1>Datos de tu tarjeta</h1>
+
+      <!-- Aparece hasta que Openpay terminó de cargar: antes, la guía resaltaría
+           un botón que todavía dice "Preparando el pago seguro…". -->
+      <button type="button" class="pf-guia-enlace" *ngIf="openpayListo"
+              (click)="abrirGuiaTarjeta()">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+          <circle cx="10" cy="10" r="8.2" fill="none" stroke="currentColor" stroke-width="1.5" />
+          <path d="M7.8 7.7a2.3 2.3 0 114 1.6c-.8.6-1.8 1.1-1.8 2.3" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <circle cx="10" cy="14.4" r="0.95" fill="currentColor" />
+        </svg>
+        ¿Cómo funciona?
+      </button>
+
+      <div class="pf-resumen" *ngIf="servicio">
+        <span>Renta de equipo Purifreze</span>
+        <strong>
+          {{ formatoMonto(servicio.total) }}
+          <ng-container *ngIf="periodicidadComun">· {{ periodicidadComun }}</ng-container>
+        </strong>
+      </div>
+
+      <!-- Logotipos oficiales del kit de marca de Openpay. No se redibujan ni se
+           recolorean: su guía de uso prohíbe modificar, distorsionar o cambiar el
+           color de las marcas. -->
+      <div class="pf-marcas" aria-label="Tarjetas aceptadas">
+        <img src="assets/openpay/visa.png" alt="Visa" loading="lazy" decoding="async" />
+        <img src="assets/openpay/mastercard.png" alt="Mastercard" loading="lazy" decoding="async" />
+        <img src="assets/openpay/amex.png" alt="American Express" loading="lazy" decoding="async" />
+        <img src="assets/openpay/carnet.png" alt="Carnet" loading="lazy" decoding="async"
+             *ngIf="aceptaCarnet" />
+      </div>
+
+      <!--
+        Los campos no llevan atributo name a propósito: así los datos de la
+        tarjeta no pueden viajar en un envío de formulario. Solo se usan para
+        generar el token con Openpay desde este navegador.
+      -->
+      <!-- El error va UNA vez, junto al botón: acá había otra copia arriba, puesta
+           para cuando Openpay no inicializaba y el formulario no se renderizaba.
+           El formulario ya no se condiciona, así que las dos se veían a la vez. -->
+
+      <!-- Sin *ngIf: Openpay.deviceData.setup() busca este formulario por id para
+           inyectar el campo del antifraude. Condicionarlo a openpayListo creaba un
+           ciclo donde cada uno esperaba al otro. -->
+      <form [id]="formId" (ngSubmit)="pedirConfirmacion()" autocomplete="off">
+        <!-- Contenedor sin estilo propio: la guía señala los cuatro datos de la
+             tarjeta como un solo paso. -->
+        <div data-guia="campos">
+          <label class="pf-campo">
+            <span>Nombre del titular</span>
+            <input type="text" [(ngModel)]="titular" [ngModelOptions]="{ standalone: true }"
+                   placeholder="Como aparece en la tarjeta" maxlength="80"
+                   data-openpay-card="holder_name" />
+          </label>
+
+          <label class="pf-campo">
+            <span>Número de tarjeta</span>
+            <input type="text" [(ngModel)]="numero" (ngModelChange)="formatearNumero()"
+                   [ngModelOptions]="{ standalone: true }" placeholder="0000 0000 0000 0000"
+                   inputmode="numeric" maxlength="23" data-openpay-card="card_number" />
+          </label>
+
+          <div class="pf-fila">
+            <!-- Un solo campo: en la tarjeta física la vigencia viene impresa así,
+                 MM/AA junta. La barra la pone el formateo al escribir. -->
+            <label class="pf-campo">
+              <span>Vigencia</span>
+              <input type="text" [(ngModel)]="vigencia" (ngModelChange)="formatearVigencia()"
+                     [ngModelOptions]="{ standalone: true }" placeholder="MM/AA"
+                     inputmode="numeric" maxlength="5" autocomplete="cc-exp" />
+            </label>
+            <label class="pf-campo">
+              <span>CVV</span>
+              <input type="password" [(ngModel)]="cvv" [ngModelOptions]="{ standalone: true }"
+                     placeholder="123" inputmode="numeric" maxlength="4"
+                     data-openpay-card="cvv2" />
+            </label>
+          </div>
+        </div>
+
+        <div class="pf-alerta" *ngIf="error" #cajaError role="alert">
+          <svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.6" />
+            <path d="M10 5.6v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <circle cx="10" cy="14" r="1" fill="currentColor" />
+          </svg>
+          <span>{{ error }}</span>
+        </div>
+
+        <button type="submit" class="pf-boton" data-guia="registrar"
+                [disabled]="!tarjetaValida || cargando || !openpayListo">
+          <span *ngIf="!cargando && openpayListo">Registrar tarjeta</span>
+          <span *ngIf="!cargando && !openpayListo" class="pf-cargando-texto">
+            Preparando el pago seguro…
+          </span>
+          <span *ngIf="cargando" class="pf-cargando-texto">Procesando…</span>
+        </button>
+      </form>
+
+      <button type="button" class="pf-enlace" (click)="volverAPlan()" [disabled]="cargando">
+        Regresar
+      </button>
+
+      <div class="pf-sello-openpay">
+        <span class="pf-sello-texto">Transacciones procesadas por</span>
+        <!-- El logotipo se usa completo y sin alterar: la guía de marca prohíbe
+             suprimir o mover el endoso "by BBVA", recortarlo o cambiarle el color. -->
+        <img src="assets/openpay/openpay-bbva.jpg" alt="Openpay by BBVA"
+             class="pf-sello-logo" loading="lazy" decoding="async"
+             (error)="logoOpenpayDisponible = false" *ngIf="logoOpenpayDisponible" />
+        <strong class="pf-sello-respaldo" *ngIf="!logoOpenpayDisponible">Openpay</strong>
+      </div>
+
+    </section>
+
+    <!-- ─── Confirmación ──────────────────────────────────────────────── -->
+    <section class="pf-tarjeta pf-tarjeta-final" *ngIf="paso === 'listo'" #panel>
+      <div class="pf-check" [class.pf-check-pendiente]="!cobroActivado"
+           #checkFinal aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="26" height="26">
+          <path *ngIf="cobroActivado" d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor"
+                stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+          <path *ngIf="!cobroActivado" d="M12 6.5v7M12 17.2v.3" fill="none" stroke="currentColor"
+                stroke-width="2.4" stroke-linecap="round" />
+        </svg>
+      </div>
+
+      <h1>{{ cobroActivado ? 'Tu pago automático quedó activo' : 'Falta un paso' }}</h1>
+
+      <!-- La confirmación dice cuándo y cuánto, no sólo que la tarjeta quedó:
+           irse sin saber si el cargo es hoy o el mes que viene es lo que hacía
+           que el cliente llamara para preguntar. -->
+      <p class="pf-entrada" *ngIf="cobroActivado && tarjetaRegistrada?.primerCobro">
+        Tu primer cargo de
+        <strong>{{ formatoMonto(tarjetaRegistrada!.monto ?? null) }}</strong>
+        será <strong>{{ fechaCobro(tarjetaRegistrada!.primerCobro!) }}</strong><ng-container
+          *ngIf="esHoy(tarjetaRegistrada!.primerCobro!) && tarjetaRegistrada!.fechaMensualidad">, por tu mensualidad del
+          <strong>{{ diaMensualidad(tarjetaRegistrada!.fechaMensualidad!) }}</strong></ng-container>.
+        Después se cobra solo cada mes en la misma fecha.
+      </p>
+      <p class="pf-entrada" *ngIf="cobroActivado && !tarjetaRegistrada?.primerCobro">
+        Desde ahora cobramos tu servicio a esta tarjeta. No tienes que hacer nada más.
+      </p>
+      <p class="pf-entrada" *ngIf="!cobroActivado">
+        {{ tarjetaRegistrada?.aviso }}
+      </p>
+
+      <div class="pf-tarjeta-registrada" *ngIf="tarjetaRegistrada">
+        {{ (tarjetaRegistrada.marca || '') | uppercase }} •••• {{ tarjetaRegistrada.ultimos4 }}
+      </div>
+
+      <p class="pf-pie" *ngIf="cobroActivado">
+        Te enviamos un correo con estos datos. Ya puedes cerrar esta ventana.
+      </p>
+      <p class="pf-pie" *ngIf="!cobroActivado">
+        No vuelvas a capturar tu tarjeta: ya la tenemos guardada.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="pf-footer">
+    <span>Pagos procesados por Openpay · BBVA</span>
+  </footer>
+</div>
+
+<!-- La confirmación se oculta mientras los términos están abiertos: comparten
+     z-index y quedarían encimados. Al cerrarlos, vuelve tal como estaba. -->
+<app-portal-confirmacion
+  *ngIf="confirmacion && !terminosAbiertos"
+  [resumen]="confirmacion"
+  [procesando]="cargando"
+  (confirmar)="registrarTarjeta()"
+  (cerrar)="cerrarConfirmacion()"
+  (verTerminos)="abrirTerminos()">
+</app-portal-confirmacion>
+
+<app-portal-terminos
+  *ngIf="terminosAbiertos"
+  [nombreCliente]="sesion?.cliente?.nombre || ''"
+  [monto]="servicio ? formatoMonto(servicio.total) : ''"
+  [periodicidad]="periodicidadComun || ''"
+  (cerrar)="cerrarTerminos()"
+  (aceptar)="cerrarTerminos()">
+</app-portal-terminos>

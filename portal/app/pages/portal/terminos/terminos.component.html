@@ -1,0 +1,98 @@
+<div class="pf-fondo-modal" (click)="onCerrar()"></div>
+
+<div class="pf-modal" role="dialog" aria-modal="true" aria-labelledby="pf-terminos-titulo">
+
+  <header class="pf-modal-cabecera">
+    <h2 id="pf-terminos-titulo">Autorización de cargos recurrentes</h2>
+    <button type="button" class="pf-cerrar" (click)="onCerrar()" aria-label="Cerrar">
+      <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+        <path d="M5.5 5.5l9 9M14.5 5.5l-9 9" stroke="currentColor"
+              stroke-width="1.7" stroke-linecap="round" />
+      </svg>
+    </button>
+  </header>
+
+  <div class="pf-modal-cuerpo">
+
+    <p class="pf-resumen-autorizacion" *ngIf="monto">
+      Autorizas a Purifreze a cobrar
+      <strong>{{ monto }}</strong> de forma <strong>{{ periodicidad | lowercase }}</strong>
+      a la tarjeta que registres.
+    </p>
+
+    <h3>1. Qué estás autorizando</h3>
+    <p>
+      Al registrar tu tarjeta autorizas a Purifreze a realizar cargos automáticos por el
+      monto y la periodicidad establecidos en tu contrato de renta de equipo de purificación.
+      El cargo se aplica en la fecha que corresponde a tu ciclo de facturación.
+    </p>
+    <p>
+      Si el monto de tu contrato cambia —por ejemplo, si agregas o retiras equipos—
+      Purifreze te lo informará antes de aplicar el nuevo importe.
+    </p>
+
+    <h3>2. Quién procesa el pago</h3>
+    <p>
+      Los cobros se procesan a través de <strong>Openpay</strong>, la plataforma de pagos
+      de BBVA. Purifreze no recibe, no ve ni almacena el número completo de tu tarjeta,
+      su fecha de vencimiento ni el código de seguridad.
+    </p>
+    <p>
+      Cuando escribes los datos de tu tarjeta, tu navegador los envía cifrados directamente
+      a Openpay. Openpay devuelve a Purifreze únicamente una referencia interna que permite
+      generar los cobros, sin exponer tus datos bancarios.
+    </p>
+    <p>
+      En tu estado de cuenta el cargo aparecerá identificado con el nombre del comercio.
+    </p>
+
+    <h3>3. Qué datos conserva Purifreze</h3>
+    <p>De tu tarjeta, únicamente:</p>
+    <ul>
+      <li>Los últimos cuatro dígitos</li>
+      <li>La marca (Visa, Mastercard, American Express)</li>
+      <li>El nombre del titular y el banco emisor</li>
+      <li>La fecha de vencimiento</li>
+    </ul>
+    <p>
+      Esos datos sirven para que puedas identificar cuál de tus tarjetas está registrada.
+      No permiten realizar un cargo por sí solos.
+    </p>
+
+    <h3>4. Cómo cancelar la autorización</h3>
+    <p>
+      Puedes cancelar esta autorización en cualquier momento comunicándote con Purifreze.
+      La cancelación surte efecto para los cobros posteriores a la solicitud y no cancela
+      por sí misma tu contrato de renta ni los adeudos pendientes.
+    </p>
+
+    <h3>5. Si un cobro no se completa</h3>
+    <p>
+      Si el cargo es rechazado —por fondos insuficientes, tarjeta vencida o bloqueo del
+      banco—, se realizarán reintentos automáticos. Si después de los reintentos el cobro
+      sigue sin completarse, Purifreze se comunicará contigo para regularizar el pago por
+      otro medio.
+    </p>
+
+    <h3>6. Comprobantes fiscales</h3>
+    <p>
+      La emisión de tu factura sigue el procedimiento habitual acordado con Purifreze y no
+      cambia por registrar un método de pago automático.
+    </p>
+
+    <h3>7. Dudas sobre esta autorización</h3>
+    <p>
+      Si tienes cualquier duda sobre el alcance de estos términos, comunícate con
+      Purifreze antes de registrar tu tarjeta.
+    </p>
+
+    <p class="pf-version">Versión {{ version }} · vigente desde el {{ vigenteDesde }}</p>
+  </div>
+
+  <footer class="pf-modal-pie">
+    <button type="button" class="pf-boton-secundario" (click)="onCerrar()">Cerrar</button>
+    <button type="button" class="pf-boton-principal" (click)="onAceptar()">
+      Acepto los términos
+    </button>
+  </footer>
+</div>

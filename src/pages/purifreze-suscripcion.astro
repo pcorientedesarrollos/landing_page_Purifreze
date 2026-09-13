@@ -1,0 +1,49 @@
+---
+/**
+ * Portal del cliente: registro del método de pago.
+ *
+ * No arma la pantalla: entrega el index del portal Angular ya compilado, que
+ * se genera con `npm run build:portal`. Ese script lo SACA de public/ a
+ * propósito: los archivos de public/ los sirve el adaptador antes que el
+ * middleware, así que un index ahí sería alcanzable sin enlace y el gate no se
+ * enteraría. Los .js y .css sí quedan en public/ — sin el HTML no abren nada, y
+ * el backend igual exige el token.
+ *
+ * Se importa como texto en tiempo de build (?raw) y no se lee del disco en cada
+ * petición porque la ruta no es la misma en desarrollo que dentro del build.
+ *
+ * Cuando esta página se ejecuta, el middleware YA validó el enlace: acá sólo se
+ * le pasa el token al portal.
+ */
+import indexDelPortal from '../../portal-index.html?raw';
+
+const token = Astro.locals.tokenPortal ?? '';
+
+/** Escapa lo que va dentro de un atributo HTML. */
+const atributo = (v: string) =>
+  v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+/**
+ * El token viaja como atributo de <app-root>, no en la URL de los assets ni en
+ * un <script> inline: en desarrollo, Vite escanea los .astro buscando scripts,
+ * encuentra el de un template literal y trata de compilar la interpolación como
+ * JavaScript. Rompe `astro dev` sin romper `astro build`, que es la peor
+ * combinación posible.
+ *
+ * El portal lo lee con document.querySelector('app-root').dataset.token.
+ */
+const html = indexDelPortal.replace(
+  '<app-root></app-root>',
+  `<app-root data-token="${atributo(token)}"></app-root>`
+);
+
+return new Response(html, {
+  status: 200,
+  headers: {
+    'Content-Type': 'text/html; charset=utf-8',
+    // El enlace es de un solo uso: que ningún intermediario guarde la página.
+    'Cache-Control': 'no-store, no-cache, must-revalidate',
+    'X-Robots-Tag': 'noindex, nofollow',
+  },
+});
+---

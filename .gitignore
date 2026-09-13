@@ -22,3 +22,18 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Build del portal Angular: lo genera `npm run build:portal` en cada deploy
+public/portal-app/
+portal-index.html
+
+# Capturas y PDF del flujo del portal: se regeneran con
+# CAPTURAS=1 npx playwright test portal-flujo-completo && node e2e/capturas-a-pdf.mjs
+/capturas
+
+# caché del CLI de Angular
+.angular/
+
+# resultados de Playwright
+test-results/
+playwright-report/

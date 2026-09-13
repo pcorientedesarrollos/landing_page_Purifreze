@@ -1,0 +1,184 @@
+/* Estilos comunes de los modales del portal: términos y confirmación.
+   Cada modal los incluye con `@use '../modal';` desde su propio scss.
+
+   Repite los tokens de color para que los modales se vean igual sin depender
+   del componente que los contiene. */
+
+:host {
+  --pf-marino-profundo: #12275a;
+  --pf-marino: #1a4c8b;
+  --pf-agua: #1785c4;
+  --pf-tinta: #1b2430;
+  --pf-tinta-media: #5b6675;
+  --pf-tinta-suave: #8b95a3;
+  --pf-borde: #dfe5ec;
+  --pf-fondo: #f2f6fa;
+
+  --pf-titulo: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --pf-texto: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  font-family: var(--pf-texto);
+}
+
+.pf-fondo-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 39, 90, 0.42);
+  z-index: 1040;
+  animation: pf-aparecer 0.18s ease-out;
+}
+
+.pf-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(560px, calc(100vw - 2rem));
+  max-height: min(82vh, 760px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 24px 64px -16px rgba(18, 39, 90, 0.32);
+  z-index: 1050;
+  overflow: hidden;
+  animation: pf-subir 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pf-aparecer {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pf-subir {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 12px)); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-fondo-modal,
+  .pf-modal {
+    animation: none;
+  }
+}
+
+/* ─── Cabecera ───────────────────────────────────────────────────────── */
+
+.pf-modal-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.35rem 1.6rem 1.1rem;
+  border-bottom: 1px solid var(--pf-borde);
+  flex-shrink: 0;
+
+  h2 {
+    font-family: var(--pf-titulo);
+    margin: 0;
+    font-size: 1.08rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--pf-marino-profundo);
+  }
+}
+
+.pf-cerrar {
+  border: 0;
+  background: transparent;
+  color: var(--pf-tinta-suave);
+  cursor: pointer;
+  padding: 0.3rem;
+  line-height: 0;
+  border-radius: 6px;
+
+  &:hover:not(:disabled) {
+    color: var(--pf-tinta);
+    background: var(--pf-fondo);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+/* ─── Cuerpo ─────────────────────────────────────────────────────────── */
+
+.pf-modal-cuerpo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem 1.6rem;
+}
+
+/* ─── Pie ────────────────────────────────────────────────────────────── */
+
+.pf-modal-pie {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding: 1.1rem 1.6rem;
+  border-top: 1px solid var(--pf-borde);
+  background: #fbfcfd;
+  flex-shrink: 0;
+}
+
+/* 48px de alto: son para dedos que no atinan a un botón chico. */
+.pf-boton-principal,
+.pf-boton-secundario {
+  min-height: 48px;
+  border-radius: 9px;
+  padding: 0.62rem 1.15rem;
+  font-family: var(--pf-texto);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.pf-boton-principal {
+  background: var(--pf-marino);
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: var(--pf-marino-profundo);
+  }
+}
+
+.pf-boton-secundario {
+  background: #fff;
+  color: var(--pf-tinta-media);
+  border-color: var(--pf-borde);
+
+  &:hover:not(:disabled) {
+    background: var(--pf-fondo);
+    border-color: #c8d2de;
+  }
+}
+
+@media (max-width: 520px) {
+  .pf-modal {
+    max-height: 90vh;
+  }
+
+  .pf-modal-cabecera,
+  .pf-modal-cuerpo,
+  .pf-modal-pie {
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+  }
+
+  .pf-modal-pie {
+    flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,76 @@
+<div class="pf-fondo-modal" (click)="onCerrar()"></div>
+
+<div class="pf-modal" role="dialog" aria-modal="true" aria-labelledby="pf-confirmacion-titulo">
+
+  <header class="pf-modal-cabecera">
+    <h2 id="pf-confirmacion-titulo">Confirma tu pago automático</h2>
+    <button type="button" class="pf-cerrar" (click)="onCerrar()" [disabled]="procesando"
+            aria-label="Cerrar">
+      <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+        <path d="M5.5 5.5l9 9M14.5 5.5l-9 9" stroke="currentColor"
+              stroke-width="1.7" stroke-linecap="round" />
+      </svg>
+    </button>
+  </header>
+
+  <div class="pf-modal-cuerpo">
+
+    <section class="pf-seccion">
+      <div class="pf-producto">
+        <img src="assets/icono_gota.png" alt="" class="pf-producto-icono" aria-hidden="true" />
+        <div>
+          <div class="pf-producto-nombre">Renta de equipo Purifreze</div>
+          <div class="pf-producto-detalle">
+            {{ resumen.contratos === 1 ? '1 contrato' : resumen.contratos + ' contratos' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuándo y cuánto en una línea: es lo que el cliente viene a confirmar. -->
+      <div class="pf-cobro">
+        <div class="pf-cobro-cuando" *ngIf="resumen.primerCargo">
+          Primer cargo: <strong>{{ resumen.primerCargo }}</strong>
+        </div>
+        <div class="pf-cobro-monto">
+          <strong>{{ resumen.total }}</strong>
+          <span>
+            <ng-container *ngIf="resumen.periodicidad">{{ resumen.periodicidad | lowercase }} · </ng-container>IVA incluido
+          </span>
+        </div>
+      </div>
+
+      <ul class="pf-condiciones">
+        <!-- El cargo en el acto va primero: un importe que se cobra al confirmar
+             sin decir a qué mes corresponde se lee como un cargo sorpresa. -->
+        <li *ngIf="resumen.cobroEnElActo">
+          Hoy se cobra tu mensualidad<ng-container *ngIf="resumen.mensualidad">
+            del {{ resumen.mensualidad }}</ng-container>. Es un solo cargo, no la suma
+          de meses anteriores.
+        </li>
+        <li>Se cobra solo cada mes, en la misma fecha, hasta que lo canceles.</li>
+        <li>Puedes cancelarlo cuando quieras comunicándote con Purifreze.</li>
+      </ul>
+    </section>
+
+    <section class="pf-seccion pf-metodo">
+      <!-- Logotipo oficial del kit de Openpay: altura fija, sin deformar. -->
+      <img *ngIf="resumen.tarjeta.logo" [src]="resumen.tarjeta.logo" alt="" aria-hidden="true" />
+      <span>{{ resumen.tarjeta.nombre }} •••• {{ resumen.tarjeta.ultimos4 }}</span>
+    </section>
+
+    <p class="pf-seccion pf-legal">
+      Al tocar “Activar pago automático” autorizas este cobro y aceptas los
+      <button type="button" class="pf-legal-enlace" (click)="verTerminos.emit()"
+              [disabled]="procesando">términos de esta autorización</button>.
+    </p>
+  </div>
+
+  <footer class="pf-modal-pie">
+    <button type="button" class="pf-boton-secundario" (click)="onCerrar()" [disabled]="procesando">
+      Regresar
+    </button>
+    <button type="button" class="pf-boton-principal" (click)="onConfirmar()" [disabled]="procesando">
+      {{ procesando ? 'Procesando…' : 'Activar pago automático' }}
+    </button>
+  </footer>
+</div>

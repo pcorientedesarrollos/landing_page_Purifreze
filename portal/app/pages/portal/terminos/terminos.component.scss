@@ -1,0 +1,58 @@
+/* Modal de términos del portal. La caja, la cabecera, el pie y los botones
+   vienen de _modal.scss, compartido con la confirmación del pago. */
+
+@use '../modal';
+
+/* ─── Texto de los términos ──────────────────────────────────────────── */
+
+.pf-modal-cuerpo {
+  color: var(--pf-tinta-media);
+  font-size: 0.885rem;
+  line-height: 1.68;
+
+  h3 {
+    font-family: var(--pf-titulo);
+    margin: 1.7rem 0 0.55rem;
+    font-size: 0.93rem;
+    font-weight: 600;
+    color: var(--pf-marino-profundo);
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  p {
+    margin: 0 0 0.9rem;
+  }
+
+  strong {
+    color: var(--pf-tinta);
+    font-weight: 600;
+  }
+
+  ul {
+    margin: 0 0 0.9rem;
+    padding-left: 1.15rem;
+
+    li {
+      margin-bottom: 0.3rem;
+    }
+  }
+}
+
+.pf-resumen-autorizacion {
+  background: var(--pf-fondo);
+  border: 1px solid var(--pf-borde);
+  border-left: 3px solid var(--pf-agua);
+  border-radius: 9px;
+  padding: 0.95rem 1.1rem;
+  margin-bottom: 1.6rem !important;
+  color: var(--pf-tinta);
+}
+
+.pf-version {
+  margin: 1rem 0 0 !important;
+  font-size: 0.72rem;
+  color: var(--pf-tinta-suave);
+}

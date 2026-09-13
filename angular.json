@@ -1,0 +1,61 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "portal",
+  "projects": {
+    "portal": {
+      "projectType": "application",
+      "root": "portal",
+      "sourceRoot": "portal",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "public/portal-app",
+            "index": "portal/index.html",
+            "main": "portal/main.portal.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.portal.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [],
+            "styles": ["portal/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "portal/enviroments/enviroment.ts",
+                  "with": "portal/enviroments/enviroment.prod.ts"
+                }
+              ],
+              "budgets": [
+                { "type": "initial", "maximumWarning": "1mb", "maximumError": "2mb" },
+                { "type": "anyComponentStyle", "maximumWarning": "8kb", "maximumError": "16kb" }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": { "browserTarget": "portal:build:production" },
+            "development": { "browserTarget": "portal:build:development" }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    }
+  }
+}

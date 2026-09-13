@@ -1,0 +1,19 @@
+/**
+ * Estilos globales del portal.
+ *
+ * No se trajo styles.scss del admin: aquel carga las clases del ERP
+ * (.containerFormSeccion, utilidades de tablas, temas de Material) que estas
+ * tres pantallas no usan. El portal se viste con sus propios .pf-*.
+ */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+  background: #f1f5f9;
+  color: #12275a;
+  -webkit-font-smoothing: antialiased;
+}

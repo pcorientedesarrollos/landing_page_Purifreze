@@ -1,0 +1,805 @@
+/* Portal público de Purifreze.
+   Estilos autónomos: esta pantalla vive fuera del admin y no hereda su tema.
+   Los selectores son deliberadamente específicos porque bootstrap.css se carga
+   de forma global y aplica estilos base a input, button y select. */
+
+:host {
+  /* Identidad Purifreze — paleta azul agua, anclada al azul del logotipo */
+  --pf-marino-profundo: #12275a;
+  --pf-marino: #1a4c8b;
+  --pf-azul: #2c6baf;
+  --pf-agua: #1785c4;
+  --pf-agua-clara: #a8cfe3;
+  --pf-hielo: #dce6f0;
+
+  --pf-tinta: #1b2430;
+  --pf-tinta-media: #5b6675;
+  --pf-tinta-suave: #8b95a3;
+  --pf-borde: #dfe5ec;
+  --pf-superficie: #ffffff;
+  --pf-fondo: #f2f6fa;
+
+  --pf-error: #b42318;
+  --pf-error-fondo: #fef4f2;
+  --pf-error-borde: #f7cfc9;
+  --pf-exito: #0a7a52;
+  /* Ámbar: la tarjeta quedó, falta activar el cobro. Ni éxito ni error. */
+  --pf-aviso: #b54708;
+  --pf-aviso-fondo: #fef6ee;
+
+  --pf-titulo: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --pf-texto: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --pf-radio: 14px;
+  --pf-sombra: 0 1px 2px rgba(18, 39, 90, 0.04), 0 8px 24px -12px rgba(18, 39, 90, 0.18);
+
+  display: block;
+  min-height: 100vh;
+  background: var(--pf-fondo);
+  color: var(--pf-tinta);
+  font-family: var(--pf-texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+.pf-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Encabezado ─────────────────────────────────────────────────────── */
+
+.pf-header {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pf-marca {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.pf-gota {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.pf-nombre {
+  font-family: var(--pf-titulo);
+  font-size: 1.12rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--pf-marino-profundo);
+}
+
+.pf-pruebas {
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #92400e;
+  background: #fffaf0;
+  border: 1px solid #fde8c4;
+  border-radius: 999px;
+  padding: 0.26rem 0.65rem;
+}
+
+/* ─── Estructura ─────────────────────────────────────────────────────── */
+
+.pf-main {
+  flex: 1;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.pf-tarjeta {
+  background: var(--pf-superficie);
+  border: 1px solid var(--pf-borde);
+  border-radius: var(--pf-radio);
+  padding: 2.1rem;
+  box-shadow: var(--pf-sombra);
+
+  h1 {
+    font-family: var(--pf-titulo);
+    margin: 0 0 0.5rem;
+    font-size: 1.42rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--pf-marino-profundo);
+  }
+}
+
+.pf-entrada {
+  margin: 0 0 1.75rem;
+  color: var(--pf-tinta-media);
+  font-size: 0.92rem;
+  line-height: 1.6;
+
+  strong {
+    color: var(--pf-tinta);
+    font-weight: 500;
+  }
+}
+
+/* ─── Progreso ───────────────────────────────────────────────────────── */
+
+.pf-progreso {
+  margin-bottom: 1.4rem;
+}
+
+.pf-progreso-pista {
+  height: 3px;
+  background: var(--pf-hielo);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.pf-progreso-barra {
+  height: 100%;
+  width: 12%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--pf-marino) 0%, var(--pf-agua) 100%);
+}
+
+.pf-progreso-etapas {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  color: var(--pf-tinta-suave);
+
+  .pf-etapa-activa {
+    color: var(--pf-marino);
+    font-weight: 600;
+  }
+
+  .pf-etapa-hecha {
+    color: var(--pf-tinta-media);
+  }
+}
+
+/* ─── Formularios ────────────────────────────────────────────────────── */
+
+.pf-campo {
+  display: block;
+  margin-bottom: 1.05rem;
+
+  > span {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.81rem;
+    font-weight: 500;
+    color: var(--pf-tinta);
+    letter-spacing: 0.005em;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1.5px solid var(--pf-borde);
+    border-radius: 10px;
+    padding: 0.72rem 0.9rem;
+    font-family: var(--pf-texto);
+    font-size: 0.97rem;
+    color: var(--pf-tinta);
+    background: var(--pf-superficie);
+    outline: none;
+    transition: border-color 0.16s ease, box-shadow 0.16s ease;
+
+    &::placeholder {
+      color: #b9c2ce;
+    }
+
+    &:hover:not(:focus) {
+      border-color: #c8d2de;
+    }
+
+    &:focus {
+      border-color: var(--pf-agua);
+      box-shadow: 0 0 0 3.5px rgba(23, 133, 196, 0.14);
+    }
+  }
+}
+
+.pf-mayusculas {
+  text-transform: uppercase;
+
+  &::placeholder {
+    text-transform: none;
+  }
+}
+
+.pf-codigo {
+  text-align: center;
+  font-size: 1.68rem !important;
+  font-weight: 500;
+  letter-spacing: 0.36em;
+  font-variant-numeric: tabular-nums;
+  padding-left: 0.36em !important;
+  color: var(--pf-marino-profundo) !important;
+}
+
+.pf-fila {
+  display: flex;
+  gap: 0.7rem;
+
+  .pf-campo {
+    flex: 1;
+  }
+}
+
+.pf-boton {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  background: var(--pf-marino);
+  color: #fff;
+  font-family: var(--pf-texto);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.82rem 1rem;
+  margin-top: 0.6rem;
+  cursor: pointer;
+  transition: background 0.16s ease, transform 0.1s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--pf-marino-profundo);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    background: #c3ccd8;
+    cursor: not-allowed;
+  }
+}
+
+.pf-cargando-texto {
+  opacity: 0.85;
+}
+
+.pf-enlace {
+  display: block;
+  width: 100%;
+  margin-top: 0.9rem;
+  border: 0;
+  background: transparent;
+  color: var(--pf-agua);
+  font-family: var(--pf-texto);
+  font-size: 0.86rem;
+  cursor: pointer;
+  padding: 0.4rem;
+
+  &:hover:not(:disabled) {
+    color: var(--pf-marino);
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    color: var(--pf-tinta-suave);
+    cursor: not-allowed;
+  }
+}
+
+/* ─── Mensajes ───────────────────────────────────────────────────────── */
+
+.pf-alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  background: var(--pf-error-fondo);
+  border: 1px solid var(--pf-error-borde);
+  color: var(--pf-error);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  font-size: 0.87rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 0.08rem;
+  }
+}
+
+.pf-pie {
+  margin: 1.6rem 0 0;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--pf-borde);
+  color: var(--pf-tinta-suave);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+/*
+ * Cuándo será el primer cargo. Va pegado al desglose porque es la última cosa
+ * que el cliente necesita saber antes de decidir, no una nota al pie.
+ */
+.pf-cuando {
+  margin: 1.1rem 0 0;
+  padding-top: 0.95rem;
+  border-top: 1px dashed var(--pf-borde);
+  color: var(--pf-tinta-media);
+  font-size: 0.88rem;
+  line-height: 1.6;
+
+  p {
+    margin: 0;
+
+    /* Espacio entre frases, no entre párrafos: se leen como un bloque. */
+    + p {
+      margin-top: 0.5rem;
+    }
+
+    /* La última cierra el tema y pesa menos que la explicación del cargo. */
+    &:last-child {
+      color: var(--pf-tinta-suave);
+      font-size: 0.83rem;
+    }
+  }
+
+  strong {
+    color: var(--pf-tinta);
+    font-weight: 600;
+  }
+}
+
+/*
+ * Cuando no se le puede cobrar. Alineado a la izquierda y con el mismo peso
+ * tipográfico que el resto de la pantalla: antes era un párrafo gris centrado
+ * flotando en una tarjeta vacía, que se leía como un error del sistema y no
+ * como una situación de su cuenta.
+ *
+ * El filete ámbar a la izquierda lo distingue del contenido normal sin gritar:
+ * no es un error —no hizo nada mal— pero tampoco puede seguir.
+ */
+.pf-bloqueo {
+  padding: 0.15rem 0 0.15rem 1.1rem;
+  border-left: 3px solid var(--pf-aviso);
+
+  h1 {
+    margin: 0 0 0.55rem;
+  }
+
+  p {
+    margin: 0;
+    color: var(--pf-tinta);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    max-width: 46ch;
+  }
+}
+
+/* Marcador de carga: mantiene la altura para que el contenido no salte. */
+.pf-esqueleto {
+  padding: 0.5rem 0 1rem;
+}
+
+.pf-esqueleto-linea {
+  height: 14px;
+  border-radius: 7px;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(90deg, var(--pf-hielo) 25%, #eaf0f6 50%, var(--pf-hielo) 75%);
+  background-size: 200% 100%;
+  animation: pf-brillo 1.3s ease-in-out infinite;
+
+  &.corta {
+    width: 62%;
+  }
+}
+
+@keyframes pf-brillo {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ─── Servicio contratado ────────────────────────────────────────────── */
+
+.pf-plan {
+  position: relative;
+  display: flex;
+  border: 1.5px solid var(--pf-borde);
+  border-radius: 12px;
+  margin-bottom: 0.8rem;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+
+  &:hover {
+    border-color: var(--pf-agua-clara);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--pf-agua);
+    outline-offset: 2px;
+  }
+}
+
+.pf-plan-marca {
+  width: 4px;
+  flex-shrink: 0;
+  background: var(--pf-borde);
+  transition: background 0.16s ease;
+}
+
+/* Card única del servicio: no se elige nada, así que no invita al clic. */
+.pf-plan-unico {
+  cursor: default;
+  border-color: var(--pf-agua);
+  box-shadow: 0 0 0 3.5px rgba(23, 133, 196, 0.08);
+
+  &:hover {
+    border-color: var(--pf-agua);
+  }
+
+  .pf-plan-marca {
+    background: linear-gradient(180deg, var(--pf-marino) 0%, var(--pf-agua) 100%);
+  }
+}
+
+.pf-plan-cuerpo {
+  flex: 1;
+  padding: 1.15rem 1.3rem;
+}
+
+.pf-plan-encabezado {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pf-plan-etiqueta {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--pf-tinta-suave);
+  margin-bottom: 0.28rem;
+}
+
+.pf-plan-titulo {
+  font-size: 0.93rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--pf-tinta);
+}
+
+.pf-plan-precio {
+  text-align: right;
+}
+
+.pf-monto {
+  font-family: var(--pf-titulo);
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--pf-marino-profundo);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.pf-frecuencia {
+  font-size: 0.74rem;
+  color: var(--pf-tinta-suave);
+  margin-top: 0.1rem;
+}
+
+.pf-equipos {
+  list-style: none;
+  margin: 0.95rem 0 0;
+  padding: 0.9rem 0 0;
+  border-top: 1px solid var(--pf-borde);
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.83rem;
+    color: var(--pf-tinta-media);
+    padding: 0.18rem 0;
+  }
+}
+
+.pf-punto {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--pf-agua-clara);
+  flex-shrink: 0;
+}
+
+.pf-detalle {
+  color: var(--pf-tinta-suave);
+}
+
+/* ─── Conceptos y totales ────────────────────────────────────────────────
+   Un renglón por contrato, como los conceptos de una factura: número, cuántos
+   equipos y su importe. Sin nombres de equipo ni series: en esta pantalla el
+   cliente está por autorizar un cargo, no revisando su inventario. */
+
+.pf-conceptos {
+  list-style: none;
+  margin: 0.95rem 0 0;
+  padding: 0.9rem 0 0;
+  border-top: 1px solid var(--pf-borde);
+
+  li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--pf-tinta-media);
+    padding: 0.28rem 0;
+  }
+}
+
+.pf-concepto-nombre {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.pf-concepto-monto {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--pf-tinta);
+}
+
+.pf-totales {
+  margin-top: 0.85rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--pf-borde);
+}
+
+.pf-totales-linea {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.82rem;
+  color: var(--pf-tinta-suave);
+  padding: 0.16rem 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.pf-totales-total {
+  margin-top: 0.35rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--pf-borde);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--pf-marino-profundo);
+}
+
+/* ─── Tarjeta ────────────────────────────────────────────────────────── */
+
+.pf-resumen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--pf-fondo);
+  border-radius: 10px;
+  padding: 0.85rem 1.05rem;
+  margin-bottom: 1.4rem;
+  font-size: 0.85rem;
+  color: var(--pf-tinta-media);
+
+  strong {
+    font-family: var(--pf-titulo);
+    color: var(--pf-marino-profundo);
+    font-weight: 600;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.pf-marcas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1.5rem;
+
+  /* Altura fija y ancho automático: la guía de marca de Openpay prohíbe
+     comprimir o distorsionar los logotipos. object-fit protege la proporción
+     aunque alguien cambie las medidas después. */
+  img {
+    height: 26px;
+    width: auto;
+    max-width: 58px;
+    object-fit: contain;
+  }
+}
+
+/* ─── Sello de Openpay ───────────────────────────────────────────────── */
+
+.pf-sello-openpay {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1.5rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--pf-borde);
+}
+
+.pf-sello-texto {
+  font-size: 0.78rem;
+  color: var(--pf-tinta-suave);
+}
+
+.pf-sello-logo {
+  height: 21px;
+  width: auto;
+  max-width: 118px;
+  object-fit: contain;
+  /* Espacio libre alrededor del logotipo, como pide la guía de marca. */
+  margin-left: 0.15rem;
+}
+
+.pf-sello-respaldo {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--pf-marino);
+}
+
+/* El bloque de seguridad va después del sello: sin borde propio para no
+   duplicar la línea divisoria. */
+.pf-sello-openpay + .pf-seguridad {
+  margin-top: 0.9rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.pf-seguridad {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1.6rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--pf-borde);
+  color: var(--pf-tinta-suave);
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--pf-agua);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.79rem;
+    line-height: 1.6;
+  }
+}
+
+/* ─── Confirmación ───────────────────────────────────────────────────── */
+
+.pf-tarjeta-final {
+  text-align: center;
+}
+
+.pf-check {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1.35rem;
+  border-radius: 50%;
+  background: #e9f7f1;
+  color: var(--pf-exito);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.pf-check-pendiente {
+    background: var(--pf-aviso-fondo);
+    color: var(--pf-aviso);
+  }
+}
+
+.pf-tarjeta-registrada {
+  display: inline-block;
+  background: var(--pf-fondo);
+  border: 1px solid var(--pf-borde);
+  border-radius: 10px;
+  padding: 0.75rem 1.3rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--pf-marino-profundo);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.pf-tarjeta-final .pf-pie {
+  border-top: 0;
+  margin-top: 1.3rem;
+  padding-top: 0;
+}
+
+/* ─── Pie ────────────────────────────────────────────────────────────── */
+
+.pf-footer {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--pf-tinta-suave);
+  font-size: 0.75rem;
+}
+
+/* ─── Pantallas chicas ───────────────────────────────────────────────── */
+
+@media (max-width: 520px) {
+  .pf-header { padding: 1.35rem 1.15rem 1rem; }
+  .pf-main { padding: 0 1.15rem 2rem; }
+  .pf-tarjeta { padding: 1.6rem 1.3rem; }
+
+  .pf-plan-encabezado {
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .pf-plan-precio { text-align: left; }
+  .pf-progreso-etapas { font-size: 0.67rem; }
+}
+
+/* Quien pidió reducir movimiento no ve el brillo del marcador de carga.
+   Las animaciones de anime.js se desactivan desde el servicio. */
+@media (prefers-reduced-motion: reduce) {
+  .pf-esqueleto-linea {
+    animation: none;
+  }
+}
+
+/* ─── Guía "¿Cómo funciona?" ─────────────────────────────────────────── */
+
+/* Se ve como enlace pero mide 44px de alto: es para dedos que no atinan a un
+   texto chico. La ventana de la guía se estiliza en src/styles.scss porque
+   Driver.js la inserta fuera de este componente. */
+.pf-guia-enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  margin: 0 0 0.9rem;
+  padding: 0 0.1rem;
+  border: 0;
+  background: transparent;
+  font-family: var(--pf-texto);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--pf-marino);
+  cursor: pointer;
+
+  svg {
+    flex-shrink: 0;
+    color: var(--pf-agua);
+  }
+
+  &:hover {
+    color: var(--pf-marino-profundo);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--pf-agua-clara);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+}
+
+/* Debajo del saludo, el enlace se pega al texto que lo introduce. */
+.pf-entrada + .pf-guia-enlace {
+  margin-top: -1.2rem;
+}
