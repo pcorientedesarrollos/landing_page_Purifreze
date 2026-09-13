@@ -115,6 +115,45 @@
   }
 }
 
+/* ─── Qué pasa con los datos ─────────────────────────────────────────── */
+
+.pf-privacidad {
+  background: #fbfcfd;
+}
+
+.pf-privacidad-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.65rem;
+  font-family: var(--pf-titulo);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--pf-marino-profundo);
+
+  svg {
+    flex-shrink: 0;
+    color: var(--pf-agua);
+  }
+}
+
+.pf-privacidad-lista {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--pf-tinta-media);
+
+  li + li {
+    margin-top: 0.4rem;
+  }
+
+  strong {
+    font-weight: 600;
+    color: var(--pf-tinta);
+  }
+}
+
 /* ─── Aceptación ─────────────────────────────────────────────────────── */
 
 .pf-legal {

@@ -58,10 +58,44 @@
       <span>{{ resumen.tarjeta.nombre }} •••• {{ resumen.tarjeta.ultimos4 }}</span>
     </section>
 
+    <!-- Los términos completos viven en su propio modal; aquí va lo único que
+         el cliente necesita saber para decidir: qué pasa con los datos de su
+         tarjeta. Sin esto, confirmar es firmar a ciegas. -->
+    <section class="pf-seccion pf-privacidad">
+      <h3 class="pf-privacidad-titulo">
+        <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true">
+          <path d="M6 8.5V6a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor"
+                stroke-width="1.6" stroke-linecap="round" />
+          <rect x="4.2" y="8.5" width="11.6" height="7.8" rx="1.8" fill="none"
+                stroke="currentColor" stroke-width="1.6" />
+        </svg>
+        Qué pasa con los datos de tu tarjeta
+      </h3>
+      <ul class="pf-privacidad-lista">
+        <li>
+          El número, la fecha de vencimiento y el código de seguridad viajan cifrados
+          a <strong>Openpay</strong>, la plataforma de pagos de BBVA. Purifreze no los
+          ve ni los guarda.
+        </li>
+        <li>
+          De tu tarjeta conservamos solo los últimos cuatro dígitos, la marca y el banco,
+          para que reconozcas cuál registraste. Con esos datos no se puede hacer un cargo.
+        </li>
+        <li>
+          Openpay nos devuelve una referencia que únicamente sirve para generar los cobros
+          de tu contrato. No la usamos para nada más ni la compartimos.
+        </li>
+        <li>
+          Si un cargo se rechaza, se reintenta automáticamente; si aun así no se completa,
+          Purifreze se comunica contigo.
+        </li>
+      </ul>
+    </section>
+
     <p class="pf-seccion pf-legal">
       Al tocar “Activar pago automático” autorizas este cobro y aceptas los
       <button type="button" class="pf-legal-enlace" (click)="verTerminos.emit()"
-              [disabled]="procesando">términos de esta autorización</button>.
+              [disabled]="procesando">términos completos de esta autorización</button>.
     </p>
   </div>
 
