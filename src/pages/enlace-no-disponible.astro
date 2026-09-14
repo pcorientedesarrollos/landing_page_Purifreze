@@ -1,27 +1,19 @@
 ---
 /**
- * Lo que ve el cliente cuando su enlace ya no sirve.
+ * El 404 del portal, con la cara de Purifreze.
  *
- * Antes esto era un 404 mudo: el mismo error que da una dirección mal escrita.
- * El enlace dura una hora, así que el cliente que lo abre al rato —el caso más
- * común que va a haber— se quedaba mirando la pantalla de error del navegador,
- * sin saber si se equivocó al copiar, si el sistema está caído o si ya no hace
- * falta hacer nada.
+ * No explica por qué —ni el cliente puede hacer nada con esa explicación, ni la
+ * landing sabe realmente cuál de las causas fue—. Lo único que tiene que lograr
+ * es que no parezca que algo se rompió, y dejar a mano el camino para seguir.
  *
- * No se dice CUÁL de las causas fue: la landing sólo sabe que el ERP dijo que
- * no sirve, y quien sondee enlaces no aprende nada de esta pantalla que no
- * supiera ya. Lo que sí tiene que quedar clarísimo es qué hacer ahora.
- *
- * A esta pantalla se llega por rewrite desde el middleware, así que conserva la
- * URL con la que el cliente entró: si vuelve a tocar el enlace de su chat, cae
- * de nuevo acá y no en una dirección que no reconoce.
+ * Se llega por rewrite desde el middleware, así que conserva la URL con la que
+ * el cliente entró.
  */
 import { SEO_CONFIG } from '../config/seo.config';
 
 const { whatsapp, phoneTel, phoneDisplay } = SEO_CONFIG.business.contact;
 
-// 410 y no 404: la dirección es la correcta, lo que caducó es el enlace.
-Astro.response.status = 410;
+Astro.response.status = 404;
 Astro.response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
 Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
 ---
@@ -32,35 +24,16 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Este enlace ya no funciona · Purifreze</title>
+    <title>Página no disponible · Purifreze</title>
     <link rel="icon" href="/favicon.svg" />
   </head>
   <body>
     <main class="tarjeta">
       <img src="/assets/nombre-logo.png" alt="Purifreze" class="logo" />
 
-      <svg class="icono" viewBox="0 0 48 48" aria-hidden="true">
-        <circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="2.5" />
-        <path
-          d="M24 13v11l7 4"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
+      <h1>Esta página no está disponible</h1>
 
-      <h1>Este enlace ya no funciona</h1>
-
-      <p class="explicacion">
-        Por seguridad, el enlace para registrar tu tarjeta dura una hora. El tuyo
-        ya venció, o alguien de Purifreze generó uno nuevo que lo reemplazó.
-      </p>
-
-      <p class="explicacion">
-        Escríbenos y te mandamos uno nuevo en el momento.
-      </p>
+      <p>Escríbenos y te ayudamos a continuar.</p>
 
       <div class="acciones">
         <a class="boton-principal" href={whatsapp} rel="noopener">
@@ -72,15 +45,10 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
               d="M12.04 2C6.6 2 2.17 6.43 2.17 11.87c0 1.74.46 3.44 1.33 4.94L2 22l5.35-1.4a9.83 9.83 0 0 0 4.69 1.2h.01c5.44 0 9.87-4.43 9.87-9.87 0-2.64-1.03-5.12-2.9-6.99A9.8 9.8 0 0 0 12.04 2zm0 18.06h-.01a8.2 8.2 0 0 1-4.17-1.14l-.3-.18-3.1.81.83-3.02-.2-.31a8.16 8.16 0 0 1-1.25-4.35c0-4.52 3.68-8.2 8.2-8.2a8.15 8.15 0 0 1 5.8 2.4 8.15 8.15 0 0 1 2.4 5.8c0 4.52-3.68 8.19-8.2 8.19z"
             />
           </svg>
-          Pedir un enlace nuevo
+          Escríbenos por WhatsApp
         </a>
         <a class="boton-secundario" href={`tel:${phoneTel}`}>{phoneDisplay}</a>
       </div>
-
-      <p class="nota">
-        Si ya registraste tu tarjeta, no tienes que hacer nada: tu pago
-        automático quedó activo.
-      </p>
     </main>
   </body>
 </html>
@@ -89,8 +57,6 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
   :root {
     --pf-marino-profundo: #12275a;
     --pf-marino: #1a4c8b;
-    --pf-agua: #1785c4;
-    --pf-tinta: #1b2430;
     --pf-tinta-media: #5b6675;
     --pf-borde: #dfe5ec;
     --pf-fondo: #f2f6fa;
@@ -110,47 +76,38 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
     justify-content: center;
     padding: 1.5rem;
     background: var(--pf-fondo);
-    color: var(--pf-tinta);
+    color: var(--pf-tinta-media);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.55;
   }
 
   .tarjeta {
-    width: min(460px, 100%);
+    width: min(420px, 100%);
     background: #fff;
     border: 1px solid var(--pf-borde);
     border-radius: 14px;
     box-shadow: 0 24px 64px -16px rgba(18, 39, 90, 0.18);
-    padding: 2.2rem 1.9rem;
+    padding: 2.4rem 1.9rem;
     text-align: center;
   }
 
   .logo {
     height: 34px;
     width: auto;
-    margin-bottom: 1.6rem;
-  }
-
-  .icono {
-    width: 48px;
-    height: 48px;
-    color: var(--pf-agua);
-    display: block;
-    margin: 0 auto 1rem;
+    margin-bottom: 2rem;
   }
 
   h1 {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: 600;
     letter-spacing: -0.015em;
     color: var(--pf-marino-profundo);
-    margin: 0 0 0.9rem;
+    margin: 0 0 0.6rem;
   }
 
-  .explicacion {
-    margin: 0 0 0.9rem;
-    color: var(--pf-tinta-media);
+  p {
+    margin: 0;
     font-size: 0.97rem;
   }
 
@@ -158,7 +115,7 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-    margin: 1.6rem 0 1.4rem;
+    margin-top: 1.8rem;
   }
 
   /* 48px de alto: son para dedos que no atinan a un botón chico. */
@@ -197,13 +154,5 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
   .boton-secundario:hover {
     background: var(--pf-fondo);
     border-color: #c8d2de;
-  }
-
-  .nota {
-    margin: 0;
-    padding-top: 1.2rem;
-    border-top: 1px solid var(--pf-borde);
-    font-size: 0.85rem;
-    color: var(--pf-tinta-media);
   }
 </style>

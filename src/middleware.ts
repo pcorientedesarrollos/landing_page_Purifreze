@@ -25,14 +25,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return noEncontrado();
   }
 
-  // El portal: sin enlace válido no se renderiza el portal, pero sí una pantalla
-  // que explique qué pasó. El 404 mudo era correcto contra quien sondea la URL y
-  // pésimo para el cliente de verdad, que es quien llega acá: su enlace dura una
-  // hora y abrirlo tarde es lo más normal del mundo.
+  // El portal: sin enlace válido sigue siendo un 404, pero con la cara de
+  // Purifreze en vez de la pantalla de error del navegador. El cliente que abre
+  // su enlace tarde —lo más normal, duran una hora— no tiene por qué sentir que
+  // algo se rompió.
   //
-  // Se hace rewrite y no redirect para conservar la URL del enlace: si vuelve a
-  // tocarlo desde su chat cae de nuevo en la explicación, no en una dirección
-  // que no reconoce. Y el token no se arrastra a ninguna parte.
+  // Se hace rewrite y no redirect para conservar la URL del enlace, y el token
+  // no se arrastra a ninguna parte.
   if (pathname === RUTA_PORTAL || pathname === `${RUTA_PORTAL}/`) {
     const enlace = await validarEnlace(searchParams.get('t'));
     if (!enlace.valido) return context.rewrite(RUTA_ENLACE_NO_DISPONIBLE);
