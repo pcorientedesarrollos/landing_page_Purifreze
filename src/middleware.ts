@@ -1,5 +1,10 @@
 import { defineMiddleware } from 'astro:middleware';
-import { validarEnlace, RUTA_PORTAL, RUTA_ASSETS } from './lib/enlace-suscripcion';
+import {
+  validarEnlace,
+  RUTA_PORTAL,
+  RUTA_ASSETS,
+  RUTA_ENLACE_NO_DISPONIBLE,
+} from './lib/enlace-suscripcion';
 
 /** 404 sin cuerpo: no confirma siquiera que la ruta exista. */
 const noEncontrado = () => new Response(null, { status: 404 });
@@ -20,11 +25,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return noEncontrado();
   }
 
-  // El portal: sin enlace válido no se renderiza nada. Se responde 404 y no un
-  // 401 o un 403 a propósito — quien sondea la URL no se entera de que existe.
+  // El portal: sin enlace válido no se renderiza el portal, pero sí una pantalla
+  // que explique qué pasó. El 404 mudo era correcto contra quien sondea la URL y
+  // pésimo para el cliente de verdad, que es quien llega acá: su enlace dura una
+  // hora y abrirlo tarde es lo más normal del mundo.
+  //
+  // Se hace rewrite y no redirect para conservar la URL del enlace: si vuelve a
+  // tocarlo desde su chat cae de nuevo en la explicación, no en una dirección
+  // que no reconoce. Y el token no se arrastra a ninguna parte.
   if (pathname === RUTA_PORTAL || pathname === `${RUTA_PORTAL}/`) {
     const enlace = await validarEnlace(searchParams.get('t'));
-    if (!enlace.valido) return noEncontrado();
+    if (!enlace.valido) return context.rewrite(RUTA_ENLACE_NO_DISPONIBLE);
     context.locals.tokenPortal = enlace.token!;
   }
 

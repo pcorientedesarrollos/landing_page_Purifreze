@@ -58,3 +58,6 @@ export const RUTA_PORTAL = '/purifreze-suscripcion';
 
 /** Carpeta desde la que se sirven los assets compilados del portal. */
 export const RUTA_ASSETS = '/portal-app';
+
+/** Lo que se muestra en lugar del portal cuando el enlace ya no sirve. */
+export const RUTA_ENLACE_NO_DISPONIBLE = '/enlace-no-disponible';
