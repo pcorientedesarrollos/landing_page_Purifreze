@@ -1,0 +1,129 @@
+---
+import { SEO_CONFIG } from "../config/seo.config";
+
+const { whatsapp } = SEO_CONFIG.business.contact;
+
+const planes = [
+  {
+    nombre: "Básico",
+    precio: 370,
+    para: "Para una casa o una oficina chica",
+    incluye: [
+      "Ósmosis inversa de 5 etapas",
+      "Filtro de sedimentos, carbón bloque y carbón granular",
+      "Membrana de 100 galones por día",
+      "Post-filtro de carbón para el sabor",
+    ],
+    destacado: false,
+  },
+  {
+    nombre: "Robusto",
+    precio: 500,
+    para: "Para familias grandes o consumo alto",
+    incluye: [
+      "Todo lo del plan Básico",
+      "Tanque de mayor capacidad: más agua lista al mismo tiempo",
+      "Recuperación más rápida entre servicios",
+    ],
+    destacado: true,
+  },
+  {
+    nombre: "Security Plus",
+    precio: 549,
+    para: "Para negocios y quien quiere la máxima protección",
+    incluye: [
+      "Todo lo del plan Robusto",
+      "Lámpara ultravioleta de 12W contra bacterias y virus",
+      "Es el equipo que más contratan nuestros clientes",
+    ],
+    destacado: false,
+  },
+];
+
+const comunes = [
+  { icono: "fa-solid fa-wrench", texto: "Instalación gratis" },
+  { icono: "fa-solid fa-wallet", texto: "$0 de inversión inicial" },
+  { icono: "fa-solid fa-screwdriver-wrench", texto: "Mantenimiento y filtros incluidos" },
+  { icono: "fa-solid fa-droplet", texto: "Agua purificada ilimitada" },
+];
+---
+
+<section class="max-w-[1200px] mx-auto px-6 py-16">
+  <div class="text-center max-w-2xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-black text-slate-900">
+      Planes de renta
+    </h2>
+    <p class="mt-4 text-lg text-slate-600">
+      Renta mensual, sin comprar el equipo. Los tres incluyen instalación,
+      mantenimiento y los cambios de filtro.
+    </p>
+  </div>
+
+  <div class="mt-12 grid gap-6 md:grid-cols-3">
+    {planes.map((plan) => (
+      <article
+        class={`relative flex flex-col rounded-2xl border bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
+          plan.destacado
+            ? "border-blue-500 shadow-blue-500/10 ring-1 ring-blue-500"
+            : "border-slate-200"
+        }`}
+      >
+        {plan.destacado && (
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 px-4 py-1 text-[11px] font-black uppercase tracking-wide text-white shadow">
+            El más pedido
+          </span>
+        )}
+
+        <h3 class="text-xl font-black text-slate-900">{plan.nombre}</h3>
+        <p class="mt-1 text-sm text-slate-500">{plan.para}</p>
+
+        <p class="mt-6 flex items-baseline gap-1">
+          <span class="text-4xl font-black text-slate-900">
+            ${plan.precio.toLocaleString("es-MX")}
+          </span>
+          <span class="text-sm font-semibold text-slate-500">al mes</span>
+        </p>
+        <p class="text-xs text-slate-500">IVA incluido</p>
+
+        <ul class="mt-6 space-y-3 text-sm text-slate-700">
+          {plan.incluye.map((linea) => (
+            <li class="flex gap-3">
+              <i class="fa-solid fa-check mt-1 text-blue-600"></i>
+              <span>{linea}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+    ))}
+  </div>
+
+  <div class="mt-12 rounded-2xl bg-slate-50 px-6 py-8">
+    <p class="text-center text-sm font-bold uppercase tracking-wide text-slate-500">
+      Los tres planes incluyen
+    </p>
+    <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {comunes.map((item) => (
+        <div class="flex items-center gap-3">
+          <i class={`${item.icono} text-xl text-blue-600`}></i>
+          <span class="text-sm font-semibold text-slate-700">{item.texto}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="mt-10 text-center">
+    <p class="text-slate-600">
+      ¿No sabes cuál te conviene? Te ayudamos a elegir según cuánta agua
+      consumen al día.
+    </p>
+    <a
+      href={whatsapp}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-5 inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 px-7 py-4 text-base font-bold text-white shadow-lg shadow-blue-500/30 transition hover:-translate-y-0.5 hover:shadow-blue-500/50"
+    >
+      <i class="fa-brands fa-whatsapp text-xl"></i>
+      Pregúntanos por WhatsApp
+    </a>
+  </div>
+</section>

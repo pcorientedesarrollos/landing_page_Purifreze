@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navigation from "../components/Navigation.astro";
+import Planes from "../components/Planes.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+    title="Purifreze - Planes de Renta | Purificadores desde $370 al mes"
+    description="Planes de renta de purificadores de agua en Mérida: Básico $370, Robusto $500 y Security Plus $549 al mes, IVA incluido. Instalación, mantenimiento y filtros incluidos."
+>
+    <Navigation />
+    <main class="pt-32 md:pt-40">
+        <h1 class="sr-only">Planes de renta de purificadores de agua Purifreze</h1>
+        <Planes />
+    </main>
+    <Footer />
+</Layout>
