@@ -126,4 +126,38 @@ const comunes = [
       Pregúntanos por WhatsApp
     </a>
   </div>
+
+  <!-- Separado del CTA de venta a propósito: esto no es para quien está
+       eligiendo plan, es para el cliente que ya tiene uno. Mezclarlos deja al
+       visitante nuevo preguntándose qué cobro va a automatizar. -->
+  <div class="mt-12 border-t border-slate-200 pt-10 text-center">
+    <p class="text-sm font-bold uppercase tracking-wide text-slate-500">
+      ¿Ya eres cliente?
+    </p>
+    <p class="mx-auto mt-3 max-w-md text-slate-600">
+      Registra tu tarjeta una vez y tu renta se paga sola cada mes. Sin
+      transferencias, sin recordatorios.
+    </p>
+    <a
+      href="/activar"
+      class="mt-5 inline-flex items-center gap-2 rounded-lg border-2 border-blue-600 px-7 py-4 text-base font-bold text-blue-700 transition hover:-translate-y-0.5 hover:bg-blue-600 hover:text-white"
+    >
+      <i class="fa-regular fa-credit-card text-xl"></i>
+      Automatiza tus cobros
+    </a>
+
+    <!-- El logo va debajo del botón y no dentro: quien duda antes de dar su
+         tarjeta busca de quién es la pasarela, no una marca más en el botón. -->
+    <p class="mt-6 flex items-center justify-center gap-2 text-sm font-medium text-slate-600">
+      <span>Pagos procesados por</span>
+      <img
+        src="/assets/openpay-bbva.jpg"
+        alt="Openpay by BBVA"
+        width="96"
+        height="36"
+        loading="lazy"
+        class="h-7 w-auto"
+      />
+    </p>
+  </div>
 </section>
