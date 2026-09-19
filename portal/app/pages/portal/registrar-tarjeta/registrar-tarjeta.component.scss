@@ -131,6 +131,53 @@
   }
 }
 
+/* ─── Sesión heredada ────────────────────────────────────────────────── */
+
+/* Ámbar y no rojo: no pasó nada malo, sólo hay que confirmar de quién es esta
+   pantalla antes de seguir. */
+.pf-heredada {
+  background: var(--pf-aviso-fondo);
+  border: 1px solid rgba(181, 71, 8, 0.22);
+  border-radius: var(--pf-radio);
+  padding: 1rem 1.15rem;
+  margin-bottom: 1.25rem;
+
+  p {
+    margin: 0 0 0.75rem;
+    color: var(--pf-tinta);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+}
+
+.pf-heredada-acciones {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.pf-heredada-seguir,
+.pf-heredada-salir {
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  font-family: var(--pf-texto);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.pf-heredada-seguir {
+  background: var(--pf-aviso);
+  border: 1px solid var(--pf-aviso);
+  color: #fff;
+}
+
+.pf-heredada-salir {
+  background: transparent;
+  border: 1px solid rgba(181, 71, 8, 0.35);
+  color: var(--pf-aviso);
+}
+
 /* ─── Progreso ───────────────────────────────────────────────────────── */
 
 .pf-progreso {

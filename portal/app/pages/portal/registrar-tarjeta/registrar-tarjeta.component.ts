@@ -28,6 +28,9 @@ import { tarjetaAConfirmar } from '../confirmacion/tarjeta';
 
 type Paso = 'plan' | 'tarjeta' | 'listo';
 
+/** Dónde se teclea el código. Es la única salida de esta pantalla hacia atrás. */
+const RUTA_ACTIVAR = '/activar';
+
 /** Porcentaje de la barra de progreso para cada paso. */
 const PROGRESO: Record<Paso, number> = {
   plan: 40,
@@ -38,10 +41,9 @@ const PROGRESO: Record<Paso, number> = {
 /**
  * Portal público de autoservicio.
  *
- * El cliente entra con un enlace de un solo uso que alguien de Purifreze generó
- * y le compartió: no teclea RFC, ni correo, ni código. El servidor de la landing
- * validó ese enlace antes de servir la pantalla, así que acá se canjea por una
- * sesión y se va directo al servicio contratado.
+ * El cliente llega acá con la sesión ya hecha: la abrió /activar al canjear el
+ * código que alguien de Purifreze le dio. Esta pantalla no tiene credencial que
+ * validar, así que sin sesión no hay nada que mostrar y se vuelve a /activar.
  *
  * Los datos de la tarjeta viven solo en este componente y viajan directo a
  * Openpay: al servidor de Purifreze únicamente llega el token resultante.
@@ -67,8 +69,8 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
   readonly formId = 'portal-payment-form';
 
   /**
-   * Arranca en 'plan' porque ya no hay pantallas previas: mientras se canjea el
-   * enlace se ve el servicio cargando, y si el canje falla, el error aparece ahí.
+   * Arranca en 'plan' porque ya no hay pantallas previas: la sesión llega hecha
+   * desde /activar y lo primero que se ve es el servicio cargando.
    */
   public paso: Paso = 'plan';
   public cargando = false;
@@ -77,6 +79,11 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
 
   // Servicio contratado
   public sesion: SesionPortal | null = null;
+  /**
+   * La sesión venía de antes en esta pestaña, no de esta entrada. Con esto
+   * puesto la pantalla muestra de quién es antes de dejar seguir.
+   */
+  public sesionHeredada = false;
   /**
    * El servicio del cliente: un solo cargo con un renglón por contrato.
    *
@@ -172,28 +179,43 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
   private errorAnimado = '';
 
   ngOnInit(): void {
-    const enlace = this.portal.tokenDelEnlace();
+    const sesion = this.portal.sesionActual;
 
-    if (!enlace) {
-      // Sólo pasa si alguien sirvió esta pantalla sin el atributo del servidor.
-      this.error = 'Abre el enlace que te compartió Purifreze para continuar.';
+    // Esta pantalla ya no trae credencial: el código se teclea en /activar, que
+    // deja la sesión hecha. Sin sesión no hay nada que mostrar acá.
+    if (!sesion) {
+      this.irAActivar();
       return;
     }
 
-    // MANDA EL ENLACE, no la sesión guardada. Se reusa la sesión únicamente si
-    // nació de este mismo enlace —así el cliente que recarga sigue donde
-    // estaba—; con cualquier otra se empieza de cero. Al revés, abrir el enlace
-    // de otro cliente en el mismo navegador mostraba los contratos del
-    // anterior, porque la sesión vieja ganaba y el enlace ni se canjeaba.
-    const previa = this.portal.sesionDelEnlace(enlace);
-    if (previa) {
-      this.sesion = previa;
-      void this.irAPlanes();
-      return;
-    }
+    this.sesion = sesion;
 
+    // Si la sesión no se canjeó en esta entrada, quedó de una visita anterior en
+    // la misma pestaña: puede ser el mismo cliente que recargó, o el siguiente
+    // que llegó a un dispositivo compartido y que no tiene por qué continuar el
+    // registro de otro sin saberlo. El portal saluda por nombre, pero saludar no
+    // es preguntar, así que acá se pregunta.
+    this.sesionHeredada = !this.portal.consumirEntradaReciente();
+
+    void this.irAPlanes();
+  }
+
+  /**
+   * "No soy yo": tira la sesión heredada y manda a teclear un código propio.
+   */
+  salirYActivar(): void {
     this.portal.limpiarSesion();
-    void this.entrarConEnlace(enlace);
+    this.sesion = null;
+    this.irAActivar();
+  }
+
+  /** Sigue con la sesión que ya estaba. Sólo cierra el aviso. */
+  continuarComoEsteCliente(): void {
+    this.sesionHeredada = false;
+  }
+
+  private irAActivar(): void {
+    window.location.href = RUTA_ACTIVAR;
   }
 
   /**
@@ -239,31 +261,6 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     return this.etapaActual === n;
   }
 
-  // ─── Entrada por enlace ──────────────────────────────────────────────────
-
-  /**
-   * Canjea el enlace por una sesión y entra.
-   *
-   * Un fallo acá no tiene salida por pantalla y no debería tenerla: para llegar
-   * hasta este punto el servidor ya validó el enlace, así que si el canje se
-   * cae es un problema del ERP, no algo que el cliente pueda resolver tecleando
-   * datos. Se le dice qué pasó y a quién recurrir.
-   */
-  private async entrarConEnlace(token: string): Promise<void> {
-    this.cargando = true;
-    this.error = '';
-    try {
-      this.sesion = await this.portal.canjearEnlace(token);
-      await this.irAPlanes();
-    } catch (e: any) {
-      this.cargando = false;
-      this.error = mensajeParaCliente(
-        e,
-        'Este enlace venció o ya se usó. Comunícate con Purifreze para que te envíen uno nuevo.'
-      );
-    }
-  }
-
   // ─── Servicio contratado ─────────────────────────────────────────────────
 
   private async irAPlanes(): Promise<void> {
@@ -278,7 +275,7 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
         this.portal.limpiarSesion();
         this.sesion = null;
         this.error =
-          'Tu sesión expiró. Vuelve a abrir el enlace que te compartió Purifreze.';
+          'Tu sesión expiró. Vuelve a escribir tu código para continuar.';
       } else {
         this.error = mensajeParaCliente(e, 'No pudimos cargar tus contratos.');
       }

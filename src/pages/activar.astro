@@ -1,0 +1,293 @@
+---
+/**
+ * Donde el cliente teclea el código que le dio Purifreze.
+ *
+ * Es pública a propósito y no puede no serlo: es el destino del botón de la
+ * landing, así que cualquiera llega. Lo que protege al cliente no es esta
+ * pantalla sino el código —8 caracteres, una hora de vida, guardado como HMAC—
+ * y el límite de intentos del ERP.
+ *
+ * El canje sale del NAVEGADOR, no de acá. Si lo hiciera el servidor de Astro,
+ * todos los intentos llegarían al ERP con la IP de Railway y su límite por IP
+ * dejaría de distinguir a un cliente de quien prueba códigos: o se afloja hasta
+ * ser inútil, o el primer abuso deja fuera a toda la cartera.
+ */
+import { SEO_CONFIG } from '../config/seo.config';
+import { CLAVE_SESION, RUTA_PORTAL, urlDelErp } from '../lib/acceso-portal';
+
+const { whatsapp } = SEO_CONFIG.business.contact;
+const erp = urlDelErp();
+
+Astro.response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Activa tu cobro automático · Purifreze</title>
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <main class="tarjeta" data-erp={erp} data-portal={RUTA_PORTAL} data-clave={CLAVE_SESION}>
+      <img src="/assets/nombre-logo.png" alt="Purifreze" class="logo" />
+
+      <h1>Escribe tu código</h1>
+      <p class="intro">
+        Es el código que te compartió Purifreze. Vence una hora después de que te lo dieron.
+      </p>
+
+      <form id="forma">
+        <!-- inputmode text y no numeric: el código lleva letras. autocomplete
+             off para que el navegador no ofrezca el de otro cliente en un
+             dispositivo compartido. -->
+        <input
+          id="codigo"
+          name="codigo"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          autocapitalize="characters"
+          spellcheck="false"
+          maxlength="9"
+          placeholder="K7M4-QX92"
+          aria-label="Código de acceso"
+          required
+        />
+        <button type="submit" id="entrar">Continuar</button>
+      </form>
+
+      <!-- Un solo texto para todos los casos en que el código no sirve: quien
+           sondea no debe aprender si existía, si venció o si ya se usó. -->
+      <p class="error" id="error" role="alert" hidden></p>
+
+      <a class="ayuda" href={whatsapp} rel="noopener">¿No tienes código? Escríbenos</a>
+    </main>
+
+    <script>
+      const tarjeta = document.querySelector('.tarjeta') as HTMLElement;
+      const forma = document.getElementById('forma') as HTMLFormElement;
+      const campo = document.getElementById('codigo') as HTMLInputElement;
+      const boton = document.getElementById('entrar') as HTMLButtonElement;
+      const error = document.getElementById('error') as HTMLElement;
+
+      const ERP = tarjeta.dataset.erp!;
+      const PORTAL = tarjeta.dataset.portal!;
+      const CLAVE = tarjeta.dataset.clave!;
+
+      const MENSAJE_INVALIDO =
+        'Ese código no sirve. Comunícate con Purifreze para que te den uno nuevo.';
+
+      // Entrar acá es empezar de cero: si en esta pestaña quedó la sesión de
+      // alguien más —un registro a medias en un dispositivo compartido—, no
+      // tiene por qué sobrevivir a que otra persona teclee su código.
+      try {
+        sessionStorage.removeItem(CLAVE);
+      } catch {
+        /* sin sessionStorage no hay nada que limpiar */
+      }
+
+      /** El guion es de lectura: se pone solo y no se manda. */
+      campo.addEventListener('input', () => {
+        const limpio = campo.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 8);
+        campo.value = limpio.length > 4 ? `${limpio.slice(0, 4)}-${limpio.slice(4)}` : limpio;
+      });
+
+      function mostrarError(texto: string): void {
+        error.textContent = texto;
+        error.hidden = false;
+        boton.disabled = false;
+        boton.textContent = 'Continuar';
+      }
+
+      forma.addEventListener('submit', async (evento) => {
+        evento.preventDefault();
+        error.hidden = true;
+        boton.disabled = true;
+        boton.textContent = 'Entrando…';
+
+        let respuesta: Response;
+        try {
+          respuesta = await fetch(`${ERP}/portal/codigo/canjear`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ codigo: campo.value }),
+          });
+        } catch {
+          mostrarError('No pudimos conectarnos. Revisa tu conexión e intenta de nuevo.');
+          return;
+        }
+
+        // 429 sí se distingue: no dice nada del código, y callarlo dejaría al
+        // cliente reintentando contra una puerta que ya no le va a abrir.
+        if (respuesta.status === 429) {
+          mostrarError('Demasiados intentos. Espera unos minutos e intenta de nuevo.');
+          return;
+        }
+        if (!respuesta.ok) {
+          mostrarError(MENSAJE_INVALIDO);
+          return;
+        }
+
+        const cuerpo = await respuesta.json().catch(() => null);
+        const sesion = cuerpo?.data;
+        if (!sesion?.token) {
+          mostrarError(MENSAJE_INVALIDO);
+          return;
+        }
+
+        try {
+          // recienCanjeada: el portal la consume al montar. Sin esa marca no
+          // sabría si la sesión se abrió ahora o quedó de una visita anterior,
+          // y seguiría el registro de otra persona sin preguntar.
+          sessionStorage.setItem(CLAVE, JSON.stringify({ ...sesion, recienCanjeada: true }));
+        } catch {
+          // Modo privado sin sessionStorage: el portal no encontraría la sesión
+          // y lo mandaría de vuelta acá, en un ciclo del que no puede salir.
+          mostrarError(
+            'Tu navegador está bloqueando el almacenamiento del sitio. ' +
+              'Desactiva la navegación privada e intenta de nuevo.'
+          );
+          return;
+        }
+
+        window.location.href = PORTAL;
+      });
+    </script>
+
+    <style is:global>
+      :root {
+        --pf-marino-profundo: #12275a;
+        --pf-marino: #1a4c8b;
+        --pf-tinta: #1b2430;
+        --pf-tinta-media: #5b6675;
+        --pf-borde: #dfe5ec;
+        --pf-fondo: #f2f6fa;
+        --pf-error: #b42318;
+
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        background: var(--pf-fondo);
+        color: var(--pf-tinta-media);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+      }
+
+      .tarjeta {
+        width: min(420px, 100%);
+        background: #fff;
+        border: 1px solid var(--pf-borde);
+        border-radius: 14px;
+        box-shadow: 0 24px 64px -16px rgba(18, 39, 90, 0.18);
+        padding: 2.4rem 1.9rem;
+        text-align: center;
+      }
+
+      .logo {
+        height: 34px;
+        width: auto;
+        margin-bottom: 2rem;
+      }
+
+      h1 {
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        color: var(--pf-marino-profundo);
+        margin: 0 0 0.6rem;
+      }
+
+      .intro {
+        margin: 0;
+        font-size: 0.97rem;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+        margin-top: 1.8rem;
+      }
+
+      /* Monoespaciada y con letra grande: se teclea mirando un papel o
+         escuchándolo por teléfono, carácter por carácter. */
+      #codigo {
+        min-height: 54px;
+        border: 1.5px solid var(--pf-borde);
+        border-radius: 9px;
+        padding: 0.6rem 1rem;
+        background: #fff;
+        color: var(--pf-tinta);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 1.35rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      #codigo:focus {
+        outline: none;
+        border-color: var(--pf-marino);
+      }
+
+      #codigo::placeholder {
+        color: #c2cad6;
+        font-weight: 400;
+        letter-spacing: 0.1em;
+      }
+
+      #entrar {
+        min-height: 48px;
+        border: 1.5px solid var(--pf-marino);
+        border-radius: 9px;
+        background: var(--pf-marino);
+        color: #fff;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+
+      #entrar:hover:not(:disabled) {
+        background: var(--pf-marino-profundo);
+      }
+
+      #entrar:disabled {
+        opacity: 0.65;
+        cursor: default;
+      }
+
+      .error {
+        margin: 1rem 0 0;
+        color: var(--pf-error);
+        font-size: 0.92rem;
+      }
+
+      .ayuda {
+        display: inline-block;
+        margin-top: 1.5rem;
+        color: var(--pf-tinta-media);
+        font-size: 0.9rem;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+    </style>
+  </body>
+</html>

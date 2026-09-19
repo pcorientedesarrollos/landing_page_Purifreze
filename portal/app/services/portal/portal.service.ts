@@ -58,13 +58,17 @@ export interface SesionPortal {
 }
 
 /**
- * La sesión tal como se guarda, con el enlace del que nació.
+ * La sesión tal como se guarda, con la marca de dónde nació.
  *
- * El enlace no se guarda por gusto: es lo que permite saber si la sesión de la
- * pestaña le corresponde a quien abrió ESTE enlace o quedó de uno anterior.
+ * Antes se guardaba el enlace que la originó, porque venía en la URL y se podían
+ * comparar. Con el código eso ya no existe: quien abre la pantalla no trae
+ * credencial. Lo que hay que poder distinguir ahora es si la sesión se canjeó
+ * recién en /activar o quedó de una visita anterior, que es lo que decide si el
+ * portal sigue solo o pregunta primero.
  */
 interface SesionPortalGuardada extends SesionPortal {
-  enlace?: string;
+  /** La puso /activar al canjear y la consume el portal al montar. */
+  recienCanjeada?: boolean;
 }
 
 export interface ConfigOpenpay {
@@ -123,19 +127,26 @@ export class PortalService {
   }
 
   /**
-   * La sesión guardada, SÓLO si nació del enlace que trae esta página.
+   * ¿Esta sesión se canjeó recién, o estaba guardada de antes?
    *
-   * Sin esta comprobación, abrir el enlace de otro cliente en el mismo
-   * navegador reusaba la sesión anterior y le mostraba los contratos de la
-   * persona equivocada: la sesión vieja ganaba y el enlace nuevo ni se canjeaba.
+   * Lo pregunta el portal al montar, y la respuesta decide si entra directo o
+   * con el nombre del cliente a la vista. Consume la marca: de acá en adelante
+   * la sesión ya no es de esta entrada.
+   *
+   * Sin esto, quien abra el portal en una pestaña donde alguien más dejó un
+   * registro a medias continuaría como esa persona sin haberlo decidido. Antes
+   * lo impedía comparar el enlace de la URL con el que originó la sesión; sin
+   * enlace en la URL no hay nada que comparar.
    */
-  sesionDelEnlace(token: string): SesionPortal | null {
+  consumirEntradaReciente(): boolean {
     const guardada = this.sesionGuardada;
-    return guardada?.enlace === token ? guardada : null;
+    if (!guardada?.recienCanjeada) return false;
+    this.guardarSesion(guardada, false);
+    return true;
   }
 
-  private guardarSesion(sesion: SesionPortal, enlace?: string): void {
-    const completa: SesionPortalGuardada = { ...sesion, enlace };
+  private guardarSesion(sesion: SesionPortal, recienCanjeada = true): void {
+    const completa: SesionPortalGuardada = { ...sesion, recienCanjeada };
     this.sesion = completa;
     try {
       // sessionStorage y no localStorage: la sesión muere al cerrar la pestaña,
@@ -170,36 +181,22 @@ export class PortalService {
   // ─── API ──────────────────────────────────────────────────────────────────
 
   /**
-   * Canjea por una sesión el enlace de un solo uso con el que entró el cliente.
+   * Canjea por una sesión el código que el cliente tecleó en /activar.
    *
-   * El enlace lo generó alguien de Purifreze y se lo compartió; el servidor de
-   * la landing ya lo validó antes de servir esta pantalla, así que acá sólo se
-   * cambia por la sesión con la que funciona el resto del portal. El enlace no
-   * se consume al canjearlo: muere cuando la tarjeta queda registrada, para que
-   * quien cierre la pestaña por error pueda volver.
+   * Sale del navegador del cliente a propósito: si lo hiciera el servidor de la
+   * landing, todos los intentos llegarían al ERP con la misma IP y su límite
+   * dejaría de distinguir a un cliente de quien prueba códigos.
+   *
+   * El código no se consume al canjearlo: muere cuando la tarjeta queda
+   * registrada, para que quien cierre la pestaña por error pueda volver.
    */
-  async canjearEnlace(token: string): Promise<SesionPortal> {
+  async canjearCodigo(codigo: string): Promise<SesionPortal> {
     const res: any = await firstValueFrom(
-      this.http.post(`${this.API_URI}/portal/enlace/canjear`, { token })
+      this.http.post(`${this.API_URI}/portal/codigo/canjear`, { codigo })
     );
     const sesion = res?.data as SesionPortal;
-    // Se guarda junto al enlace que la originó: es lo que evita que el enlace
-    // de otro cliente reuse esta sesión.
-    this.guardarSesion(sesion, token);
+    this.guardarSesion(sesion);
     return sesion;
-  }
-
-  /**
-   * El enlace con el que se abrió la pantalla.
-   *
-   * Viaja como atributo de <app-root> y no en la URL: el servidor lo pone ahí
-   * después de validarlo, así no queda en el historial de assets ni en los logs
-   * de acceso a los .js.
-   */
-  tokenDelEnlace(): string | null {
-    const raiz = document.querySelector('app-root');
-    const token = raiz?.getAttribute('data-token')?.trim();
-    return token ? token : null;
   }
 
   contratos(): Observable<any> {

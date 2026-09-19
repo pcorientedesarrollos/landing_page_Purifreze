@@ -1,10 +1,5 @@
 import { defineMiddleware } from 'astro:middleware';
-import {
-  validarEnlace,
-  RUTA_PORTAL,
-  RUTA_ASSETS,
-  RUTA_ENLACE_NO_DISPONIBLE,
-} from './lib/enlace-suscripcion';
+import { RUTA_ASSETS } from './lib/acceso-portal';
 
 /** 404 sin cuerpo: no confirma siquiera que la ruta exista. */
 const noEncontrado = () => new Response(null, { status: 404 });
@@ -17,26 +12,20 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return Response.redirect(url.toString(), 301);
   }
 
-  const { pathname, searchParams } = context.url;
-
-  // El index compilado del portal se sirve SÓLO por la página, que antes valida
-  // el enlace. Alcanzarlo por su ruta de assets saltearía el gate entero.
+  // El index compilado del portal se sirve SÓLO por su página. Los archivos de
+  // public/ los entrega el adaptador node ANTES que este middleware, así que un
+  // index alcanzable por su ruta de assets sería una segunda puerta a la misma
+  // pantalla, por fuera de lo que se decida acá.
+  const { pathname } = context.url;
   if (pathname === `${RUTA_ASSETS}/index.html` || pathname === `${RUTA_ASSETS}/`) {
     return noEncontrado();
   }
 
-  // El portal: sin enlace válido sigue siendo un 404, pero con la cara de
-  // Purifreze en vez de la pantalla de error del navegador. El cliente que abre
-  // su enlace tarde —lo más normal, duran una hora— no tiene por qué sentir que
-  // algo se rompió.
-  //
-  // Se hace rewrite y no redirect para conservar la URL del enlace, y el token
-  // no se arrastra a ninguna parte.
-  if (pathname === RUTA_PORTAL || pathname === `${RUTA_PORTAL}/`) {
-    const enlace = await validarEnlace(searchParams.get('t'));
-    if (!enlace.valido) return context.rewrite(RUTA_ENLACE_NO_DISPONIBLE);
-    context.locals.tokenPortal = enlace.token!;
-  }
+  // El portal ya no se protege desde acá. Antes traía el token en la URL y
+  // había algo que validar antes de renderizar; ahora la credencial es un
+  // código que se teclea en /activar, y lo que hace falta para ver datos es la
+  // sesión que sale de ese canje. Sin ella la pantalla se vuelve sola a
+  // /activar, y el servidor no entrega datos de nadie en el camino.
 
   return next();
 });

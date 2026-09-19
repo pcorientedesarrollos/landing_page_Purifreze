@@ -10,6 +10,24 @@
 
   <main class="pf-main">
 
+    <!-- La sesión estaba de antes en esta pestaña, no se abrió en esta entrada.
+         Puede ser el mismo cliente que recargó, o el siguiente en un dispositivo
+         compartido: continuar el registro de otro sin saberlo es lo que esto
+         evita. No bloquea, nombra. -->
+    <div class="pf-heredada" *ngIf="sesionHeredada && sesion">
+      <p>
+        Vas a continuar el registro de <strong>{{ sesion.cliente.nombre }}</strong>.
+      </p>
+      <div class="pf-heredada-acciones">
+        <button type="button" class="pf-heredada-seguir" (click)="continuarComoEsteCliente()">
+          Continuar
+        </button>
+        <button type="button" class="pf-heredada-salir" (click)="salirYActivar()">
+          No soy yo
+        </button>
+      </div>
+    </div>
+
     <!-- Progreso -->
     <div class="pf-progreso" *ngIf="paso !== 'listo'">
       <div class="pf-progreso-pista">
