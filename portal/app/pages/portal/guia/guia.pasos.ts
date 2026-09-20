@@ -12,24 +12,18 @@ import type { DriveStep } from 'driver.js';
  * datos del servidor, hay que escaparlos antes.
  */
 
-export function pasosServicio(): DriveStep[] {
-  return [
-    paso(
-      'servicio',
-      'Revisa tu servicio',
-      'Confirma que sean tus contratos y tu monto. Si algo no coincide, no sigas y llama a Purifreze.'
-    ),
-    paso('continuar', 'Toca “Continuar”', 'Después te pediremos los datos de tu tarjeta.'),
-  ];
-}
-
 /**
+ * El recorrido completo, en el orden en que se recorre la pantalla única:
+ * escribir la tarjeta, revisar lo que se va a cobrar, aceptar y activar.
+ *
+ * Antes eran dos recorridos —uno por pantalla— y el corte lo imponía la
+ * navegación, no la tarea. Con todo a la vista el recorrido es uno solo.
+ *
  * Una acción por paso, no un paso por campo: los cuatro datos de la tarjeta se
- * escriben de corrido, y pedir "Siguiente" entre cada uno cansa antes de terminar.
- * Qué se cobra y cuándo lo muestra la confirmación que abre el botón; la guía no
- * lo repite.
+ * escriben de corrido, y pedir "Siguiente" entre cada uno cansa antes de
+ * terminar.
  */
-export function pasosTarjeta(): DriveStep[] {
+export function pasosPago(): DriveStep[] {
   return [
     // Hay tarjetas que no traen los datos impresos: el número y el CVV viven en
     // la app del banco.
@@ -39,7 +33,17 @@ export function pasosTarjeta(): DriveStep[] {
       'Nombre, número, vigencia y CVV, tal como vienen en tu tarjeta. ' +
         'Si no vienen impresos, búscalos en la app de tu banco.'
     ),
-    paso('registrar', 'Toca “Registrar tarjeta”', 'Verás el resumen de tu pago para confirmarlo.'),
+    paso(
+      'servicio',
+      'Revisa lo que se va a cobrar',
+      'Confirma que sean tus contratos, tu monto y tu fecha. Si algo no coincide, no sigas y llama a Purifreze.'
+    ),
+    paso(
+      'aceptar',
+      'Marca la casilla de autorización',
+      'Es tu permiso para que el cargo se haga solo cada mes. Sin ella no se puede activar.'
+    ),
+    paso('registrar', 'Toca “Activar pago automático”', 'Con eso queda listo y te confirmamos en pantalla.'),
   ];
 }
 

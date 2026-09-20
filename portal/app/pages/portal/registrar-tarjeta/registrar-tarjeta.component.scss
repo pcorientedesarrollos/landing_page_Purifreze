@@ -94,12 +94,162 @@
 
 /* ─── Estructura ─────────────────────────────────────────────────────── */
 
+/* Antes eran 520px: una columna angosta para pantallas de un paso a la vez.
+   Ahora la vista lleva el formulario y el resumen lado a lado. */
 .pf-main {
   flex: 1;
   width: 100%;
-  max-width: 520px;
+  max-width: 1040px;
   margin: 0 auto;
   padding: 0 1.5rem 3rem;
+}
+
+/* El éxito y el bloqueo siguen siendo de una columna: un mensaje corto a lo
+   ancho de 1040px se lee peor. */
+.pf-tarjeta-final,
+.pf-bloqueo,
+.pf-heredada {
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ─── Las dos columnas ───────────────────────────────────────────────── */
+
+.pf-pago-titulo {
+  margin-bottom: 1.4rem;
+
+  h1 {
+    font-family: var(--pf-titulo);
+    margin: 0 0 0.35rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--pf-marino-profundo);
+  }
+}
+
+.pf-columnas {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* El resumen acompaña al formulario mientras se teclea: el importe no se va
+   de la vista aunque el formulario sea más alto. */
+.pf-resumen-col {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.pf-col-pago h2,
+.pf-col-resumen h2 {
+  font-family: var(--pf-titulo);
+  margin: 0 0 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--pf-marino-profundo);
+}
+
+/* El submit real existe para quien teclea Enter en un campo; el botón que se
+   ve vive en la columna del resumen, junto al importe. */
+.pf-submit-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pf-privacidad {
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--pf-borde);
+
+  p {
+    margin: 0;
+    font-size: 0.76rem;
+    line-height: 1.55;
+    color: var(--pf-tinta-suave);
+  }
+}
+
+/* Lo que el cargo implica, junto al botón que lo autoriza. */
+.pf-condiciones {
+  list-style: none;
+  margin: 1.2rem 0 0;
+  padding: 0;
+
+  li {
+    position: relative;
+    padding-left: 0.95rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--pf-tinta-suave);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--pf-agua);
+    }
+  }
+}
+
+/* La casilla es lo que reemplaza al modal de confirmación: tiene que verse
+   como un acto, no como letra chica. */
+.pf-acepto {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 1.1rem 0 1.2rem;
+  padding: 0.85rem 0.9rem;
+  border: 1px solid var(--pf-borde);
+  border-radius: calc(var(--pf-radio) / 2);
+  background: var(--pf-fondo);
+  cursor: pointer;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--pf-tinta);
+
+  input {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    accent-color: var(--pf-marino);
+    cursor: pointer;
+  }
+
+  strong { color: var(--pf-marino-profundo); }
+}
+
+.pf-enlace-terminos {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--pf-agua);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.pf-cuando-titulo {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 700;
+  color: var(--pf-tinta-suave);
+  margin-bottom: 0.35rem;
 }
 
 .pf-tarjeta {
@@ -178,43 +328,6 @@
   color: var(--pf-aviso);
 }
 
-/* ─── Progreso ───────────────────────────────────────────────────────── */
-
-.pf-progreso {
-  margin-bottom: 1.4rem;
-}
-
-.pf-progreso-pista {
-  height: 3px;
-  background: var(--pf-hielo);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.pf-progreso-barra {
-  height: 100%;
-  width: 12%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--pf-marino) 0%, var(--pf-agua) 100%);
-}
-
-.pf-progreso-etapas {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-top: 0.6rem;
-  font-size: 0.72rem;
-  color: var(--pf-tinta-suave);
-
-  .pf-etapa-activa {
-    color: var(--pf-marino);
-    font-weight: 600;
-  }
-
-  .pf-etapa-hecha {
-    color: var(--pf-tinta-media);
-  }
-}
 
 /* ─── Formularios ────────────────────────────────────────────────────── */
 
@@ -849,4 +962,19 @@
 /* Debajo del saludo, el enlace se pega al texto que lo introduce. */
 .pf-entrada + .pf-guia-enlace {
   margin-top: -1.2rem;
+}
+
+/* ─── Móvil: una sola columna ────────────────────────────────────────── */
+/* El resumen va DEBAJO del formulario y queda pegado al botón, que es donde
+   se decide. Lo hace el orden del DOM; acá sólo se apaga el sticky, que en
+   una columna dejaría el resumen clavado tapando los campos. */
+@media (max-width: 900px) {
+  .pf-columnas {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.1rem;
+  }
+
+  .pf-resumen-col {
+    position: static;
+  }
 }

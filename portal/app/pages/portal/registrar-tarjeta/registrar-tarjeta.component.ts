@@ -19,24 +19,12 @@ import { PortalAnimacionesService } from '../animaciones.service';
 import { PortalTerminosComponent } from '../terminos/terminos.component';
 import { mensajeParaCliente } from '../errores';
 import { PortalGuiaService } from '../guia/guia.service';
-import { pasosServicio, pasosTarjeta } from '../guia/guia.pasos';
-import {
-  PortalConfirmacionComponent,
-  ResumenConfirmacion,
-} from '../confirmacion/confirmacion.component';
-import { tarjetaAConfirmar } from '../confirmacion/tarjeta';
+import { pasosPago } from '../guia/guia.pasos';
 
-type Paso = 'plan' | 'tarjeta' | 'listo';
+type Paso = 'pago' | 'listo';
 
 /** Dónde se teclea el código. Es la única salida de esta pantalla hacia atrás. */
 const RUTA_ACTIVAR = '/activar';
-
-/** Porcentaje de la barra de progreso para cada paso. */
-const PROGRESO: Record<Paso, number> = {
-  plan: 40,
-  tarjeta: 85,
-  listo: 100,
-};
 
 /**
  * Portal público de autoservicio.
@@ -51,7 +39,7 @@ const PROGRESO: Record<Paso, number> = {
 @Component({
   selector: 'app-portal-registrar-tarjeta',
   standalone: true,
-  imports: [CommonModule, FormsModule, PortalTerminosComponent, PortalConfirmacionComponent],
+  imports: [CommonModule, FormsModule, PortalTerminosComponent],
   templateUrl: './registrar-tarjeta.component.html',
   styleUrls: ['./registrar-tarjeta.component.scss'],
 })
@@ -62,17 +50,17 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
   private host = inject(ElementRef<HTMLElement>);
 
   @ViewChild('panel') panel?: ElementRef<HTMLElement>;
-  @ViewChild('barraProgreso') barraProgreso?: ElementRef<HTMLElement>;
   @ViewChild('cajaError') cajaError?: ElementRef<HTMLElement>;
   @ViewChild('checkFinal') checkFinal?: ElementRef<HTMLElement>;
 
   readonly formId = 'portal-payment-form';
 
   /**
-   * Arranca en 'plan' porque ya no hay pantallas previas: la sesión llega hecha
-   * desde /activar y lo primero que se ve es el servicio cargando.
+   * Una sola pantalla: la tarjeta y lo que se va a cobrar se miran juntos, y de
+   * acá se pasa directo al resultado. Antes eran tres pasos y el importe
+   * desaparecía de la vista justo cuando el cliente entregaba su tarjeta.
    */
-  public paso: Paso = 'plan';
+  public paso: Paso = 'pago';
   public cargando = false;
   public error = '';
   public sandbox = false;
@@ -150,10 +138,11 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
   public terminosAbiertos = false;
 
   /**
-   * Lo que el cliente está confirmando, mientras el modal está abierto. Se arma
-   * al abrirlo y no en cada render: lo que confirma tiene que ser lo que vio.
+   * La casilla de autorización. Es lo que ocupa el lugar de la confirmación que
+   * antes era un modal aparte: sin un acto explícito, activar el cobro sería un
+   * solo clic sobre un formulario recién llenado.
    */
-  public confirmacion: ResumenConfirmacion | null = null;
+  public aceptaTerminos = false;
 
   /**
    * Versión del texto que esta pantalla muestra. Viaja con el registro de la
@@ -197,7 +186,7 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     // es preguntar, así que acá se pregunta.
     this.sesionHeredada = !this.portal.consumirEntradaReciente();
 
-    void this.irAPlanes();
+    void this.cargar();
   }
 
   /**
@@ -230,10 +219,6 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
       this.animaciones.entradaCampos(
         this.host.nativeElement.querySelectorAll('.pf-campo, .pf-plan')
       );
-      this.animaciones.avanzarProgreso(
-        this.barraProgreso?.nativeElement ?? null,
-        PROGRESO[this.paso]
-      );
       if (this.paso === 'listo') {
         this.animaciones.confirmacion(this.checkFinal?.nativeElement ?? null);
       }
@@ -251,20 +236,17 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     this.guia.cerrar();
   }
 
-  // ─── Progreso ────────────────────────────────────────────────────────────
-
-  get etapaActual(): number {
-    return this.paso === 'plan' ? 1 : 2;
-  }
-
-  esEtapa(n: number): boolean {
-    return this.etapaActual === n;
-  }
 
   // ─── Servicio contratado ─────────────────────────────────────────────────
 
-  private async irAPlanes(): Promise<void> {
-    this.paso = 'plan';
+  /**
+   * Trae el servicio y, si hay algo que cobrar, prepara la pasarela.
+   *
+   * En ese orden y no en paralelo: al cliente bloqueado —varios contratos, sin
+   * contratos, mensualidades sin generar— no se le pide tarjeta, así que
+   * cargarle Openpay.js sería trabajo y scripts de terceros para nada.
+   */
+  private async cargar(): Promise<void> {
     this.cargando = true;
     this.error = '';
     try {
@@ -282,9 +264,11 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     } finally {
       this.enviando = false;
       this.cargando = false;
-      // El listado llega después del render del paso, así que se anima aparte.
+      // El servicio llega después del primer render, así que se anima aparte.
       this.pasoAnimado = null;
     }
+
+    await this.prepararOpenpay();
   }
 
   /**
@@ -312,12 +296,14 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     return this.servicio?.periodicidad ?? null;
   }
 
-  async continuarATarjeta(): Promise<void> {
+  /**
+   * Deja el formulario listo para tokenizar.
+   *
+   * Openpay.deviceData.setup() busca el <form> por id, así que esto corre
+   * DESPUÉS de que el servicio cargó y el formulario está en el DOM.
+   */
+  private async prepararOpenpay(): Promise<void> {
     if (!this.hayServicio) return;
-    // La guía deja tocar "Continuar": al cambiar de pantalla, se va con ella.
-    this.guia.cerrar();
-    this.paso = 'tarjeta';
-    this.error = '';
     this.cargando = true;
     try {
       const config = await this.portal.inicializarOpenpay();
@@ -428,37 +414,19 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     );
   }
 
+  /** Todo lo que tiene que ser cierto para poder activar el cobro. */
+  get puedeActivar(): boolean {
+    return this.tarjetaValida && this.aceptaTerminos && this.openpayListo && !this.cargando;
+  }
+
   /**
-   * El formulario no registra: abre la confirmación, donde el cliente ve qué se
-   * cobra, desde cuándo y con qué tarjeta. El registro sale de ahí.
+   * Activa el cobro automático.
+   *
+   * Tocar el botón con la casilla marcada ES el consentimiento: terminosVersion
+   * viaja con el alta y queda guardado como evidencia de qué texto se aceptó.
    */
-  pedirConfirmacion(): void {
-    const servicio = this.servicio;
-    if (!servicio || !this.tarjetaValida || this.enviando || !this.openpayListo) return;
-    this.guia.cerrar();
-    this.error = '';
-
-    const primer = servicio.primerCobro;
-    this.confirmacion = {
-      contratos: servicio.contratos.length,
-      total: this.formatoMonto(servicio.total),
-      periodicidad: this.periodicidadComun,
-      primerCargo: primer ? (this.esHoy(primer) ? 'hoy' : this.fechaLarga(primer)) : null,
-      cobroEnElActo: servicio.cobroVencido,
-      mensualidad: servicio.fechaMensualidad
-        ? this.diaMensualidad(servicio.fechaMensualidad)
-        : null,
-      tarjeta: tarjetaAConfirmar(this.numeroLimpio),
-    };
-  }
-
-  cerrarConfirmacion(): void {
-    if (!this.enviando) this.confirmacion = null;
-  }
-
-  /** Lo llama la confirmación. Tocar "Activar pago automático" es aceptar los términos. */
   async registrarTarjeta(): Promise<void> {
-    if (!this.tarjetaValida || this.enviando || !this.openpayListo) return;
+    if (!this.puedeActivar || this.enviando) return;
     this.enviando = true;
     this.cargando = true;
     this.error = '';
@@ -485,32 +453,28 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     } finally {
       this.enviando = false;
       this.cargando = false;
-      // Bien o mal, la confirmación se cierra: si el banco rechazó la tarjeta, el
-      // error se lee junto a los campos, que es donde se corrige.
-      this.confirmacion = null;
     }
   }
 
   /**
-   * Los términos se abren desde la confirmación, que se oculta mientras tanto:
-   * los dos modales comparten z-index y quedarían encimados.
+   * Los términos completos, en su propio modal. El resumen de la derecha dice
+   * lo esencial; esto es el texto largo para quien quiera leerlo entero.
    */
   abrirTerminos(): void {
     this.terminosAbiertos = true;
   }
 
   /**
-   * "Cerrar" y "Acepto los términos" regresan a la confirmación. Aceptar ahí no
-   * activa nada: el consentimiento se da al tocar "Activar pago automático".
+   * "Acepto los términos" cierra el modal y marca la casilla: quien leyó el
+   * texto completo y lo aceptó ahí no tiene por qué volver a decirlo abajo.
    */
-  cerrarTerminos(): void {
+  aceptarDesdeTerminos(): void {
+    this.aceptaTerminos = true;
     this.terminosAbiertos = false;
   }
 
-  volverAPlan(): void {
-    this.limpiarDatosSensibles();
-    this.paso = 'plan';
-    this.error = '';
+  cerrarTerminos(): void {
+    this.terminosAbiertos = false;
   }
 
   private limpiarDatosSensibles(): void {
@@ -520,18 +484,10 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
 
   // ─── Guía "¿Cómo funciona?" ──────────────────────────────────────────────
 
-  abrirGuiaServicio(): void {
-    if (!this.hayServicio) return;
-    this.guia.abrir(pasosServicio());
-  }
-
-  /**
-   * Solo con Openpay listo: antes de eso, el último paso resaltaría un botón que
-   * todavía dice "Preparando el pago seguro…".
-   */
-  abrirGuiaTarjeta(): void {
-    if (!this.openpayListo) return;
-    this.guia.abrir(pasosTarjeta());
+  /** Un solo recorrido: la pantalla es una sola. */
+  abrirGuia(): void {
+    if (!this.hayServicio || !this.openpayListo) return;
+    this.guia.abrir(pasosPago());
   }
 
   // ─── Presentación ────────────────────────────────────────────────────────
