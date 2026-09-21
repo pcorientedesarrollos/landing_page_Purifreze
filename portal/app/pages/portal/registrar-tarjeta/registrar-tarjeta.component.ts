@@ -36,6 +36,20 @@ type MarcaTarjeta = 'visa' | 'mastercard' | 'amex' | 'carnet';
 const RUTA_ACTIVAR = '/activar';
 
 /**
+ * Los tres tamaños de texto que ofrece la pantalla, como factor del normal.
+ *
+ * Tres y no un deslizador: son tres botones que se ven y se tocan, y el salto
+ * entre uno y otro se nota. 1.3 es el techo con el que las dos columnas siguen
+ * cabiendo en un monitor chico antes de apilarse.
+ */
+const ESCALAS_TEXTO = [1, 1.15, 1.3];
+
+/** El font-size de la raíz con el que están calculados los rem de la hoja. */
+const BASE_TEXTO_PX = 16;
+
+const CLAVE_ESCALA = 'portal_purifreze_escala_texto';
+
+/**
  * Portal público de autoservicio.
  *
  * El cliente llega acá con la sesión ya hecha: la abrió /activar al canjear el
@@ -107,6 +121,12 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
    * puede voltear tocándola.
    */
   public dorsoVisible = false;
+
+  // ─── Tamaño del texto ────────────────────────────────────────────────────
+  readonly escalasTexto = ESCALAS_TEXTO;
+  /** Qué dice el lector de pantalla de cada botón, en el mismo orden. */
+  readonly nombresEscalaTexto = ['Texto normal', 'Texto grande', 'Texto más grande'];
+  public escalaTexto = ESCALAS_TEXTO[0];
 
   public tarjetaRegistrada: {
     marca: string | null;
@@ -204,7 +224,43 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     // es preguntar, así que acá se pregunta.
     this.sesionHeredada = !this.portal.consumirEntradaReciente();
 
+    // El tamaño que la persona eligió en una visita anterior, antes de pintar.
+    this.restaurarEscalaTexto();
+
     void this.cargar();
+  }
+
+  /**
+   * Tamaño del texto de la pantalla.
+   *
+   * Quien registra su tarjeta no siempre ve bien de cerca, y esta pantalla pide
+   * leer un importe y una fecha antes de autorizar un cargo recurrente: que el
+   * texto sea legible es parte de que el consentimiento sea informado.
+   *
+   * Se escribe sobre el font-size de la raíz porque toda la hoja de estilos
+   * mide en rem: cambiarlo ahí escala los textos, los campos y los espacios
+   * juntos, sin tocar una sola regla. El plástico dibujado no se mueve: su SVG
+   * mide en unidades de su viewBox.
+   */
+  cambiarEscalaTexto(escala: number): void {
+    this.escalaTexto = escala;
+    document.documentElement.style.fontSize = `${BASE_TEXTO_PX * escala}px`;
+    try {
+      localStorage.setItem(CLAVE_ESCALA, String(escala));
+    } catch {
+      // Sin persistencia la preferencia vale para esta visita. Aceptable.
+    }
+  }
+
+  /** La preferencia vale para la persona, no para la pestaña: sobrevive al cierre. */
+  private restaurarEscalaTexto(): void {
+    let guardada = 0;
+    try {
+      guardada = Number(localStorage.getItem(CLAVE_ESCALA));
+    } catch {
+      return;
+    }
+    if (ESCALAS_TEXTO.includes(guardada)) this.cambiarEscalaTexto(guardada);
   }
 
   /**

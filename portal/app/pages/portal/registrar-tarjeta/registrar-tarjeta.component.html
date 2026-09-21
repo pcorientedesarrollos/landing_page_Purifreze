@@ -5,7 +5,23 @@
       <img src="assets/logo-purifreze.png" alt="Purifreze" />
       <span>Purifreze</span>
     </div>
-    <span class="pf-pruebas" *ngIf="sandbox">Modo de pruebas</span>
+
+    <div class="pf-header-derecha">
+      <span class="pf-pruebas" *ngIf="sandbox">Modo de pruebas</span>
+
+      <!-- Tamaño del texto, arriba y siempre visible: quien necesita agrandarlo
+           lo necesita ANTES de empezar a leer, no después de buscar el ajuste.
+           Las tres A crecen para que el botón muestre lo que hace. -->
+      <div class="pf-texto-tamano" role="group" aria-label="Tamaño del texto">
+        <span class="pf-texto-tamano-rotulo" aria-hidden="true">Tamaño del texto</span>
+        <button type="button" class="pf-texto-boton"
+                *ngFor="let escala of escalasTexto; let i = index"
+                [class.pf-texto-boton-activo]="escalaTexto === escala"
+                [attr.aria-pressed]="escalaTexto === escala"
+                [attr.aria-label]="nombresEscalaTexto[i]"
+                (click)="cambiarEscalaTexto(escala)">A</button>
+      </div>
+    </div>
   </header>
 
   <main class="pf-main">

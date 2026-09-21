@@ -12,9 +12,14 @@
   --pf-agua-clara: #a8cfe3;
   --pf-hielo: #dce6f0;
 
-  --pf-tinta: #1b2430;
-  --pf-tinta-media: #5b6675;
-  --pf-tinta-suave: #8b95a3;
+  /* Textos casi negros. Los grises de antes (--pf-tinta-media #5b6675,
+     --pf-tinta-suave #8b95a3) se leían mal en pantallas con brillo bajo o al
+     sol, y acá se lee un importe y una fecha antes de autorizar un cargo
+     recurrente. Los tres niveles se conservan como jerarquía, pero todos por
+     encima de 7:1 de contraste contra el blanco (WCAG AAA para texto normal). */
+  --pf-tinta: #101820;
+  --pf-tinta-media: #23303e;
+  --pf-tinta-suave: #3c4a5a;
   --pf-borde: #dfe5ec;
   --pf-superficie: #ffffff;
   --pf-fondo: #f2f6fa;
@@ -49,15 +54,87 @@
 
 /* ─── Encabezado ─────────────────────────────────────────────────────── */
 
+/* Al ancho del contenido, no los 520px de cuando la pantalla era de una sola
+   columna: el control de tamaño va a la derecha y tiene que quedar alineado
+   con el resumen, no flotando sobre el formulario. */
 .pf-header {
   width: 100%;
-  max-width: 520px;
+  max-width: 1040px;
   margin: 0 auto;
   padding: 1.75rem 1.5rem 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+}
+
+.pf-header-derecha {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+/* ─── Tamaño del texto ───────────────────────────────────────────────────
+
+   Tres botones con una A que crece: el control muestra lo que hace sin tener
+   que leer una etiqueta. El rótulo se oculta en móvil, donde no cabe. */
+
+.pf-texto-tamano {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.pf-texto-tamano-rotulo {
+  font-size: 0.72rem;
+  color: var(--pf-tinta-suave);
+  margin-right: 0.15rem;
+}
+
+.pf-texto-boton {
+  /* 40px de lado al tamaño normal: el mínimo táctil que puede tocar sin errar
+     alguien con pulso poco firme, que es justamente quien lo va a usar. */
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--pf-borde);
+  border-radius: 9px;
+  background: var(--pf-superficie);
+  font-family: var(--pf-texto);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--pf-tinta-media);
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+
+  &:nth-of-type(1) { font-size: 0.85rem; }
+  &:nth-of-type(2) { font-size: 1.05rem; }
+  &:nth-of-type(3) { font-size: 1.28rem; }
+
+  &:hover:not(.pf-texto-boton-activo) {
+    border-color: var(--pf-agua-clara);
+    color: var(--pf-tinta);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--pf-agua-clara);
+    outline-offset: 2px;
+  }
+}
+
+.pf-texto-boton-activo {
+  background: var(--pf-marino);
+  border-color: var(--pf-marino);
+  color: #fff;
+  cursor: default;
+}
+
+@media (max-width: 720px) {
+  .pf-texto-tamano-rotulo {
+    display: none;
+  }
 }
 
 .pf-marca {
@@ -338,8 +415,9 @@
   > span {
     display: block;
     margin-bottom: 0.4rem;
-    font-size: 0.81rem;
-    font-weight: 500;
+    /* 0.81rem era letra chica para el rótulo del dato que estamos pidiendo. */
+    font-size: 0.9rem;
+    font-weight: 600;
     color: var(--pf-tinta);
     letter-spacing: 0.005em;
   }
@@ -351,14 +429,17 @@
     border-radius: 10px;
     padding: 0.72rem 0.9rem;
     font-family: var(--pf-texto);
-    font-size: 0.97rem;
+    font-size: 1.02rem;
     color: var(--pf-tinta);
     background: var(--pf-superficie);
     outline: none;
     transition: border-color 0.16s ease, box-shadow 0.16s ease;
 
+    /* #b9c2ce contra blanco es 1.9:1: el ejemplo del formato no se leía. Este
+       llega a 4.6:1 y sigue distinguiéndose del valor ya tecleado, que es casi
+       negro. */
     &::placeholder {
-      color: #b9c2ce;
+      color: #6b7787;
     }
 
     &:hover:not(:focus) {
