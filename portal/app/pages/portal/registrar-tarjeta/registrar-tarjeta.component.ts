@@ -23,6 +23,15 @@ import { pasosPago } from '../guia/guia.pasos';
 
 type Paso = 'pago' | 'listo';
 
+/**
+ * Marcas que la tarjeta dibujada sabe representar.
+ *
+ * No es validación: Openpay decide si acepta el número. Sirve para mostrarle al
+ * cliente que reconocimos su tarjeta mientras la teclea, y para agrupar los
+ * dígitos como vienen impresos en el plástico.
+ */
+type MarcaTarjeta = 'visa' | 'mastercard' | 'amex' | 'carnet';
+
 /** Dónde se teclea el código. Es la única salida de esta pantalla hacia atrás. */
 const RUTA_ACTIVAR = '/activar';
 
@@ -89,6 +98,15 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
   public cvv = '';
   private deviceSessionId = '';
   public openpayListo = false;
+
+  /**
+   * La tarjeta dibujada muestra el dorso.
+   *
+   * Se voltea al enfocar el CVV porque ahí es donde está impreso: el dibujo le
+   * dice a la persona dónde buscar el dato que le estamos pidiendo. También se
+   * puede voltear tocándola.
+   */
+  public dorsoVisible = false;
 
   public tarjetaRegistrada: {
     marca: string | null;
@@ -341,9 +359,113 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     return this.numero.replace(/\D/g, '');
   }
 
+  /**
+   * Marca deducida del prefijo del número (IIN), mientras se teclea.
+   *
+   * Los rangos son los públicos de cada red: Visa empieza con 4, Mastercard con
+   * 51-55 o 2221-2720, American Express con 34 o 37. Carnet va antes de
+   * Mastercard porque 506199 caería en su rango de dos dígitos.
+   *
+   * Devuelve null mientras no alcance para decidir: la tarjeta dibujada queda
+   * neutra en vez de adivinar.
+   */
+  get marcaDetectada(): MarcaTarjeta | null {
+    const n = this.numeroLimpio;
+    if (!n) return null;
+    if (n.startsWith('4')) return 'visa';
+    if (/^3[47]/.test(n)) return 'amex';
+    if (/^(506199|606333|588772)/.test(n)) return 'carnet';
+    if (/^(5[1-5]|2[2-7])/.test(n)) return 'mastercard';
+    return null;
+  }
+
+  /**
+   * Cómo se agrupan los dígitos en el plástico.
+   *
+   * American Express imprime 4-6-5 y son 15 dígitos; el resto va de cuatro en
+   * cuatro. Agrupar como en la tarjeta física es lo que permite comparar a
+   * simple vista lo tecleado con lo impreso.
+   */
+  private get gruposDelNumero(): number[] {
+    return this.marcaDetectada === 'amex' ? [4, 6, 5] : [4, 4, 4, 4];
+  }
+
   formatearNumero(): void {
-    const limpio = this.numeroLimpio.slice(0, 19);
-    this.numero = limpio.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+    // Amex son 15 dígitos exactos; una Visa puede llegar a 19.
+    const limpio = this.numeroLimpio.slice(0, this.marcaDetectada === 'amex' ? 15 : 19);
+    const grupos = this.gruposDelNumero;
+
+    const partes: string[] = [];
+    let i = 0;
+    for (const tamano of grupos) {
+      if (i >= limpio.length) break;
+      partes.push(limpio.slice(i, i + tamano));
+      i += tamano;
+    }
+    // Una Visa de 17 a 19 dígitos deja un resto después de los cuatro grupos:
+    // se agrega de a cuatro en vez de recortarlo.
+    while (i < limpio.length) {
+      partes.push(limpio.slice(i, i + 4));
+      i += 4;
+    }
+
+    this.numero = partes.join(' ');
+  }
+
+  // ─── Lo que se dibuja en la tarjeta ──────────────────────────────────────
+  //
+  // Todo sale de los campos que el cliente ya tecleó: no se guarda ninguna
+  // copia del número ni del CVV. Es la misma cadena del formulario, agrupada.
+
+  /** Número con los huecos que faltan marcados, como el plástico en blanco. */
+  get numeroEnTarjeta(): string {
+    const d = this.numeroLimpio;
+    const partes: string[] = [];
+    let i = 0;
+    for (const tamano of this.gruposDelNumero) {
+      partes.push(d.slice(i, i + tamano).padEnd(tamano, '•'));
+      i += tamano;
+    }
+    const resto = d.slice(i);
+    return resto ? `${partes.join(' ')} ${resto}` : partes.join(' ');
+  }
+
+  get titularEnTarjeta(): string {
+    return this.titular.trim() || 'NOMBRE DEL TITULAR';
+  }
+
+  get vigenciaEnTarjeta(): string {
+    const d = this.vigencia.replace(/\D/g, '');
+    if (!d) return 'MM/AA';
+    return d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : `${d}/`;
+  }
+
+  /**
+   * El CVV, legible, en el dorso dibujado.
+   *
+   * Es la pantalla del propio cliente mirando su propia tarjeta: verlo escrito
+   * le sirve para comprobar que tecleó los tres dígitos correctos, que es el
+   * dato que más se equivoca. El campo sigue siendo type="password" para que no
+   * quede a la vista de quien pase al lado mientras llena el formulario; el
+   * dorso solo aparece mientras ese campo tiene el foco.
+   *
+   * No se guarda en ninguna parte: sale del mismo campo y se va con él.
+   */
+  get cvvEnTarjeta(): string {
+    return this.cvv || '•••';
+  }
+
+  /**
+   * Logotipo que va sobre la tarjeta, del kit oficial de Openpay.
+   *
+   * Carnet solo se muestra si el comercio la tiene habilitada (aceptaCarnet):
+   * pintar su logo sin aceptarla le haría creer al cliente que su tarjeta sirve.
+   */
+  get logoDeLaMarca(): string | null {
+    const marca = this.marcaDetectada;
+    if (!marca) return null;
+    if (marca === 'carnet' && !this.aceptaCarnet) return null;
+    return `assets/openpay/${marca}.png`;
   }
 
   /**

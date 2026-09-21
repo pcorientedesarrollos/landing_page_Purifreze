@@ -786,6 +786,223 @@
   }
 }
 
+/* La marca que el cliente está tecleando queda encendida y las otras se
+   atenúan. Se baja la opacidad, no se recolorea: la guía de Openpay prohíbe
+   cambiarle el color a sus logotipos. */
+.pf-marca-apagada {
+  opacity: 0.28;
+  transition: opacity 0.2s ease;
+}
+
+/* ─── Tarjeta dibujada ───────────────────────────────────────────────────
+
+   Decorativa: refleja lo que el cliente teclea para que pueda comparar con el
+   plástico. Geometría basada en el diseño de Adam Quinlan (MIT,
+   https://codepen.io/quinlo/pen/YONMEa), con la paleta Purifreze.
+
+   El color de fondo cambia con la marca detectada: la tarjeta en pantalla se
+   parece a la que la persona tiene en la mano. */
+
+.pf-cc-marco {
+  perspective: 1400px;
+  margin-bottom: 1.6rem;
+}
+
+.pf-cc {
+  position: relative;
+  /* 750×471 es la proporción de una tarjeta ID-1, la del plástico real. */
+  aspect-ratio: 750 / 471;
+  max-width: 380px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.15, 0.2, 1);
+  cursor: pointer;
+
+  /* Gris neutro mientras no se sabe la marca. */
+  --pf-cc-fondo: #7d8896;
+  --pf-cc-fondo-oscuro: #59626e;
+
+  &[data-marca='visa'] {
+    --pf-cc-fondo: #2c6baf;
+    --pf-cc-fondo-oscuro: #12275a;
+  }
+
+  &[data-marca='mastercard'] {
+    --pf-cc-fondo: #d1873c;
+    --pf-cc-fondo-oscuro: #8a4b1f;
+  }
+
+  &[data-marca='amex'] {
+    --pf-cc-fondo: #1785c4;
+    --pf-cc-fondo-oscuro: #10557c;
+  }
+
+  &[data-marca='carnet'] {
+    --pf-cc-fondo: #9c3b4a;
+    --pf-cc-fondo-oscuro: #6a2029;
+  }
+}
+
+.pf-cc-volteada {
+  transform: rotateY(180deg);
+}
+
+.pf-cc-cara {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.pf-cc-dorso {
+  transform: rotateY(180deg);
+}
+
+.pf-cc-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px -12px rgba(18, 39, 90, 0.45);
+}
+
+/* El logotipo de la marca va encima del SVG, del kit oficial y sin alterar. */
+.pf-cc-logo {
+  position: absolute;
+  top: 7%;
+  right: 7%;
+  height: 13%;
+  width: auto;
+  max-width: 24%;
+  object-fit: contain;
+  z-index: 1;
+  /* La tarjeta se voltea con un clic: el logo no puede interceptarlo. */
+  pointer-events: none;
+}
+
+/* ─── Frente ─────────────────────────────────────────────────────────── */
+
+.pf-cc-claro {
+  fill: var(--pf-cc-fondo);
+  transition: fill 0.4s ease;
+}
+
+.pf-cc-oscuro {
+  fill: var(--pf-cc-fondo-oscuro);
+  transition: fill 0.4s ease;
+}
+
+.pf-cc-chip-cuerpo {
+  fill: #e8d8a6;
+}
+
+.pf-cc-chip-linea {
+  fill: #a08f5f;
+}
+
+.pf-cc-rotulo {
+  fill: #ffffff;
+  opacity: 0.62;
+  font-family: var(--pf-texto);
+  font-size: 24px;
+  letter-spacing: 0.02em;
+}
+
+/* Monoespaciada del sistema: los dígitos quedan alineados y no se agrega
+   ninguna fuente externa a la pantalla que captura la tarjeta. */
+.pf-cc-numero {
+  fill: #ffffff;
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 52px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* 17 a 19 dígitos: mismo bloque, letra más chica. */
+.pf-cc-numero-largo {
+  font-size: 44px;
+}
+
+.pf-cc-titular {
+  fill: #ffffff;
+  font-family: var(--pf-texto);
+  font-size: 33px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.pf-cc-vigencia {
+  fill: #ffffff;
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 36px;
+}
+
+/* "VÁLIDA HASTA" es más largo que el "VALID THRU" del diseño original y
+   chocaba con la flecha: va un punto más chico y sin separación extra. */
+.pf-cc-mini {
+  fill: #ffffff;
+  font-family: var(--pf-texto);
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+.pf-cc-flecha {
+  fill: #ffffff;
+}
+
+/* ─── Dorso ──────────────────────────────────────────────────────────── */
+
+.pf-cc-banda {
+  fill: #14181d;
+}
+
+.pf-cc-firma {
+  fill: #f2f2f2;
+}
+
+.pf-cc-firma-raya {
+  fill: #d8d2db;
+}
+
+.pf-cc-caja-cvv {
+  fill: #c4c4c4;
+}
+
+.pf-cc-cvv {
+  fill: #1b2430;
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 27px;
+}
+
+.pf-cc-titular-dorso {
+  fill: #1b2430;
+  font-family: var(--pf-texto);
+  font-style: italic;
+  font-size: 34px;
+}
+
+.pf-cc-letra-chica {
+  fill: #eaeaea;
+}
+
+/* Quien pidió menos movimiento ve el cambio de cara sin la animación. */
+@media (prefers-reduced-motion: reduce) {
+  .pf-cc {
+    transition: none;
+  }
+
+  .pf-cc-claro,
+  .pf-cc-oscuro {
+    transition: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .pf-cc {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+
 /* ─── Sello de Openpay ───────────────────────────────────────────────── */
 
 .pf-sello-openpay {
