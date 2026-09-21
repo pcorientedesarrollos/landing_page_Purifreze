@@ -64,7 +64,8 @@ const CLAVE_ESCALA = 'portal_purifreze_escala_texto';
   standalone: true,
   imports: [CommonModule, FormsModule, PortalTerminosComponent],
   templateUrl: './registrar-tarjeta.component.html',
-  styleUrls: ['./registrar-tarjeta.component.scss'],
+  // La tarjeta dibujada trae su propia hoja: ver el encabezado de ese archivo.
+  styleUrls: ['./registrar-tarjeta.component.scss', './tarjeta-dibujada.scss'],
 })
 export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked, OnDestroy {
   private portal = inject(PortalService);
