@@ -48,7 +48,52 @@ const comunes = [
 ];
 ---
 
-<section class="max-w-[1200px] mx-auto px-6 py-16">
+<!-- pt chico: la banda del cliente que ya renta es lo primero de la página y el
+     <main> de /planes ya reserva el alto de la barra fija. Con py-16 quedaba un
+     hueco blanco antes de ella. -->
+<section class="max-w-[1200px] mx-auto px-6 pt-4 pb-16">
+  <!-- Arriba y no al final: es lo primero que el cliente que YA renta necesita
+       de esta página, y antes vivía debajo de los tres planes y del CTA de
+       venta, así que sólo lo encontraba quien bajaba hasta el borde. Sigue
+       separado de la oferta —banda propia, color propio, antes de que empiece
+       el catálogo— para que el visitante nuevo no crea que tiene que registrar
+       una tarjeta para contratar. -->
+  <div
+    class="mb-14 flex flex-col gap-6 rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 to-cyan-50 p-6 sm:p-8 md:flex-row md:items-center md:justify-between md:gap-10"
+  >
+    <div>
+      <p class="text-sm font-bold uppercase tracking-wide text-blue-700">
+        ¿Ya eres cliente?
+      </p>
+      <p class="mt-2 max-w-md text-slate-700">
+        Registra tu tarjeta una vez y tu renta se paga sola cada mes. Sin
+        transferencias, sin recordatorios.
+      </p>
+
+      <!-- El logo va junto al texto y no dentro del botón: quien duda antes de
+           dar su tarjeta busca de quién es la pasarela, no una marca más en el
+           botón. -->
+      <p class="mt-4 flex items-center gap-2 text-sm font-medium text-slate-600">
+        <span>Pagos procesados por</span>
+        <img
+          src="/assets/openpay-bbva.jpg"
+          alt="Openpay by BBVA"
+          width="96"
+          height="36"
+          class="h-7 w-auto"
+        />
+      </p>
+    </div>
+
+    <a
+      href="/activar"
+      class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-7 py-4 text-base font-bold text-blue-700 shadow-sm ring-2 ring-blue-600 transition hover:-translate-y-0.5 hover:bg-blue-600 hover:text-white hover:shadow-lg hover:shadow-blue-500/30"
+    >
+      <i class="fa-regular fa-credit-card text-xl"></i>
+      Automatiza tus cobros
+    </a>
+  </div>
+
   <div class="text-center max-w-2xl mx-auto">
     <h2 class="text-3xl md:text-4xl font-black text-slate-900">
       Planes de renta
@@ -125,39 +170,5 @@ const comunes = [
       <i class="fa-brands fa-whatsapp text-xl"></i>
       Pregúntanos por WhatsApp
     </a>
-  </div>
-
-  <!-- Separado del CTA de venta a propósito: esto no es para quien está
-       eligiendo plan, es para el cliente que ya tiene uno. Mezclarlos deja al
-       visitante nuevo preguntándose qué cobro va a automatizar. -->
-  <div class="mt-12 border-t border-slate-200 pt-10 text-center">
-    <p class="text-sm font-bold uppercase tracking-wide text-slate-500">
-      ¿Ya eres cliente?
-    </p>
-    <p class="mx-auto mt-3 max-w-md text-slate-600">
-      Registra tu tarjeta una vez y tu renta se paga sola cada mes. Sin
-      transferencias, sin recordatorios.
-    </p>
-    <a
-      href="/activar"
-      class="mt-5 inline-flex items-center gap-2 rounded-lg border-2 border-blue-600 px-7 py-4 text-base font-bold text-blue-700 transition hover:-translate-y-0.5 hover:bg-blue-600 hover:text-white"
-    >
-      <i class="fa-regular fa-credit-card text-xl"></i>
-      Automatiza tus cobros
-    </a>
-
-    <!-- El logo va debajo del botón y no dentro: quien duda antes de dar su
-         tarjeta busca de quién es la pasarela, no una marca más en el botón. -->
-    <p class="mt-6 flex items-center justify-center gap-2 text-sm font-medium text-slate-600">
-      <span>Pagos procesados por</span>
-      <img
-        src="/assets/openpay-bbva.jpg"
-        alt="Openpay by BBVA"
-        width="96"
-        height="36"
-        loading="lazy"
-        class="h-7 w-auto"
-      />
-    </p>
   </div>
 </section>
