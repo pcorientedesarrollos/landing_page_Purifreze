@@ -50,6 +50,34 @@ const BASE_TEXTO_PX = 16;
 const CLAVE_ESCALA = 'portal_purifreze_escala_texto';
 
 /**
+ * Los datos que la guía escribe en los campos para que el cliente vea dónde va
+ * cada uno y cómo se dibujan en el plástico.
+ *
+ * El titular ya no es un nombre de persona: decía "MARIA LOPEZ GARCIA", y un
+ * nombre común de verdad puede ser el de una clienta real, así que quien abriera
+ * su pantalla de pago vería el nombre de otra persona ya cargado en el formulario.
+ * El sello "Ejemplo" lo explica, pero el susto llega primero. Una instrucción en
+ * su lugar no puede ser de nadie y además dice qué escribir.
+ *
+ * El número es el de prueba de Visa —cuatro grupos iguales, nadie lo lee como
+ * una tarjeta de alguien—. Nunca se envían: ver `puedeActivar`, y el primer
+ * toque en cualquier campo los borra.
+ */
+const EJEMPLO_TARJETA = {
+  titular: 'TU NOMBRE COMPLETO',
+  numero: '4111 1111 1111 1111',
+  cvv: '123',
+} as const;
+
+/**
+ * Vigencia del ejemplo: diciembre, cuatro años adelante. Calculada y no escrita
+ * a mano para que la tarjeta de muestra no aparezca vencida dentro de dos años.
+ */
+function vigenciaDeEjemplo(): string {
+  return `12/${(new Date().getFullYear() + 4) % 100}`;
+}
+
+/**
  * Portal público de autoservicio.
  *
  * El cliente llega acá con la sesión ya hecha: la abrió /activar al canjear el
@@ -122,6 +150,23 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
    * puede voltear tocándola.
    */
   public dorsoVisible = false;
+
+  /**
+   * La guía está enseñando datos de ejemplo en los cuatro campos.
+   *
+   * Mientras esté puesta no se puede activar nada: el ejemplo es un número de
+   * prueba bien formado y en sandbox se tokenizaría sin chistar, así que lo que
+   * impide registrar una tarjeta que no es de nadie es esta bandera.
+   */
+  public ejemploGuia = false;
+
+  /** Lo que el cliente ya tenía escrito antes de abrir la guía. Se le devuelve tal cual. */
+  private antesDelEjemplo: {
+    titular: string;
+    numero: string;
+    vigencia: string;
+    cvv: string;
+  } | null = null;
 
   // ─── Tamaño del texto ────────────────────────────────────────────────────
   readonly escalasTexto = ESCALAS_TEXTO;
@@ -595,7 +640,16 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
 
   /** Todo lo que tiene que ser cierto para poder activar el cobro. */
   get puedeActivar(): boolean {
-    return this.tarjetaValida && this.aceptaTerminos && this.openpayListo && !this.cargando;
+    return (
+      this.tarjetaValida &&
+      this.aceptaTerminos &&
+      this.openpayListo &&
+      !this.cargando &&
+      // El ejemplo de la guía pasa todas las validaciones. Sin esta condición,
+      // marcar la casilla durante el recorrido dejaría el botón activo y el
+      // siguiente toque registraría una tarjeta que no es del cliente.
+      !this.ejemploGuia
+    );
   }
 
   /**
@@ -666,7 +720,54 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
   /** Un solo recorrido: la pantalla es una sola. */
   abrirGuia(): void {
     if (!this.hayServicio || !this.openpayListo) return;
-    this.guia.abrir(pasosPago());
+    this.ponerEjemplo();
+    // Dos salidas para el ejemplo: al pasar del primer paso y al cerrarse la
+    // guía por donde sea —"Entendido", "Omitir" o la pantalla yéndose—. Quitarlo
+    // es idempotente, así que las dos pueden ocurrir.
+    this.guia.abrir(
+      pasosPago(() => this.descartarEjemplo()),
+      () => this.descartarEjemplo()
+    );
+  }
+
+  /**
+   * Escribe la tarjeta de muestra en los cuatro campos.
+   *
+   * Lo que el cliente ya tecleó se guarda y se le devuelve después: abrir la
+   * guía no puede costarle lo que llevaba escrito.
+   */
+  private ponerEjemplo(): void {
+    if (this.ejemploGuia) return;
+    this.antesDelEjemplo = {
+      titular: this.titular,
+      numero: this.numero,
+      vigencia: this.vigencia,
+      cvv: this.cvv,
+    };
+    this.titular = EJEMPLO_TARJETA.titular;
+    this.numero = EJEMPLO_TARJETA.numero;
+    this.vigencia = vigenciaDeEjemplo();
+    this.cvv = EJEMPLO_TARJETA.cvv;
+    this.ejemploGuia = true;
+    // El frente es lo que el ejemplo explica. El dorso ya se voltea solo cuando
+    // el cliente llega al CVV de verdad.
+    this.dorsoVisible = false;
+  }
+
+  /**
+   * Quita el ejemplo y devuelve los campos a como estaban.
+   *
+   * Lo llama el focusin del contenedor de los campos: el primer toque para
+   * escribir en serio es el que lo borra, sin pedirle a nadie que lo limpie.
+   */
+  descartarEjemplo(): void {
+    if (!this.ejemploGuia) return;
+    this.titular = this.antesDelEjemplo?.titular ?? '';
+    this.numero = this.antesDelEjemplo?.numero ?? '';
+    this.vigencia = this.antesDelEjemplo?.vigencia ?? '';
+    this.cvv = this.antesDelEjemplo?.cvv ?? '';
+    this.antesDelEjemplo = null;
+    this.ejemploGuia = false;
   }
 
   // ─── Presentación ────────────────────────────────────────────────────────

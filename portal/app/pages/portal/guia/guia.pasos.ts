@@ -22,17 +22,30 @@ import type { DriveStep } from 'driver.js';
  * Una acción por paso, no un paso por campo: los cuatro datos de la tarjeta se
  * escriben de corrido, y pedir "Siguiente" entre cada uno cansa antes de
  * terminar.
+ *
+ * @param alDejarLosCampos Se llama cuando el recorrido abandona el primer paso.
+ *   El ejemplo de la tarjeta sirve para enseñar dónde va cada dato; del segundo
+ *   paso en adelante ya explicó lo suyo y estorba, porque el resto de la guía
+ *   habla de lo que el cliente va a autorizar de verdad.
  */
-export function pasosPago(): DriveStep[] {
+export function pasosPago(alDejarLosCampos?: () => void): DriveStep[] {
   return [
     // Hay tarjetas que no traen los datos impresos: el número y el CVV viven en
     // la app del banco.
-    paso(
-      'campos',
-      'Escribe los datos de tu tarjeta',
-      'Nombre, número, vigencia y CVV, tal como vienen en tu tarjeta. ' +
-        'Si no vienen impresos, búscalos en la app de tu banco.'
-    ),
+    //
+    // El paso señala la tarjeta dibujada junto a los cuatro campos, y la
+    // pantalla la llena con un ejemplo mientras dura: ver el número tomando
+    // forma en el plástico dice dónde va cada dato mejor que cualquier frase.
+    {
+      ...paso(
+        'campos',
+        'Escribe los datos de tu tarjeta',
+        'Nombre, número, vigencia y CVV, tal como vienen en tu tarjeta. ' +
+          'Si no vienen impresos, búscalos en la app de tu banco.<br><br>' +
+          'Arriba va un <strong>ejemplo</strong>: se borra en cuanto toques un campo.'
+      ),
+      onDeselected: alDejarLosCampos,
+    },
     paso(
       'servicio',
       'Revisa lo que se va a cobrar',

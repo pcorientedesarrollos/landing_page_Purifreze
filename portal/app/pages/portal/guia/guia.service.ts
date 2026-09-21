@@ -12,7 +12,13 @@ import { driver, type DriveStep, type Driver, type PopoverDOM } from 'driver.js'
 export class PortalGuiaService {
   private activa: Driver | null = null;
 
-  abrir(pasos: DriveStep[]): void {
+  /**
+   * @param alCerrar Se llama cuando la guía se va, sea por "Entendido", por
+   *   "Omitir" o porque la pantalla la cerró. La pantalla puede montar algo
+   *   mientras la guía corre —un ejemplo en los campos, por decir— y necesita un
+   *   único lugar donde deshacerlo, pase lo que pase.
+   */
+  abrir(pasos: DriveStep[], alCerrar?: () => void): void {
     if (!pasos.length) return;
     this.cerrar();
 
@@ -45,6 +51,7 @@ export class PortalGuiaService {
       onPopoverRender: (popover, { driver: d }) => this.armar(popover, d),
       onDestroyed: () => {
         if (this.activa === guia) this.activa = null;
+        alCerrar?.();
       },
     });
 
@@ -79,6 +86,15 @@ export class PortalGuiaService {
     }
     const lleno = progreso?.querySelector<HTMLElement>('.pf-guia-barra span');
     if (lleno) lleno.style.width = `${(actual / total) * 100}%`;
+
+    // Cuando lo señalado ocupa casi toda la pantalla no queda lugar para poner
+    // la ventana al lado, y Driver la centra ENCIMA: en un celular, el primer
+    // paso —la tarjeta dibujada más los cuatro campos— terminaba con la ventana
+    // tapando el titular y la vigencia del ejemplo, que es justo lo que ese paso
+    // explica. Anclada al pie tapa lo de abajo y deja ver lo señalado.
+    const zona = guia.getActiveElement()?.getBoundingClientRect();
+    const noCabeAlLado = !!zona && zona.height > window.innerHeight * 0.55;
+    popover.wrapper.classList.toggle('pf-guia-al-pie', noCabeAlLado);
 
     // En el primer paso no hay a dónde regresar. Driver deja el botón apagado,
     // y un botón que no hace nada es otra cosa que la persona no entiende.

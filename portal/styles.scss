@@ -152,6 +152,25 @@ body {
   }
 }
 
+// La ventana anclada al pie de la pantalla. La clase la pone PortalGuiaService
+// cuando lo señalado no cabe junto a ella —en celular, la tarjeta dibujada más
+// los cuatro campos pasan del 55% del alto—: ahí Driver.js la centra ENCIMA y
+// tapa justo lo que el paso está explicando. Al pie tapa lo de abajo.
+//
+// Va con !important porque Driver.js escribe top y left en el atributo style.
+.driver-popover.pf-guia.pf-guia-al-pie {
+  position: fixed !important;
+  top: auto !important;
+  bottom: 0.6rem !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+
+  // La flecha apuntaría a un lado que ya no existe.
+  .driver-popover-arrow {
+    display: none !important;
+  }
+}
+
 // Lo que la guía señala lleva un anillo además del recorte del fondo: con el
 // brillo del celular bajo, el recorte solo no alcanza para ver dónde tocar.
 [data-guia].driver-active-element {

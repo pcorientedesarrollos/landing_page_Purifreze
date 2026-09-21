@@ -18,8 +18,31 @@
    parece a la que la persona tiene en la mano. */
 
 .pf-cc-marco {
+  position: relative;
   perspective: 1400px;
   margin-bottom: 1.6rem;
+}
+
+/* El sello que avisa que lo dibujado es la tarjeta de muestra de la guía.
+
+   Va montado en el borde de arriba y no dentro del plástico: así se lee como
+   una etiqueta nuestra pegada encima y no como algo impreso en la tarjeta. El
+   ángulo superior derecho ya lo ocupa el logotipo de la marca. */
+.pf-cc-ejemplo {
+  position: absolute;
+  z-index: 2;
+  top: -0.55rem;
+  left: 0.9rem;
+  padding: 0.16rem 0.62rem;
+  border-radius: 999px;
+  background: var(--pf-aviso);
+  box-shadow: 0 2px 6px rgba(18, 39, 90, 0.28);
+  color: #fff;
+  font-family: var(--pf-texto);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .pf-cc {
