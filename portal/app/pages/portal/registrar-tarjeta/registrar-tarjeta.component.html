@@ -312,7 +312,6 @@
               <li *ngFor="let c of servicio!.contratos">
                 <span class="pf-concepto-nombre">
                   Contrato {{ c.idContrato }}
-                  <span class="pf-detalle">{{ textoEquipos(c.equipos) }}</span>
                   <span class="pf-detalle" *ngIf="!periodicidadComun && c.periodicidad">
                     · {{ c.periodicidad }}
                   </span>
@@ -374,7 +373,7 @@
                      [ngModelOptions]="{ standalone: true }" [disabled]="cargando" />
               <span>
                 Acepto los
-                <button type="button" class="pf-enlace-terminos" (click)="abrirTerminos()">
+                <button type="button" class="pf-enlace-inline" (click)="abrirTerminos()">
                   Términos y condiciones
                 </button>
                 y autorizo el cargo automático de
@@ -383,6 +382,12 @@
                 a esta tarjeta.
               </span>
             </label>
+
+            <p class="pf-aviso-privacidad-enlace">
+              <button type="button" class="pf-enlace-inline" (click)="abrirAvisoPrivacidad()">
+                Aviso de Privacidad
+              </button>
+            </p>
 
             <!-- El error del alta va acá: el botón que falló es este. -->
             <div class="pf-alerta" *ngIf="error && hayServicio" #cajaError role="alert">
@@ -467,3 +472,8 @@
   (cerrar)="cerrarTerminos()"
   (aceptar)="aceptarDesdeTerminos()">
 </app-portal-terminos>
+
+<app-portal-aviso-privacidad
+  *ngIf="avisoPrivacidadAbierto"
+  (cerrar)="cerrarAvisoPrivacidad()">
+</app-portal-aviso-privacidad>

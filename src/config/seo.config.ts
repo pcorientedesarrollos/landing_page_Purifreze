@@ -11,9 +11,10 @@ export const SEO_CONFIG = {
       whatsapp: "https://wa.me/5219998999110",
       phoneTel: "+5219998999110",
       phoneDisplay: "+52 1 999 899 9110",
-      email: "contacto@purifreze.com", // Asumido, verificar
+      email: "contacto@purifreze.mx",
       address: {
-        streetAddress: "Nuevo Yucatán",
+        // Domicilio fiscal según Constancia de Situación Fiscal (RFC PUR260326HR0).
+        streetAddress: "Calle 46 #485, Col. Nuevo Yucatán",
         addressLocality: "Mérida",
         addressRegion: "Yucatán",
         addressCountry: "MX",

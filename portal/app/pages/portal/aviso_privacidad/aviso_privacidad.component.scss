@@ -1,0 +1,39 @@
+/* Modal del aviso de privacidad. La caja, la cabecera, el pie y los botones
+   vienen de _modal.scss, compartido con términos y la confirmación del pago. */
+
+@use '../modal';
+
+/* ─── Texto del aviso ────────────────────────────────────────────────── */
+
+.pf-modal-cuerpo {
+  color: var(--pf-tinta-media);
+  font-size: 0.885rem;
+  line-height: 1.68;
+
+  h3 {
+    font-family: var(--pf-titulo);
+    margin: 1.7rem 0 0.55rem;
+    font-size: 0.93rem;
+    font-weight: 600;
+    color: var(--pf-marino-profundo);
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  p {
+    margin: 0 0 0.9rem;
+  }
+
+  strong {
+    color: var(--pf-tinta);
+    font-weight: 600;
+  }
+}
+
+.pf-version {
+  margin: 1rem 0 0 !important;
+  font-size: 0.72rem;
+  color: var(--pf-tinta-suave);
+}

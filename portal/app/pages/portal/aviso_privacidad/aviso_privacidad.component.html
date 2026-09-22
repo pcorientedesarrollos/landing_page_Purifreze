@@ -1,0 +1,85 @@
+<div class="pf-fondo-modal" (click)="onCerrar()"></div>
+
+<div class="pf-modal" role="dialog" aria-modal="true" aria-labelledby="pf-privacidad-titulo">
+
+  <header class="pf-modal-cabecera">
+    <h2 id="pf-privacidad-titulo">Aviso de Privacidad</h2>
+    <button type="button" class="pf-cerrar" (click)="onCerrar()" aria-label="Cerrar">
+      <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+        <path d="M5.5 5.5l9 9M14.5 5.5l-9 9" stroke="currentColor"
+              stroke-width="1.7" stroke-linecap="round" />
+      </svg>
+    </button>
+  </header>
+
+  <div class="pf-modal-cuerpo">
+
+    <h3>1. Responsable del tratamiento</h3>
+    <p>
+      <strong>Purifreze, S. de R.L. de C.V.</strong> (RFC PUR260326HR0), con domicilio en
+      Calle 46 #485, colonia Nuevo Yucatán, Mérida, Yucatán, C.P. 97147, es responsable de
+      tratar tus datos personales conforme a la Ley Federal de Protección de Datos
+      Personales en Posesión de los Particulares.
+    </p>
+
+    <h3>2. Datos que se recaban</h3>
+    <p>
+      Para registrar tu método de pago se recaban el nombre del titular de la tarjeta y los
+      datos necesarios para tokenizarla (número, vigencia y código de seguridad). Estos
+      datos viajan cifrados directamente de tu navegador a Openpay — Purifreze nunca los
+      recibe completos. De vuelta, Purifreze solo conserva los últimos cuatro dígitos, la
+      marca, el banco emisor y la vigencia, que sirven para identificar la tarjeta
+      registrada.
+    </p>
+
+    <h3>3. Finalidades del tratamiento</h3>
+    <p>
+      Los datos se usan para: generar los cargos automáticos de tu contrato de renta de
+      equipo, dar seguimiento a esos cobros (confirmaciones, rechazos, reintentos) y
+      cumplir las obligaciones fiscales derivadas de la relación comercial. No se usan con
+      fines de mercadotecnia ni se venden a terceros.
+    </p>
+
+    <h3>4. Transferencia a Openpay</h3>
+    <p>
+      Openpay, S.A.P.I. de C.V., Institución de Fondos de Pago Electrónico, procesa el
+      cobro como <strong>encargado</strong> del tratamiento: actúa por cuenta de Purifreze,
+      bajo instrucciones de Purifreze, y no puede usar tus datos para fines propios. Esta
+      transferencia es necesaria para prestar el servicio que contrataste y no requiere tu
+      consentimiento adicional conforme al artículo 37 de la Ley.
+    </p>
+
+    <h3>5. Medidas de seguridad</h3>
+    <p>
+      La captura de la tarjeta ocurre en un formulario que Openpay controla directamente
+      dentro de esta página (tokenización en el navegador); el número completo, la vigencia
+      y el código de seguridad nunca tocan los servidores de Purifreze. Esto corresponde al
+      nivel de cumplimiento PCI DSS SAQ A, el más restrictivo para un comercio que no
+      almacena datos de tarjeta.
+    </p>
+
+    <h3>6. Derechos ARCO</h3>
+    <p>
+      Puedes acceder, rectificar o cancelar tus datos personales, u oponerte a su
+      tratamiento, escribiendo a <strong>contacto&#64;purifreze.mx</strong> con tu nombre,
+      el contrato al que corresponde tu tarjeta registrada y el derecho que deseas ejercer.
+      Purifreze responderá en un plazo máximo de 20 días hábiles.
+    </p>
+    <p>
+      Cancelar tus datos de pago no cancela por sí mismo tu contrato de renta ni los
+      adeudos pendientes — para eso, contacta a Purifreze directamente.
+    </p>
+
+    <h3>7. Cambios a este aviso</h3>
+    <p>
+      Si el tratamiento de tus datos cambia de forma relevante, este aviso se actualizará y
+      la fecha de abajo cambiará con él.
+    </p>
+
+    <p class="pf-version">Última actualización: {{ actualizado }}</p>
+  </div>
+
+  <footer class="pf-modal-pie">
+    <button type="button" class="pf-boton-principal" (click)="onCerrar()">Cerrar</button>
+  </footer>
+</div>

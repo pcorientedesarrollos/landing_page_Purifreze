@@ -5,10 +5,6 @@
  * "Unknown column 'contacto' in 'field list'" no solo es incomprensible —
  * además revela el esquema interno de la base de datos a cualquiera que abra
  * el portal.
- *
- * La excepción son los errores de Openpay: sus descripciones están escritas
- * para el usuario final ("fondos insuficientes", "tarjeta rechazada") y son
- * justo lo que la persona necesita leer para saber qué hacer.
  */
 
 /** Señales de que un mensaje viene de la base de datos o del motor, no del negocio. */
@@ -43,8 +39,16 @@ const GENERICO =
  *
  * @param err       lo que haya lanzado HttpClient o el SDK de Openpay
  * @param respaldo  mensaje propio del contexto, si el error no aporta nada útil
+ * @param soloRespaldo  descarta el detalle del servidor y usa siempre el respaldo.
+ *   Para el alta de tarjeta: el motivo exacto del rechazo lo decide el banco y
+ *   decirlo en pantalla es tanto ruido para el cliente como pista para quien
+ *   esté probando tarjetas ajenas.
  */
-export function mensajeParaCliente(err: any, respaldo?: string): string {
+export function mensajeParaCliente(
+  err: any,
+  respaldo?: string,
+  soloRespaldo = false
+): string {
   // Sin respuesta del servidor: el problema es de red, no del sistema.
   if (err?.status === 0) {
     return 'No pudimos conectar. Revisa tu conexión a internet e intenta de nuevo.';
@@ -70,16 +74,12 @@ export function mensajeParaCliente(err: any, respaldo?: string): string {
     return err?.error?.message ?? 'Demasiados intentos. Espera unos minutos e intenta de nuevo.';
   }
 
-  // Rechazo de Openpay: trae errorCode y una descripción pensada para el cliente.
-  //
-  // El body va PRIMERO. En un HttpErrorResponse de Angular, `err.message` es el
-  // texto del framework ("Http failure response for .../portal/tarjeta: 400 Bad
-  // Request") y el mensaje real del servidor vive en `err.error.message`. Con el
-  // orden invertido, `err.message` —que siempre existe— ganaba siempre y el
-  // cliente leía la URL del backend en vez de "The external_id already exists".
-  if (err?.errorCode || err?.error?.errorCode) {
-    const desc = err?.error?.message ?? err?.message;
-    if (desc && !esTecnico(desc)) return desc;
+  // Pasados los casos que el propio portal redacta, el detalle del servidor se
+  // descarta: queda en consola para diagnóstico, no en pantalla.
+  if (soloRespaldo) {
+    const detalle = err?.error?.message ?? err?.message;
+    if (detalle) console.error('[portal] error silenciado:', err?.error?.errorCode ?? '', detalle);
+    return respaldo ?? GENERICO;
   }
 
   const delServidor = err?.error?.message ?? err?.message;

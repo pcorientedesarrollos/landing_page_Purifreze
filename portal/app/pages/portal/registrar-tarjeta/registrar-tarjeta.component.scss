@@ -310,7 +310,11 @@
   strong { color: var(--pf-marino-profundo); }
 }
 
-.pf-enlace-terminos {
+/* Estilo compartido por los enlaces que abren un modal legal (términos,
+   aviso de privacidad): texto en línea dentro de un párrafo, no un botón de
+   ancho completo — por eso es una clase distinta de .pf-enlace de más abajo. */
+.pf-enlace-inline {
+  display: inline;
   padding: 0;
   border: 0;
   background: none;
@@ -318,6 +322,14 @@
   color: var(--pf-agua);
   text-decoration: underline;
   cursor: pointer;
+}
+
+/* Entre la casilla de aceptación y el botón: no forma parte de lo que se
+   acepta, es la referencia para quien quiera leerlo antes de dar clic. */
+.pf-aviso-privacidad-enlace {
+  margin: 0 0 1.1rem;
+  text-align: center;
+  font-size: 0.78rem;
 }
 
 .pf-cuando-titulo {

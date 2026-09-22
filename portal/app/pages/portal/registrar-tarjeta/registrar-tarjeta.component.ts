@@ -17,6 +17,7 @@ import {
 } from '../../../services/portal/portal.service';
 import { PortalAnimacionesService } from '../animaciones.service';
 import { PortalTerminosComponent } from '../terminos/terminos.component';
+import { PortalAvisoPrivacidadComponent } from '../aviso_privacidad/aviso_privacidad.component';
 import { mensajeParaCliente } from '../errores';
 import { PortalGuiaService } from '../guia/guia.service';
 import { pasosPago } from '../guia/guia.pasos';
@@ -90,7 +91,7 @@ function vigenciaDeEjemplo(): string {
 @Component({
   selector: 'app-portal-registrar-tarjeta',
   standalone: true,
-  imports: [CommonModule, FormsModule, PortalTerminosComponent],
+  imports: [CommonModule, FormsModule, PortalTerminosComponent, PortalAvisoPrivacidadComponent],
   templateUrl: './registrar-tarjeta.component.html',
   // La tarjeta dibujada trae su propia hoja: ver el encabezado de ese archivo.
   styleUrls: ['./registrar-tarjeta.component.scss', './tarjeta-dibujada.scss'],
@@ -220,6 +221,7 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
   public aceptaCarnet = false;
 
   public terminosAbiertos = false;
+  public avisoPrivacidadAbierto = false;
 
   /**
    * La casilla de autorización. Es lo que ocupa el lugar de la confirmación que
@@ -681,8 +683,12 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
       this.paso = 'listo';
       this.portal.limpiarSesion();
     } catch (e: any) {
-      console.log(e)
-      this.error = mensajeParaCliente(e, 'No pudimos registrar la tarjeta. Revisa los datos.');
+      console.error('[portal] alta de tarjeta:', e);
+      this.error = mensajeParaCliente(
+        e,
+        'No pudimos registrar la tarjeta. Revisa los datos e intenta de nuevo.',
+        true
+      );
     } finally {
       this.enviando = false;
       this.cargando = false;
@@ -708,6 +714,14 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
 
   cerrarTerminos(): void {
     this.terminosAbiertos = false;
+  }
+
+  abrirAvisoPrivacidad(): void {
+    this.avisoPrivacidadAbierto = true;
+  }
+
+  cerrarAvisoPrivacidad(): void {
+    this.avisoPrivacidadAbierto = false;
   }
 
   private limpiarDatosSensibles(): void {
@@ -779,12 +793,6 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
       currency: 'MXN',
       minimumFractionDigits: 2,
     });
-  }
-
-  /** "1 equipo" / "3 equipos". Sin nombres ni números de serie. */
-  textoEquipos(cantidad: number): string {
-    if (!cantidad) return 'Sin equipos registrados';
-    return cantidad === 1 ? '1 equipo' : `${cantidad} equipos`;
   }
 
   /** "IVA 16%" a partir de la tasa que mandó el servidor. */

@@ -1,7 +1,7 @@
 ---
 import { SEO_CONFIG } from "../config/seo.config";
 
-const { whatsapp } = SEO_CONFIG.business.contact;
+const { whatsapp, email, phoneTel, phoneDisplay, address } = SEO_CONFIG.business.contact;
 
 const planes = [
   {
@@ -170,5 +170,24 @@ const comunes = [
       <i class="fa-brands fa-whatsapp text-xl"></i>
       Pregúntanos por WhatsApp
     </a>
+  </div>
+
+  <!-- Identidad del comercio junto al CTA de pago: quien está por registrar
+       su tarjeta arriba necesita poder verificar a quién se la está dando. -->
+  <div class="mt-10 flex flex-col items-center gap-2 text-center text-sm text-slate-500">
+    <p class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+      <a href={`mailto:${email}`} class="hover:text-blue-700 hover:underline">
+        <i class="fa-solid fa-envelope mr-1.5 text-blue-600"></i>{email}
+      </a>
+      <span class="text-slate-300">·</span>
+      <a href={`tel:${phoneTel}`} class="hover:text-blue-700 hover:underline">
+        <i class="fa-solid fa-phone mr-1.5 text-blue-600"></i>{phoneDisplay}
+      </a>
+    </p>
+    <p class="max-w-md">
+      <i class="fa-solid fa-location-dot mr-1.5 text-blue-600"></i>
+      Purifreze, S. de R.L. de C.V. — {address.streetAddress}, {address.addressLocality},
+      {address.addressRegion}, C.P. {address.postalCode}
+    </p>
   </div>
 </section>
