@@ -723,13 +723,6 @@
   margin-bottom: 0.28rem;
 }
 
-.pf-plan-titulo {
-  font-size: 0.93rem;
-  font-weight: 500;
-  line-height: 1.45;
-  color: var(--pf-tinta);
-}
-
 .pf-plan-precio {
   text-align: right;
 }
@@ -748,69 +741,6 @@
   font-size: 0.74rem;
   color: var(--pf-tinta-suave);
   margin-top: 0.1rem;
-}
-
-.pf-equipos {
-  list-style: none;
-  margin: 0.95rem 0 0;
-  padding: 0.9rem 0 0;
-  border-top: 1px solid var(--pf-borde);
-
-  li {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-size: 0.83rem;
-    color: var(--pf-tinta-media);
-    padding: 0.18rem 0;
-  }
-}
-
-.pf-punto {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--pf-agua-clara);
-  flex-shrink: 0;
-}
-
-.pf-detalle {
-  color: var(--pf-tinta-suave);
-}
-
-/* ─── Conceptos y totales ────────────────────────────────────────────────
-   Un renglón por contrato, como los conceptos de una factura: número, cuántos
-   equipos y su importe. Sin nombres de equipo ni series: en esta pantalla el
-   cliente está por autorizar un cargo, no revisando su inventario. */
-
-.pf-conceptos {
-  list-style: none;
-  margin: 0.95rem 0 0;
-  padding: 0.9rem 0 0;
-  border-top: 1px solid var(--pf-borde);
-
-  li {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.75rem;
-    font-size: 0.85rem;
-    color: var(--pf-tinta-media);
-    padding: 0.28rem 0;
-  }
-}
-
-.pf-concepto-nombre {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-}
-
-.pf-concepto-monto {
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  color: var(--pf-tinta);
 }
 
 .pf-totales {

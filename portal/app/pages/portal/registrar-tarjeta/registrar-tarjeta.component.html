@@ -294,31 +294,19 @@
           <div class="pf-tarjeta pf-col-resumen">
             <h2>Tu servicio</h2>
 
+            <!-- Sin desglose por contrato: lo que se cobra es UN cargo por el
+                 total. Enumerar los contratos invitaba a buscar el propio y a
+                 leer el cargo como si fuera por partes —sobre todo con un RFC
+                 agrupado, donde los renglones son de varios clientes—. -->
             <div class="pf-plan-encabezado">
               <div>
                 <div class="pf-plan-etiqueta">Renta de equipo Purifreze</div>
-                <div class="pf-plan-titulo">
-                  {{ servicio!.contratos.length }}
-                  {{ servicio!.contratos.length === 1 ? 'contrato' : 'contratos' }}
-                </div>
               </div>
               <div class="pf-plan-precio">
                 <div class="pf-monto">{{ formatoMonto(servicio!.total) }}</div>
                 <div class="pf-frecuencia" *ngIf="periodicidadComun">{{ periodicidadComun }}</div>
               </div>
             </div>
-
-            <ul class="pf-conceptos">
-              <li *ngFor="let c of servicio!.contratos">
-                <span class="pf-concepto-nombre">
-                  Contrato {{ c.idContrato }}
-                  <span class="pf-detalle" *ngIf="!periodicidadComun && c.periodicidad">
-                    · {{ c.periodicidad }}
-                  </span>
-                </span>
-                <span class="pf-concepto-monto">{{ formatoMonto(c.monto) }}</span>
-              </li>
-            </ul>
 
             <div class="pf-totales">
               <div class="pf-totales-linea">

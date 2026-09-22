@@ -91,9 +91,13 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
       }
 
       /** El guion es de lectura: se pone solo y no se manda. */
+      function conGuion(crudo: string): string {
+        const limpio = crudo.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 8);
+        return limpio.length > 4 ? `${limpio.slice(0, 4)}-${limpio.slice(4)}` : limpio;
+      }
+
       campo.addEventListener('input', () => {
-        const limpio = campo.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 8);
-        campo.value = limpio.length > 4 ? `${limpio.slice(0, 4)}-${limpio.slice(4)}` : limpio;
+        campo.value = conGuion(campo.value);
       });
 
       function mostrarError(texto: string): void {
@@ -156,6 +160,26 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
 
         window.location.href = PORTAL;
       });
+
+      /**
+       * El código puede venir en la liga: /activar?codigo=ARDZ-HAHZ.
+       *
+       * Es el caso normal —la liga se manda por WhatsApp y el cliente le da un
+       * clic—, así que la pantalla se teclea sola y entra sin pedirle nada. El
+       * formulario sigue ahí para quien recibió el código dictado por teléfono.
+       *
+       * El parámetro se borra de la barra de direcciones en cuanto se lee: el
+       * código ya está en el campo, y dejarlo a la vista lo mete en el historial
+       * y en cualquier captura de pantalla que el cliente comparta después.
+       */
+      const codigoDeLaLiga = conGuion(new URLSearchParams(location.search).get('codigo') ?? '');
+      if (codigoDeLaLiga) {
+        campo.value = codigoDeLaLiga;
+        history.replaceState(null, '', location.pathname);
+        // requestSubmit y no submit(): dispara el listener de arriba, que es
+        // quien canjea. submit() se saltaría el handler y recargaría la página.
+        forma.requestSubmit();
+      }
     </script>
 
     <style is:global>
