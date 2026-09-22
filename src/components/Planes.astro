@@ -184,9 +184,11 @@ const comunes = [
         <i class="fa-solid fa-phone mr-1.5 text-blue-600"></i>{phoneDisplay}
       </a>
     </p>
-    <p class="max-w-md">
+    <!-- Sin max-w: con el ancho de la sección la dirección entra en un solo
+         renglón. Nada de whitespace-nowrap, que en móvil la desbordaría. -->
+    <p>
       <i class="fa-solid fa-location-dot mr-1.5 text-blue-600"></i>
-      Purifreze, S. de R.L. de C.V. — {address.streetAddress}, {address.addressLocality},
+      {address.streetAddress}, {address.addressLocality},
       {address.addressRegion}, C.P. {address.postalCode}
     </p>
   </div>
