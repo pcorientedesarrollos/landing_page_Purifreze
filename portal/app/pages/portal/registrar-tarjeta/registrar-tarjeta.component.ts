@@ -545,18 +545,14 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
   }
 
   /**
-   * El CVV, legible, en el dorso dibujado.
-   *
-   * Es la pantalla del propio cliente mirando su propia tarjeta: verlo escrito
-   * le sirve para comprobar que tecleó los tres dígitos correctos, que es el
-   * dato que más se equivoca. El campo sigue siendo type="password" para que no
-   * quede a la vista de quien pase al lado mientras llena el formulario; el
-   * dorso solo aparece mientras ese campo tiene el foco.
+   * El CVV, oculto, en el dorso dibujado: un punto por dígito tecleado, nunca
+   * el valor. Da la misma confirmación de cantidad que da el input real sin
+   * exponer el dato en pantalla mientras el dorso está a la vista.
    *
    * No se guarda en ninguna parte: sale del mismo campo y se va con él.
    */
   get cvvEnTarjeta(): string {
-    return this.cvv || '•••';
+    return this.cvv ? '•'.repeat(this.cvv.length) : '•••';
   }
 
   /**
