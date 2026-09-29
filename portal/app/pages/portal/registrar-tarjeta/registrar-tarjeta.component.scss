@@ -58,6 +58,9 @@
    columna: el control de tamaño va a la derecha y tiene que quedar alineado
    con el resumen, no flotando sobre el formulario. */
 .pf-header {
+  /* Sin border-box, el 100% más el padding medía más que la pantalla del
+     teléfono y aparecía scroll horizontal. */
+  box-sizing: border-box;
   width: 100%;
   max-width: 1040px;
   margin: 0 auto;
@@ -174,6 +177,7 @@
 /* Antes eran 520px: una columna angosta para pantallas de un paso a la vez.
    Ahora la vista lleva el formulario y el resumen lado a lado. */
 .pf-main {
+  box-sizing: border-box;
   flex: 1;
   width: 100%;
   max-width: 1040px;
@@ -933,7 +937,20 @@
 /* ─── Pantallas chicas ───────────────────────────────────────────────── */
 
 @media (max-width: 520px) {
-  .pf-header { padding: 1.35rem 1.15rem 1rem; }
+  /* Logo, etiqueta de pruebas y las tres A no caben en un renglón de
+     teléfono: sin wrap empujaban la página y aparecía scroll horizontal. */
+  .pf-header {
+    padding: 1.35rem 1.15rem 1rem;
+    flex-wrap: wrap;
+    row-gap: 0.75rem;
+  }
+
+  .pf-header-derecha {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
   .pf-main { padding: 0 1.15rem 2rem; }
   .pf-tarjeta { padding: 1.6rem 1.3rem; }
 
