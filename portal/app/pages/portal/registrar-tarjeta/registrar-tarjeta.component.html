@@ -339,8 +339,7 @@
                    corresponde, se lee como un cargo sorpresa y el cliente llama
                    al banco antes que a Purifreze. -->
               <p *ngIf="servicio!.cobroVencido">
-                Se cobra ahora porque esa fecha ya pasó y la mensualidad sigue
-                pendiente. Es <strong>un solo cargo</strong> por ese mes, no un
+                Es <strong>un solo cargo</strong> por ese mes, no un
                 cobro adicional ni la suma de meses anteriores.
               </p>
 
@@ -388,7 +387,7 @@
             </div>
 
             <button type="button" class="pf-boton" data-guia="registrar"
-                    (click)="registrarTarjeta()" [disabled]="!puedeActivar">
+                    (click)="abrirConfirmacion()" [disabled]="!puedeActivar">
               <span *ngIf="!cargando && openpayListo">Activar pago automático</span>
               <span *ngIf="!cargando && !openpayListo" class="pf-cargando-texto">
                 Preparando el pago seguro…
@@ -460,6 +459,18 @@
   (cerrar)="cerrarTerminos()"
   (aceptar)="aceptarDesdeTerminos()">
 </app-portal-terminos>
+
+<app-portal-confirmar-pago
+  *ngIf="confirmacionAbierta && servicio"
+  [monto]="formatoMonto(servicio.total)"
+  [periodicidad]="periodicidadComun || ''"
+  [tarjeta]="{ logo: logoDeLaMarca, ultimos4: numeroLimpio.slice(-4), titular: titular.trim() }"
+  [primerCargo]="esHoy(servicio.primerCobro) ? 'Hoy' : fechaLarga(servicio.primerCobro || '')"
+  [mensualidad]="esHoy(servicio.primerCobro) && servicio.fechaMensualidad ? diaMensualidad(servicio.fechaMensualidad) : null"
+  [procesando]="cargando"
+  (cerrar)="cerrarConfirmacion()"
+  (confirmar)="registrarTarjeta()">
+</app-portal-confirmar-pago>
 
 <app-portal-aviso-privacidad
   *ngIf="avisoPrivacidadAbierto"

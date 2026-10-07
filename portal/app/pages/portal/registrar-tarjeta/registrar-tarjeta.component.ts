@@ -18,6 +18,7 @@ import {
 import { PortalAnimacionesService } from '../animaciones.service';
 import { PortalTerminosComponent } from '../terminos/terminos.component';
 import { PortalAvisoPrivacidadComponent } from '../aviso_privacidad/aviso_privacidad.component';
+import { PortalConfirmarPagoComponent } from '../confirmar-pago/confirmar-pago.component';
 import { mensajeParaCliente } from '../errores';
 import { PortalGuiaService } from '../guia/guia.service';
 import { pasosPago } from '../guia/guia.pasos';
@@ -91,7 +92,10 @@ function vigenciaDeEjemplo(): string {
 @Component({
   selector: 'app-portal-registrar-tarjeta',
   standalone: true,
-  imports: [CommonModule, FormsModule, PortalTerminosComponent, PortalAvisoPrivacidadComponent],
+  imports: [
+    CommonModule, FormsModule, PortalTerminosComponent, PortalAvisoPrivacidadComponent,
+    PortalConfirmarPagoComponent,
+  ],
   templateUrl: './registrar-tarjeta.component.html',
   // La tarjeta dibujada trae su propia hoja: ver el encabezado de ese archivo.
   styleUrls: ['./registrar-tarjeta.component.scss', './tarjeta-dibujada.scss'],
@@ -222,11 +226,11 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
 
   public terminosAbiertos = false;
   public avisoPrivacidadAbierto = false;
+  public confirmacionAbierta = false;
 
   /**
-   * La casilla de autorización. Es lo que ocupa el lugar de la confirmación que
-   * antes era un modal aparte: sin un acto explícito, activar el cobro sería un
-   * solo clic sobre un formulario recién llenado.
+   * La casilla de autorización. Nombra el monto: una que sólo dijera "acepto los
+   * términos" se marca sin leer.
    */
   public aceptaTerminos = false;
 
@@ -650,11 +654,23 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     );
   }
 
+  /** "Activar pago automático" sólo abre el resumen; la tarjeta se guarda al confirmar. */
+  abrirConfirmacion(): void {
+    if (!this.puedeActivar || this.enviando) return;
+    this.error = '';
+    this.confirmacionAbierta = true;
+  }
+
+  cerrarConfirmacion(): void {
+    this.confirmacionAbierta = false;
+  }
+
   /**
    * Activa el cobro automático.
    *
-   * Tocar el botón con la casilla marcada ES el consentimiento: terminosVersion
-   * viaja con el alta y queda guardado como evidencia de qué texto se aceptó.
+   * Confirmar en el resumen con la casilla marcada ES el consentimiento:
+   * terminosVersion viaja con el alta y queda guardado como evidencia de qué
+   * texto se aceptó.
    */
   async registrarTarjeta(): Promise<void> {
     if (!this.puedeActivar || this.enviando) return;
@@ -688,6 +704,9 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     } finally {
       this.enviando = false;
       this.cargando = false;
+      // Con error también se cierra: el mensaje vive junto al botón y al
+      // formulario, que es donde se corrige.
+      this.confirmacionAbierta = false;
     }
   }
 

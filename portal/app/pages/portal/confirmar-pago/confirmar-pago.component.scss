@@ -1,0 +1,56 @@
+/* La caja, la cabecera, el pie y los botones vienen de _modal.scss. */
+
+@use '../modal';
+
+.pf-resumen {
+  margin: 0;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--pf-borde);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  dt {
+    color: var(--pf-tinta-suave);
+    font-size: 0.82rem;
+    flex-shrink: 0;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--pf-tinta);
+    font-size: 0.92rem;
+    text-align: right;
+  }
+
+  strong {
+    color: var(--pf-marino-profundo);
+  }
+}
+
+.pf-resumen-tarjeta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.2rem 0.5rem;
+
+  img {
+    height: 18px;
+    width: auto;
+  }
+
+  small {
+    flex-basis: 100%;
+    color: var(--pf-tinta-media);
+    font-size: 0.78rem;
+  }
+}

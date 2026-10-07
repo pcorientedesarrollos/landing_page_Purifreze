@@ -1,0 +1,52 @@
+<div class="pf-fondo-modal" (click)="onCerrar()"></div>
+
+<div class="pf-modal" role="dialog" aria-modal="true" aria-labelledby="pf-confirmar-titulo">
+
+  <header class="pf-modal-cabecera">
+    <h2 id="pf-confirmar-titulo">Confirma tu pago automático</h2>
+    <button type="button" class="pf-cerrar" (click)="onCerrar()" [disabled]="procesando"
+            aria-label="Cerrar">
+      <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+        <path d="M5.5 5.5l9 9M14.5 5.5l-9 9" stroke="currentColor"
+              stroke-width="1.7" stroke-linecap="round" />
+      </svg>
+    </button>
+  </header>
+
+  <div class="pf-modal-cuerpo">
+    <dl class="pf-resumen">
+      <div>
+        <dt>Servicio</dt>
+        <dd>Renta de equipo Purifreze</dd>
+      </div>
+      <div>
+        <dt>Monto</dt>
+        <dd><strong>{{ monto }}</strong> {{ periodicidad | lowercase }}</dd>
+      </div>
+      <div>
+        <dt>Tarjeta</dt>
+        <dd class="pf-resumen-tarjeta">
+          <img *ngIf="tarjeta.logo" [src]="tarjeta.logo" alt="" aria-hidden="true" />
+          <span>•••• {{ tarjeta.ultimos4 }}</span>
+          <small>{{ tarjeta.titular }}</small>
+        </dd>
+      </div>
+      <div>
+        <dt>Primer cargo</dt>
+        <dd>
+          <strong>{{ primerCargo }}</strong><ng-container *ngIf="mensualidad">,
+            por tu mensualidad del {{ mensualidad }}</ng-container>
+        </dd>
+      </div>
+    </dl>
+  </div>
+
+  <footer class="pf-modal-pie">
+    <button type="button" class="pf-boton-secundario" (click)="onCerrar()" [disabled]="procesando">
+      Regresar
+    </button>
+    <button type="button" class="pf-boton-principal" (click)="confirmar.emit()" [disabled]="procesando">
+      {{ procesando ? 'Procesando…' : 'Confirmar' }}
+    </button>
+  </footer>
+</div>
