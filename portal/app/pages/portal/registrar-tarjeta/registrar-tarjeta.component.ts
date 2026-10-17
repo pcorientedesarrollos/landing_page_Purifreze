@@ -696,10 +696,13 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
       this.portal.limpiarSesion();
     } catch (e: any) {
       console.error('[portal] alta de tarjeta:', e);
+      // soloRespaldo=false: el cliente necesita el motivo real del rechazo
+      // (aunque venga en inglés de Openpay) para no reintentar con la misma
+      // tarjeta bloqueada. "Revisa los datos" no le dice que el problema es
+      // la tarjeta, no la captura.
       this.error = mensajeParaCliente(
         e,
-        'No pudimos registrar la tarjeta. Revisa los datos e intenta de nuevo.',
-        true
+        'No pudimos registrar la tarjeta. Revisa los datos e intenta de nuevo.'
       );
     } finally {
       this.enviando = false;
