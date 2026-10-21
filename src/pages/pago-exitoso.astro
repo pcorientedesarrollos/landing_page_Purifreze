@@ -1,0 +1,103 @@
+---
+/**
+ * Destino del redirect_url de un cargo con redirección (link de pago) de
+ * Openpay. Puramente informativa: el cargo ya se procesó del lado de Openpay
+ * antes de llegar acá, y es el webhook —no esta página— quien lo asienta en
+ * el ERP.
+ */
+import { SEO_CONFIG } from '../config/seo.config';
+
+const { whatsapp } = SEO_CONFIG.business.contact;
+
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Pago registrado · Purifreze</title>
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <main class="tarjeta">
+      <img src="/assets/nombre-logo.png" alt="Purifreze" class="logo" />
+      <h1>Gracias, tu pago quedó registrado</h1>
+      <p class="intro">
+        Ya puedes cerrar esta ventana. Si Purifreze necesita confirmarte algo más, te lo haremos saber.
+      </p>
+      <a class="ayuda" href={whatsapp} rel="noopener">¿Tienes alguna duda? Escríbenos</a>
+    </main>
+
+    <style is:global>
+      :root {
+        --pf-marino-profundo: #12275a;
+        --pf-marino: #1a4c8b;
+        --pf-tinta: #1b2430;
+        --pf-tinta-media: #5b6675;
+        --pf-borde: #dfe5ec;
+        --pf-fondo: #f2f6fa;
+
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        background: var(--pf-fondo);
+        color: var(--pf-tinta-media);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+      }
+
+      .tarjeta {
+        width: min(420px, 100%);
+        background: #fff;
+        border: 1px solid var(--pf-borde);
+        border-radius: 14px;
+        box-shadow: 0 24px 64px -16px rgba(18, 39, 90, 0.18);
+        padding: 2.4rem 1.9rem;
+        text-align: center;
+      }
+
+      .logo {
+        height: 34px;
+        width: auto;
+        margin-bottom: 2rem;
+      }
+
+      h1 {
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        color: var(--pf-marino-profundo);
+        margin: 0 0 0.6rem;
+      }
+
+      .intro {
+        margin: 0;
+        font-size: 0.97rem;
+      }
+
+      .ayuda {
+        display: inline-block;
+        margin-top: 1.8rem;
+        color: var(--pf-tinta-media);
+        font-size: 0.9rem;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+    </style>
+  </body>
+</html>
