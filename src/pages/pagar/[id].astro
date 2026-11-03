@@ -1,0 +1,224 @@
+---
+/**
+ * El link de pago que se le manda al cliente: purifreze.mx/pagar/<cargo>.
+ *
+ * Pasa por aquí y no directo a Openpay por dos cosas: el ERP anota que se
+ * abrió (Openpay no avisa) y el cliente ve su nombre, qué paga y cuánto antes
+ * de capturar su tarjeta.
+ *
+ * La consulta sale del servidor de Astro, así que el navegador y la IP del
+ * cliente se le pasan al ERP en cabeceras propias.
+ */
+import { SEO_CONFIG } from '../../config/seo.config';
+import { urlDelErp } from '../../lib/acceso-portal';
+
+type Apertura =
+  | { estado: 'no_existe' }
+  | { estado: 'sin_pagar' | 'pagado' | 'vencido'; cliente: string; descripcion: string; monto: number; url: string | null };
+
+const { whatsapp } = SEO_CONFIG.business.contact;
+// El servidor puede alcanzar al ERP por la red privada; si no hay variable propia, la del navegador.
+const erp = process.env['PORTAL_API_URL'] ?? urlDelErp();
+const id = String(Astro.params.id ?? '');
+
+let apertura: Apertura | null = null;
+try {
+  const ip = Astro.request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || Astro.clientAddress;
+  const r = await fetch(`${erp}/portal/link-pago/${encodeURIComponent(id)}`, {
+    headers: {
+      'x-visitante-user-agent': Astro.request.headers.get('user-agent') ?? '',
+      'x-visitante-ip': ip ?? '',
+    },
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (r.ok || r.status === 404) apertura = await r.json();
+} catch (e) {
+  console.error('[pagar] el ERP no respondió', e);
+}
+
+const pesos = (n: number) => n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+
+Astro.response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Pago a Purifreze</title>
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <main class="tarjeta">
+      <img src="/assets/nombre-logo.png" alt="Purifreze" class="logo" />
+
+      {apertura?.estado === 'sin_pagar' && (
+        <>
+          <p class="saludo">Hola, <strong>{apertura.cliente}</strong></p>
+          <h1>Tu pago a Purifreze</h1>
+          <div class="detalle">
+            <span class="concepto">{apertura.descripcion}</span>
+            <span class="monto">{pesos(apertura.monto)}</span>
+          </div>
+          <a class="pagar" href={apertura.url!}>Pagar con tarjeta</a>
+          <p class="nota">El pago lo procesa Openpay de forma segura. Al terminar regresarás a Purifreze.</p>
+        </>
+      )}
+
+      {apertura?.estado === 'pagado' && (
+        <>
+          <h1>Este pago ya está hecho</h1>
+          <p class="intro">
+            Gracias, {apertura.cliente}. Ya recibimos tu pago de {pesos(apertura.monto)} por {apertura.descripcion}.
+          </p>
+        </>
+      )}
+
+      {apertura?.estado === 'vencido' && (
+        <>
+          <h1>Este link ya no está vigente</h1>
+          <p class="intro">Escríbenos y te mandamos uno nuevo para pagar {apertura.descripcion}.</p>
+        </>
+      )}
+
+      {apertura?.estado === 'no_existe' && (
+        <>
+          <h1>No encontramos este link</h1>
+          <p class="intro">Revisa que esté completo o escríbenos y te mandamos uno nuevo.</p>
+        </>
+      )}
+
+      {!apertura && (
+        <>
+          <h1>No pudimos cargar tu pago</h1>
+          <p class="intro">Intenta de nuevo en unos minutos.</p>
+        </>
+      )}
+
+      <a class="ayuda" href={whatsapp} rel="noopener">¿Tienes alguna duda? Escríbenos</a>
+    </main>
+
+    <style is:global>
+      :root {
+        --pf-marino-profundo: #12275a;
+        --pf-marino: #1a4c8b;
+        --pf-tinta: #1b2430;
+        --pf-tinta-media: #5b6675;
+        --pf-borde: #dfe5ec;
+        --pf-fondo: #f2f6fa;
+
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        background: var(--pf-fondo);
+        color: var(--pf-tinta-media);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+      }
+
+      .tarjeta {
+        width: min(420px, 100%);
+        background: #fff;
+        border: 1px solid var(--pf-borde);
+        border-radius: 14px;
+        box-shadow: 0 24px 64px -16px rgba(18, 39, 90, 0.18);
+        padding: 2.4rem 1.9rem;
+        text-align: center;
+      }
+
+      .logo {
+        height: 34px;
+        width: auto;
+        margin-bottom: 2rem;
+      }
+
+      .saludo {
+        margin: 0 0 0.3rem;
+        font-size: 0.97rem;
+
+        strong {
+          color: var(--pf-tinta);
+        }
+      }
+
+      h1 {
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        color: var(--pf-marino-profundo);
+        margin: 0 0 0.6rem;
+      }
+
+      .intro {
+        margin: 0;
+        font-size: 0.97rem;
+      }
+
+      .detalle {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        margin: 1.4rem 0 1.6rem;
+        padding: 1.1rem 1rem;
+        border: 1px solid var(--pf-borde);
+        border-radius: 10px;
+        background: var(--pf-fondo);
+      }
+
+      .concepto {
+        font-size: 0.95rem;
+        color: var(--pf-tinta);
+      }
+
+      .monto {
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 1.9rem;
+        font-weight: 600;
+        color: var(--pf-marino-profundo);
+      }
+
+      .pagar {
+        display: block;
+        padding: 0.85rem 1rem;
+        border-radius: 10px;
+        background: var(--pf-marino);
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+
+        &:hover {
+          background: var(--pf-marino-profundo);
+        }
+      }
+
+      .nota {
+        margin: 0.9rem 0 0;
+        font-size: 0.82rem;
+      }
+
+      .ayuda {
+        display: inline-block;
+        margin-top: 1.8rem;
+        color: var(--pf-tinta-media);
+        font-size: 0.9rem;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+    </style>
+  </body>
+</html>
