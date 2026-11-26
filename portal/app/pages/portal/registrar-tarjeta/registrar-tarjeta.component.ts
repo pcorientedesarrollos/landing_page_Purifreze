@@ -11,10 +11,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import {
+  CobroProgramado,
   PortalService,
   ResumenServicio,
   SesionPortal,
 } from '../../../services/portal/portal.service';
+import {
+  MESES,
+  avisoMensualidadVencida,
+  fechaLarga,
+  formatoMXN,
+  fraseCobroProgramado,
+  montoAutorizado,
+} from './cobro-programado';
 import { PortalAnimacionesService } from '../animaciones.service';
 import { PortalTerminosComponent } from '../terminos/terminos.component';
 import { PortalAvisoPrivacidadComponent } from '../aviso_privacidad/aviso_privacidad.component';
@@ -191,6 +200,8 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     /** Mes que salda ese cargo, 'YYYY-MM'. */
     fechaMensualidad?: string | null;
     monto?: number | null;
+    /** Con suscripción programada: monto y día de cada mes. */
+    cobroProgramado?: CobroProgramado | null;
   } | null = null;
 
   /**
@@ -420,6 +431,29 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
    */
   get periodicidadComun(): string | null {
     return this.servicio?.periodicidad ?? null;
+  }
+
+  /**
+   * La suscripción que Purifreze le programó en un día fijo del mes, si la hay.
+   * null: rige la regla de siempre y la pantalla no cambia.
+   */
+  get cobroProgramado(): CobroProgramado | null {
+    return this.servicio?.cobroProgramado ?? null;
+  }
+
+  /** Lo que se cobrará cada mes: lo programado, o el total del servicio. */
+  get montoAutorizado(): number | null {
+    return montoAutorizado(this.servicio);
+  }
+
+  /** "Se te cobrarán $X el día N de cada mes". */
+  fraseCobroProgramado(cobro: CobroProgramado): string {
+    return fraseCobroProgramado(cobro);
+  }
+
+  /** Sólo aviso: la mensualidad vencida no se cobra a la tarjeta. */
+  avisoMensualidadVencida(cobro: CobroProgramado | null | undefined): string | null {
+    return avisoMensualidadVencida(cobro ?? null);
   }
 
   /**
@@ -805,12 +839,7 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
   // ─── Presentación ────────────────────────────────────────────────────────
 
   formatoMonto(monto: number | null): string {
-    if (monto === null) return '—';
-    return monto.toLocaleString('es-MX', {
-      style: 'currency',
-      currency: 'MXN',
-      minimumFractionDigits: 2,
-    });
+    return formatoMXN(monto);
   }
 
   /** "IVA 16%" a partir de la tasa que mandó el servidor. */
@@ -834,8 +863,7 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
 
   /** "3 de octubre de 2026", partiendo la cadena por la misma razón que fechaCobro. */
   fechaLarga(fecha: string): string {
-    const [anio, mes, dia] = fecha.split('-').map(Number);
-    return `${dia} de ${MESES[mes - 1]} de ${anio}`;
+    return fechaLarga(fecha);
   }
 
   /**
@@ -865,9 +893,3 @@ export class PortalRegistrarTarjetaComponent implements OnInit, AfterViewChecked
     return `${dia} de ${MESES[mes - 1]}`;
   }
 }
-
-/** Meses en español, para escribir la fecha como la lee una persona. */
-const MESES = [
-  'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
-];
