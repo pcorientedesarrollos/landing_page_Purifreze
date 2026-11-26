@@ -14,6 +14,24 @@ export interface RenglonContrato {
 }
 
 /**
+ * Suscripción que Purifreze le programó al cliente en un día fijo del mes,
+ * antes de que registre su tarjeta: "Se te cobrarán $monto el día diaCobro de
+ * cada mes".
+ *
+ * `mensualidadVencida` es sólo un aviso: esa mensualidad NO se cobra a la
+ * tarjeta.
+ */
+export interface CobroProgramado {
+  /** Monto de cada mes, IVA incluido. */
+  monto: number;
+  /** Día del mes, 1-31; en meses más cortos, el último día. */
+  diaCobro: number;
+  /** YYYY-MM-DD del primer cargo a la tarjeta. */
+  fechaPrimerCobro: string;
+  mensualidadVencida: { fecha: string; monto: number } | null;
+}
+
+/**
  * El servicio del cliente: un solo cargo con sus contratos como renglones.
  *
  * Los importes vienen calculados del servidor. El monto del contrato incluye
@@ -49,6 +67,11 @@ export interface ResumenServicio {
   fechaMensualidad: string | null;
   /** El día de esa mensualidad ya pasó: por eso el cargo es hoy. */
   cobroVencido: boolean;
+  /**
+   * null: sin día programado, rige la regla de siempre. Con programación,
+   * `cobroVencido` es false y `fechaMensualidad` es la del primer ciclo.
+   */
+  cobroProgramado: CobroProgramado | null;
 }
 
 export interface SesionPortal {

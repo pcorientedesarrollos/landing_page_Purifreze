@@ -325,7 +325,21 @@
 
             <!-- Cuándo. Es lo que el cliente vino a averiguar antes de entregar su
                  tarjeta —sobre todo el que ya pagó el mes y teme el cobro doble—. -->
-            <div class="pf-cuando" *ngIf="servicio!.primerCobro">
+            <!-- Suscripción programada por Purifreze en un día fijo del mes: el
+                 cliente ve cuánto y qué día, y cuándo es el primero. La
+                 mensualidad vencida sólo se avisa: no se cobra a la tarjeta. -->
+            <div class="pf-cuando" *ngIf="cobroProgramado as cp" data-test="cobro-programado">
+              <div class="pf-cuando-titulo">Tu cobro mensual</div>
+              <p><strong>{{ fraseCobroProgramado(cp) }}</strong>.</p>
+              <p>
+                Tu primer cargo será <strong>{{ fechaCobro(cp.fechaPrimerCobro) }}</strong>.
+              </p>
+              <p class="pf-cuando-aviso" *ngIf="avisoMensualidadVencida(cp) as aviso" role="note">
+                {{ aviso }}
+              </p>
+            </div>
+
+            <div class="pf-cuando" *ngIf="!cobroProgramado && servicio!.primerCobro">
               <div class="pf-cuando-titulo">Tu primer cargo</div>
               <p>
                 Será <strong>{{ fechaCobro(servicio!.primerCobro) }}</strong><ng-container
@@ -364,8 +378,11 @@
                   Términos y condiciones
                 </button>
                 y autorizo el cargo automático de
-                <strong>{{ formatoMonto(servicio!.total) }}</strong>
-                <ng-container *ngIf="periodicidadComun"> {{ periodicidadComun | lowercase }}</ng-container>
+                <strong>{{ formatoMonto(montoAutorizado) }}</strong>
+                <ng-container *ngIf="cobroProgramado; else periodicidadDelCargo"> el día
+                  {{ cobroProgramado!.diaCobro }} de cada mes</ng-container>
+                <ng-template #periodicidadDelCargo><ng-container *ngIf="periodicidadComun">
+                  {{ periodicidadComun | lowercase }}</ng-container></ng-template>
                 a esta tarjeta.
               </span>
             </label>
@@ -417,7 +434,17 @@
       <!-- La confirmación dice cuándo y cuánto, no sólo que la tarjeta quedó:
            irse sin saber si el cargo es hoy o el mes que viene es lo que hacía
            que el cliente llamara para preguntar. -->
-      <p class="pf-entrada" *ngIf="cobroActivado && tarjetaRegistrada?.primerCobro">
+      <ng-container *ngIf="cobroActivado && tarjetaRegistrada?.cobroProgramado as cp">
+        <p class="pf-entrada" data-test="cobro-programado">
+          <strong>{{ fraseCobroProgramado(cp) }}</strong>.
+          Tu primer cargo será <strong>{{ fechaCobro(cp.fechaPrimerCobro) }}</strong>.
+        </p>
+        <p class="pf-entrada pf-entrada-aviso" *ngIf="avisoMensualidadVencida(cp) as aviso" role="note">
+          {{ aviso }}
+        </p>
+      </ng-container>
+      <p class="pf-entrada"
+         *ngIf="cobroActivado && !tarjetaRegistrada?.cobroProgramado && tarjetaRegistrada?.primerCobro">
         Tu primer cargo de
         <strong>{{ formatoMonto(tarjetaRegistrada!.monto ?? null) }}</strong>
         será <strong>{{ fechaCobro(tarjetaRegistrada!.primerCobro!) }}</strong><ng-container
@@ -454,7 +481,7 @@
 <app-portal-terminos
   *ngIf="terminosAbiertos"
   [nombreCliente]="sesion?.cliente?.nombre || ''"
-  [monto]="servicio ? formatoMonto(servicio.total) : ''"
+  [monto]="servicio ? formatoMonto(montoAutorizado) : ''"
   [periodicidad]="periodicidadComun || ''"
   (cerrar)="cerrarTerminos()"
   (aceptar)="aceptarDesdeTerminos()">
@@ -462,11 +489,14 @@
 
 <app-portal-confirmar-pago
   *ngIf="confirmacionAbierta && servicio"
-  [monto]="formatoMonto(servicio.total)"
-  [periodicidad]="periodicidadComun || ''"
+  [monto]="formatoMonto(montoAutorizado)"
+  [periodicidad]="cobroProgramado ? 'el día ' + cobroProgramado.diaCobro + ' de cada mes' : (periodicidadComun || '')"
   [tarjeta]="{ logo: logoDeLaMarca, ultimos4: numeroLimpio.slice(-4), titular: titular.trim() }"
-  [primerCargo]="esHoy(servicio.primerCobro) ? 'Hoy' : fechaLarga(servicio.primerCobro || '')"
-  [mensualidad]="esHoy(servicio.primerCobro) && servicio.fechaMensualidad ? diaMensualidad(servicio.fechaMensualidad) : null"
+  [primerCargo]="cobroProgramado
+    ? (esHoy(cobroProgramado.fechaPrimerCobro) ? 'Hoy' : fechaLarga(cobroProgramado.fechaPrimerCobro))
+    : (esHoy(servicio.primerCobro) ? 'Hoy' : fechaLarga(servicio.primerCobro || ''))"
+  [mensualidad]="!cobroProgramado && esHoy(servicio.primerCobro) && servicio.fechaMensualidad ? diaMensualidad(servicio.fechaMensualidad) : null"
+  [avisoVencida]="avisoMensualidadVencida(cobroProgramado)"
   [procesando]="cargando"
   (cerrar)="cerrarConfirmacion()"
   (confirmar)="registrarTarjeta()">
