@@ -68,7 +68,6 @@ export const TARJETA = {
 
 export const TOKEN_OPENPAY = 'tok_demostracion';
 export const DEVICE_SESSION_ID = 'device_demostracion';
-export const CODIGO = '482913';
 
 export function primerDiaDelMesQueViene(): string {
   const hoy = new Date();
@@ -112,14 +111,6 @@ export async function simularOpenpay(page: Page): Promise<void> {
   }
 }
 
-/** Siembra la sesión del portal: es lo que deja el login tras verificar el código. */
-export async function sembrarSesion(page: Page): Promise<void> {
-  await page.addInitScript(
-    ({ clave, sesion }) => sessionStorage.setItem(clave, JSON.stringify(sesion)),
-    { clave: 'portal_purifreze_sesion', sesion: SESION }
-  );
-}
-
 function json(datos: unknown) {
   return { status: 200, contentType: 'application/json', body: JSON.stringify(datos) };
 }
@@ -133,7 +124,6 @@ function json(datos: unknown) {
 export async function simularBackend(
   page: Page,
   opciones: {
-    conAutenticacion?: boolean;
     alRegistrar?: (cuerpo: any) => void;
     /** true pinta el distintivo "MODO DE PRUEBAS". Por omisión se muestra el
      *  portal como lo ve el cliente en producción, que es lo que documentan
@@ -141,10 +131,9 @@ export async function simularBackend(
     sandbox?: boolean;
   } = {}
 ): Promise<void> {
-  if (opciones.conAutenticacion) {
-    await page.route('**/portal/solicitar-codigo', ruta => ruta.fulfill(json({ data: { enviado: true } })));
-    await page.route('**/portal/verificar-codigo', ruta => ruta.fulfill(json({ data: SESION })));
-  }
+  // El canje del enlace es lo primero que hace la pantalla: sin esto no hay
+  // sesión y el portal muestra el error del enlace vencido.
+  await page.route('**/portal/enlace/canjear', ruta => ruta.fulfill(json({ data: SESION })));
 
   await page.route('**/portal/contratos', ruta => ruta.fulfill(json({ data: SERVICIO })));
   await page.route('**/portal/config-openpay', ruta =>

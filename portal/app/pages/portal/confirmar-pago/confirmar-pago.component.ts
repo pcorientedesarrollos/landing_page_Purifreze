@@ -25,6 +25,11 @@ export class PortalConfirmarPagoComponent {
   @Input() primerCargo = '';
   /** "2 de octubre" cuando el primer cargo es hoy: qué mensualidad paga. */
   @Input() mensualidad: string | null = null;
+  /**
+   * Con cobro programado y una mensualidad ya vencida: sólo se avisa, esa
+   * mensualidad no se cobra a la tarjeta.
+   */
+  @Input() avisoVencida: string | null = null;
   @Input() procesando = false;
 
   @Output() cerrar = new EventEmitter<void>();

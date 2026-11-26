@@ -54,3 +54,15 @@
     font-size: 0.78rem;
   }
 }
+
+/* Mensualidad vencida con cobro programado: sólo un aviso, no un cargo. */
+.pf-aviso-vencida {
+  margin: 0.9rem 0 0;
+  background: var(--pf-aviso-fondo, #fef6ee);
+  border-left: 3px solid var(--pf-aviso, #b54708);
+  border-radius: 6px;
+  padding: 0.55rem 0.75rem;
+  color: var(--pf-tinta);
+  font-size: 0.83rem;
+  line-height: 1.5;
+}

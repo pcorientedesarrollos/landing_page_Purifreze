@@ -1,17 +1,15 @@
 import { test, expect } from '@playwright/test';
 import {
   CLIENTE, SERVICIO, TARJETA, TOKEN_OPENPAY, DEVICE_SESSION_ID,
-  vigenciaFutura, simularOpenpay, sembrarSesion, simularBackend, RUTA_PORTAL,
+  vigenciaFutura, simularOpenpay, simularBackend, RUTA_PORTAL,
 } from '../portal-fixtures';
 
 /**
  * Golden path del portal del cliente: ve el servicio que tiene contratado y
  * registra su tarjeta para quedar domiciliado.
  *
- * ARRANCA EN "Tu servicio": siembra en sessionStorage la misma sesión que deja
- * el login al verificar el código, que es lo único que mira ngOnInit para
- * saltarse identidad y código. El recorrido con esos dos pasos incluidos está
- * en portal-flujo-completo.spec.ts.
+ * El recorrido con los términos y condiciones incluidos está en
+ * portal-flujo-completo.spec.ts.
  *
  * El backend y Openpay.js están simulados (ver ../portal-fixtures.ts). Lo que
  * pasa del lado del servidor está cubierto por los integration contra MySQL real.
@@ -21,7 +19,6 @@ import {
  */
 
 test('Portal — ve su servicio contratado y registra la tarjeta', async ({ page }) => {
-  await sembrarSesion(page);
   await simularOpenpay(page);
 
   // Se guarda lo que el front manda: es la única forma de comprobar que el

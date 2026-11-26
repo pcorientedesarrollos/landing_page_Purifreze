@@ -614,6 +614,17 @@
   }
 }
 
+/* Mensualidad vencida con cobro programado: sólo un aviso, no un cargo. */
+.pf-cuando p.pf-cuando-aviso,
+.pf-entrada-aviso {
+  background: var(--pf-aviso-fondo);
+  border-left: 3px solid var(--pf-aviso);
+  border-radius: 6px;
+  padding: 0.55rem 0.75rem;
+  color: var(--pf-tinta);
+  font-size: 0.83rem;
+}
+
 /*
  * Cuando no se le puede cobrar. Alineado a la izquierda y con el mismo peso
  * tipográfico que el resto de la pantalla: antes era un párrafo gris centrado
